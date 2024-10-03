@@ -2,18 +2,18 @@ import { gql, useQuery } from '@apollo/client'
 import './App.css'
 // import { Filiere } from 'api/types/graphql'
 
-interface Filiere {
-  idF: string
-  nomF: string
-  descriptionF: string
+interface Course {
+  id: string
+  name: string
+  description: string
 }
 
 export const QUERY = gql`
-  query FindFilieres {
-    filieres {
-      idF
-      nomF
-      descriptionF
+  query FindCourses {
+    courses {
+      id
+      name
+      description
     }
   }
 `
@@ -26,10 +26,10 @@ function App() {
 
   return (
     <div>
-      {data.filieres.map((filiere: Filiere) => (
-        <div key={filiere.idF}>
-          <h2>{filiere.nomF}</h2>
-          <p>{filiere.descriptionF}</p>
+      {data.courses.map((course: Course) => (
+        <div key={course.id}>
+          <h2>{course.name}</h2>
+          <p>{course.description}</p>
         </div>
       ))}
     </div>
