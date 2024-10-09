@@ -1,9 +1,11 @@
-import './App.css'
+import { DepartmentProvider } from './context/DepartmentContext'
 import Routes from './Routes'
 
 function App() {
   return (
-    <Routes />
+    <DepartmentProvider>
+      <Routes />
+    </DepartmentProvider>
   )
 }
 

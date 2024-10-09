@@ -1,11 +1,13 @@
-import { BrowserRouter, Navigate, Routes as Paths, Route } from 'react-router-dom'
-import Accueil from './pages/accueil/page'
+import { BrowserRouter, Routes as Paths, Route } from 'react-router-dom'
+import Home from './pages/Home/Home'
+import Departments from './pages/Departments/Departments'
 
 const Routes = () => {
   return (
     <BrowserRouter>
       <Paths>
-        <Route path="/" element={<Accueil />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/departments" element={<Departments />} />
       </Paths>
     </BrowserRouter>
   )
