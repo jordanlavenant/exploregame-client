@@ -10,6 +10,7 @@ import ProfilPerso from './pages/profil/profilperso/page'
 import ProgressionGlobal from './pages/progression/progressionglobal/page'
 import ProgressionScenario from './pages/progression/progressionscenario/page'
 import ProgressionEtape from './pages/progression/progressionetape/page'
+import Dialogue from './pages/dialogue/page'
 
 const Routes = () => {
   return (
@@ -26,6 +27,7 @@ const Routes = () => {
         <Route path="/progression/global" element={<ProgressionGlobal />} />
         <Route path="/progression/scenario" element={<ProgressionScenario />} />
         <Route path="/progression/etape" element={<ProgressionEtape />} />
+        <Route path="/dialogue" element={<Dialogue />} />
       </Paths>
     </BrowserRouter>
   )
