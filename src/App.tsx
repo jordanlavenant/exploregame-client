@@ -1,10 +1,13 @@
-import { DepartmentProvider } from './context/DepartmentContext'
-import Routes from './Routes'
+import { CurrentDepartmentProvider } from '@context/CurrentDepartmentContext'
+import { DepartmentProvider } from '@context/DepartmentDataContext'
+import Routes from '@/Routes'
 
 function App() {
   return (
     <DepartmentProvider>
-      <Routes />
+      <CurrentDepartmentProvider>
+        <Routes />
+      </CurrentDepartmentProvider>
     </DepartmentProvider>
   )
 }

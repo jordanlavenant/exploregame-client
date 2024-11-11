@@ -1,13 +1,15 @@
 import { BrowserRouter, Routes as Paths, Route } from 'react-router-dom'
-import Home from './pages/Home/Home'
-import Departments from './pages/Departments/Departments'
+import HomePage from '@pages/Home/Home'
+import DepartmentPage from '@pages/Department/Department'
+import ScenarioPage from '@pages/Scenario/Scenario'
 
 const Routes = () => {
   return (
     <BrowserRouter>
       <Paths>
-        <Route path="/" element={<Home />} />
-        <Route path="/departments" element={<Departments />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/departments" element={<DepartmentPage />} />
+        <Route path="/department/:depId/scenario/:sceId" element={<ScenarioPage />} />
       </Paths>
     </BrowserRouter>
   )
