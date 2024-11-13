@@ -3,7 +3,7 @@ import HomePage from '@pages/Home/Home'
 import DepartmentPage from '@pages/Department/Department'
 import ScenarioPage from '@pages/Scenario/Scenario'
 import LoginPage from '@pages/Login/Login'
-import RegisterPage from './pages/Register/RegisterPage'
+import RegisterPage from '@pages/Register/RegisterPage'
 
 const Routes = () => {
   return (
