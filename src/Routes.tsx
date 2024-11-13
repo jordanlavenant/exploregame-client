@@ -9,7 +9,7 @@ const Routes = () => {
       <Paths>
         <Route path="/" element={<HomePage />} />
         <Route path="/departments" element={<DepartmentPage />} />
-        <Route path="/department/:depId/scenario/:sceId" element={<ScenarioPage />} />
+        <Route path="/departments/:depId/scenarios/:sceId" element={<ScenarioPage />} />
       </Paths>
     </BrowserRouter>
   )

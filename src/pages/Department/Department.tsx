@@ -3,12 +3,12 @@ import DepartmentHeader from "@/components/Departments/DepartmentHeader/Departme
 
 const DepartmentPage = () => {
 
-    return (
-        <main>
-            <DepartmentHeader />
-            <DepartmentCell />
-        </main>
-    )
+	return (
+		<main>
+			<DepartmentHeader />
+			<DepartmentCell />
+		</main>
+	)
 }
 
 export default DepartmentPage
