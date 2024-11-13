@@ -31,12 +31,10 @@ const ScenarioPage = () => {
 
   const scenario = data.script
 
-  console.log(scenario)
-
   return (
     <main>
-      <ScenarioHeader />
-      <ScenarioCell />
+      <ScenarioHeader scenario={scenario} />
+      <ScenarioCell scenario={scenario} />
     </main>
   )
 
