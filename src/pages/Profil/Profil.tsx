@@ -1,39 +1,31 @@
 import BoutonCell from "@/components/Profil/BoutonCell"
+import BoutonIcon from "@/components/Profil/BoutonIcon"
+import AchievementCarousel from "@/components/Achievements/AchievementCarousel"
 
 interface ProfilPageProps {
     username: string;
 }
 
 const ProfilPage = ({username="@username"}:ProfilPageProps) => {
+    const listeAchievements = [
+        ({nom: 'Accomplissement 1', filiere: 'GEA', urlImage: '/succes.png'}),
+        ({nom: 'Accomplissement 2', filiere: 'INFO', urlImage: '/succes.png'}),
+        ({nom: 'Accomplissement 3', filiere: 'GMP', urlImage: '/succes.png'}),
+        ({nom: 'Accomplissement 4', filiere: 'GEA', urlImage: '/succes-vide.png'}),
+        ({nom: 'Accomplissement 5', filiere: 'INFO', urlImage: '/succes-vide.png'}),
+        ({nom: 'Accomplissement 6', filiere: 'GMP', urlImage: '/succes-vide.png'}),
+    ];
+
     return (
         <div>
-            <div className="w-full text-center text-5xl mt-10 text-[#791860] font-bold">{username}</div>
-            <section className="w-full mt-10 px-7 grid grid-rows-2">
-                <div className="w-full flex flex-start items-center gap-5">
-                    <p className="text-2xl font-bold text-[#791860]">Accomplissements</p>
-                    <button className="px-4 py-2 flex items-center justify-center"><img src="/arrow-right.png" alt="flèche vers la droite"></img></button>
-                </div>
-                <div className="w-full flex flex-start items-center">
-                    <img src="/succes.png" alt="succès" className="w-[70px] h-[70px]"></img>
-                    <img src="/succes.png" alt="succès" className="w-[70px] h-[70px]"></img>
-                    <img src="/succes.png" alt="succès" className="w-[70px] h-[70px]"></img>
-                    <img src="/succes.png" alt="succès" className="w-[70px] h-[70px]"></img>
-                    <img src="/succes-vide.png" alt="succès" className="w-[70px] h-[70px]"></img>
-                    <img src="/succes-vide.png" alt="succès" className="w-[70px] h-[70px]"></img>
-                </div>
-            </section>
+            <h1 className="w-full text-center text-5xl mt-10 text-[#791860] font-bold">{username}</h1>
+            <AchievementCarousel listeAchievements={listeAchievements} />
             <section className="w-full mt-10 px-7 grid grid-cols-2 gap-3">
-                <div className="w-full grid grid-rows-2 items-center">
-                    <p className="text-xl font-bold text-[#791860] text-center">Partage ton profil</p>
-                    <button className="px-4 py-4 flex items-center justify-center bg-[#791860] bg-opacity-50 rounded-xl border-[#791860] border-4"><img src="/share.png" alt="flèche vers la droite" className="h-[30px]"></img></button>
-                </div>
-                <div className="w-full grid grid-rows-2 items-center">
-                    <p className="text-xl font-bold text-[#791860] text-center">Aimer par</p>
-                    <button className="px-4 py-4 flex items-center justify-center gap-2 bg-[#791860] bg-opacity-50 rounded-xl border-[#791860] border-4"><p className="text-[#791860] text-center font-bold text-xl">16</p><img src="/Like.png" alt="flèche vers la droite" className="h-[30px]"></img></button>
-                </div>
+                <BoutonIcon urlRedirection="/share" urlImage="/share.png" nomTitre="Partager mon profil" />
+                <BoutonIcon urlRedirection="/like" urlImage="/Like.png" nomTitre="Aimer par" nbLike={16} />
             </section>
-            <BoutonCell urlRedirection="/filiere" nomBouton="Informatique" title="Ma filière" />
-            <BoutonCell urlRedirection="/informations" nomBouton="Modifier informations" title="Mes informations" />
+            <BoutonCell urlRedirection="/profil/check" nomBouton="Informatique" title="Ma filière" />
+            <BoutonCell urlRedirection="/profil/check" nomBouton="Modifier informations" title="Mes informations" />
         </div>
     )
   }
