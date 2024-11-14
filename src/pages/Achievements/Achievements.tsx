@@ -2,9 +2,9 @@ const AchievementPage = () => {
     return (
         <div>
             <link rel="stylesheet" href="./styles/achievements.css"/>
-            <section className="w-full mt-10 px-7 grid grid-rows-2">
-                <div className="grid grid-rows-2 items-center">
-                    <p className="text-4xl font-bold text-[#555454] text-start">Obtenu</p>
+            <section className="w-full mt-10 px-7 flex flex-wrap gap-5">
+                <div className="flex flex-wrap justify-center items-center gap-3">
+                    <p className="text-4xl font-bold text-[#555454] text-start w-full">Obtenu</p>
                     <div className="w-full flex flex-wrap justify-center items-center bg-[#F0F0F0] rounded-xl gap-3 p-5">
                         <div className="grid grid-cols-2 w-full px-4 py-4 bg-[#791860] bg-opacity-50 rounded-xl border-4 border-[#791860] text-[#791860]">
                             <div className="flex items-center justify-between w-1/3">
@@ -34,8 +34,8 @@ const AchievementPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-rows-2 items-center">
-                    <p className="text-4xl font-bold text-[#555454] text-start">En cours d'obtention</p>
+                <div className="flex flex-wrap justify-center items-center gap-3">
+                    <p className="text-4xl font-bold text-[#555454] text-start w-full">En cours d'obtention</p>
                     <div className="w-full flex flex-wrap justify-center items-center bg-[#F0F0F0] rounded-xl gap-3 p-5">
                         <div className="grid grid-cols-2 w-full px-4 py-4 bg-[#791860] bg-opacity-50 rounded-xl border-4 border-[#791860] text-[#791860]">
                             <div className="flex items-center justify-between w-1/3">
@@ -65,8 +65,8 @@ const AchievementPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="grid grid-rows-2 items-center">
-                    <p className="text-4xl font-bold text-[#555454] text-start">A Suivre</p>
+                <div className="flex flex-wrap justify-center items-center gap-3">
+                    <p className="text-4xl font-bold text-[#555454] text-start w-full">A Suivre</p>
                     <div className="w-full flex flex-wrap justify-center items-center bg-[#F0F0F0] rounded-xl gap-3 p-5">
                         <div className="grid grid-cols-2 w-full px-4 py-4 bg-[#791860] bg-opacity-50 rounded-xl border-4 border-[#791860] text-[#791860]">
                             <div className="flex items-center justify-between w-1/3">
