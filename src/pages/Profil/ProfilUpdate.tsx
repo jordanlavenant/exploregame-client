@@ -25,7 +25,7 @@ const ProfilModifPage = () => {
 
     return (
         <div className="">
-            <div className="w-full text-center text-4xl mt-10 text-[#791860] font-bold">Modifier {title}</div>
+            <div className="w-full text-center text-4xl mt-10 text-[#000] font-bold">Modifier {title}</div>
             <section className="w-full py-40 px-7 grid grid-rows-2 gap-32">
                 <InputUpdate typeInput={type} onChange={handleInputChange} />
                 <BoutonActivate urlRedirection="/profil/check" nomBouton="Modifier" activate={activation} />

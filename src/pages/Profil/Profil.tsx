@@ -18,7 +18,7 @@ const ProfilPage = ({username="@username"}:ProfilPageProps) => {
 
     return (
         <div>
-            <h1 className="w-full text-center text-5xl mt-10 text-[#791860] font-bold">{username}</h1>
+            <h1 className="w-full text-center text-5xl mt-10 text-[#000] font-bold">{username}</h1>
             <AchievementCarousel listeAchievements={listeAchievements} />
             <section className="w-full mt-10 px-7 grid grid-cols-2 gap-3">
                 <BoutonIcon urlRedirection="/share" urlImage="/share.png" nomTitre="Partager mon profil" />
