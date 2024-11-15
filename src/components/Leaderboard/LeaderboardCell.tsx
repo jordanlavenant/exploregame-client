@@ -1,0 +1,26 @@
+import LeaderboardBox from "@components/Leaderboard/LeaderboardBox";
+
+interface LeaderboardCellProps {
+    title: string;
+    listePlayer: LeaderboardBoxProps[];
+}
+
+const LeaderboardCell = ({ title, listePlayer }:LeaderboardCellProps) => {
+    return (
+        <div className="flex flex-wrap justify-center items-center gap-3 px-5 my-5">
+            <p className="text-3xl font-bold text-[#000] text-start w-full">{title}</p>
+            <div className="w-full flex flex-wrap justify-center items-center bg-[#dad9d9] rounded-xl gap-3 p-5">
+                {listePlayer.map((player, index) => (
+                    <LeaderboardBox 
+                        key={index}
+                        nomPlayer={player.nomPlayer}
+                        temps={player.temps}
+                        top={player.top}
+                    />
+                ))}
+            </div>
+        </div>
+    )
+}
+
+export default LeaderboardCell;
