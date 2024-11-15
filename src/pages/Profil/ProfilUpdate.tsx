@@ -1,14 +1,37 @@
+import { useEffect, useState } from 'react';
+import InputUpdate from '@/components/Profil/InputUpdate';
+import BoutonActivate from '@/components/Profil/BoutonActivate';
+
 const ProfilModifPage = () => {
+    const [type, setType] = useState("");
+    const [activation, setActivation] = useState(false);
+    const [inputValue, setInputValue] = useState("");
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const typeParam = params.get('type');
+        if (typeParam) {
+            setType(typeParam);
+        }
+    }, []);
+
+    const title = type === "username" ? "username" : type === "mail" ? "mail" : type === "password" ? "mot de passe" : type === "filiere" ? "filière" : "Type de champ inconnu";
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        setInputValue(value);
+        setActivation(value.trim().length > 0);
+    };
+
     return (
-        <div className="min-h-screen">
-            <div className="w-full text-center text-4xl mt-10 text-[#791860] font-bold">Modifie ton username</div>
-            <section className="w-full mt-10 px-7 grid grid-rows-3 gap-5">
-                <p className="text-3xl font-bold text-[#791860] text-center">Username</p>
-                <input className="px-4 py-3 rounded-xl border-[#791860] border-4 text-[#791860] text-center font-bold text-2xl placeholder:text-[#791860]" placeholder="@username"></input>
-                <button className="px-4 py-3 bg-[#791860] bg-opacity-50 rounded-xl border-[#791860] border-4 text-[#791860] text-center font-bold text-2xl">Modifier</button>
+        <div className="">
+            <div className="w-full text-center text-4xl mt-10 text-[#791860] font-bold">Modifier {title}</div>
+            <section className="w-full py-40 px-7 grid grid-rows-2 gap-32">
+                <InputUpdate typeInput={type} onChange={handleInputChange} />
+                <BoutonActivate urlRedirection="/profil/check" nomBouton="Modifier" activate={activation} />
             </section>
         </div>
     )
-  }
-  
-  export default ProfilModifPage
+}
+
+export default ProfilModifPage;
