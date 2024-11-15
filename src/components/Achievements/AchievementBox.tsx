@@ -17,9 +17,13 @@ const AchievementBox = ({ filiere, progression, remainingSteps, scenarioStart }:
     } else {
         phrase = "A Commencer";
     }
+
+    const handleRetourClick = () => {
+        window.location.href = '/evolutions/scenario';
+    };
     
     return (
-        <div className="flex gap-20 justify-between w-full px-4 py-4 bg-[#791860] bg-opacity-50 rounded-xl border-4 border-[#791860] text-[#791860]">
+        <div className="flex gap-20 justify-between w-full px-4 py-4 bg-[#791860] bg-opacity-50 rounded-xl border-4 border-[#791860] text-[#791860]" onClick={handleRetourClick}>
             <div className="flex items-center justify-between">
                 <img src={urlPhotoSucces} alt="achievement" className="w-11 h-11"/>
                 <p className="font-bold text-2xl">{filiere}</p>    
