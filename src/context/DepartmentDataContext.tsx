@@ -8,6 +8,9 @@ export const QUERY = gql`
       id
       name
       description
+      Script {
+        id
+      }
     }
   }
 `

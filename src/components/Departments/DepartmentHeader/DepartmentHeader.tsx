@@ -1,32 +1,18 @@
-import { useCurrentDepartment } from "@/context/CurrentDepartmentContext";
-import { useDepartments } from "@/context/DepartmentDataContext";
+import { Department } from "api/types/graphql"
 
-const DepartmentHeader = () => {
-  const { departments, loading: departmentsLoading, error: departmentsError } = useDepartments();
-  const { currentDepartmentIndex, setCurrentDepartmentIndex, loading: currentDepartmentLoading, error: currentDepartmentError } = useCurrentDepartment();
-
-  if (departmentsLoading || currentDepartmentLoading) {
-    return <header className="header">Loading...</header>;
-  }
-
-  if (departmentsError || currentDepartmentError) {
-    return <header className="header">Error</header>;
-  }
-
-  const currentDepartment = departments![currentDepartmentIndex!];
-  const previousDepartment = departments![(currentDepartmentIndex! - 1 + departments!.length) % departments!.length];
-  const nextDepartment = departments![(currentDepartmentIndex! + 1) % departments!.length];
-
-  const handlePrevClick = () => {
-    setCurrentDepartmentIndex(
-      (prevIndex: number) => (prevIndex - 1 + departments.length) % departments.length
-    )
-  }
-
-  const handleNextClick = () => {
-    setCurrentDepartmentIndex(
-      (prevIndex: number) => (prevIndex + 1) % departments.length)
-  }
+const DepartmentHeader = ({
+  currentDepartment,
+  nextDepartment,
+  previousDepartment,
+  handleNextClick,
+  handlePrevClick,
+}: {
+  currentDepartment: Department,
+  nextDepartment: Department,
+  previousDepartment: Department,
+  handleNextClick: () => void,
+  handlePrevClick: () => void,
+}) => {
 
   return (
     <header className="header grid grid-cols-3 items-center p-4 bg-red-300">

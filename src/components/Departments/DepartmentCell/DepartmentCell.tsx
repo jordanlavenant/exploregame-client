@@ -1,23 +1,25 @@
-import { useCurrentDepartment } from "@/context/CurrentDepartmentContext"
-import { useDepartments } from "@/context/DepartmentDataContext"
+import { Department } from "api/types/graphql"
+import { useNavigate } from "react-router-dom"
 
-const DepartmentCell = () => {
-  const { departments, loading: departmentsLoading, error: departmentsError } = useDepartments()
-  const { currentDepartmentIndex, loading: currentDepartmentLoading, error: currentDepartmentError } = useCurrentDepartment()
+const DepartmentCell = ({
+  department,
+}: {
+  department: Department
+}) => {
+  const navigate = useNavigate()
 
-  if (departmentsLoading || currentDepartmentLoading) {
-    return <header className="header">Loading...</header>
+  const handleScript = () => {
+    //TODO: resume or start scenario
+    //TODO: redirect to the correct url
+    navigate(`${department.id}/scenarios/${department.Script[0]!.id}`)
+
   }
 
-  if (departmentsError || currentDepartmentError) {
-    return <header className="header">Error</header>
-  }
-
-  const currentDepartment = departments![currentDepartmentIndex!]
   return (
     <div>
-      <p>{currentDepartment.name}</p>
-      <p>{currentDepartment.description}</p>
+      <p>{department.name}</p>
+      <p>{department.description}</p>
+      <button onClick={handleScript}>Explorer</button>
     </div>
   )
 }
