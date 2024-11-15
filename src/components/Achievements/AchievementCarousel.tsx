@@ -21,9 +21,9 @@ const AchievementCell = ({ listeAchievements }: AchievementCellProps) => {
   return (
     <section className="w-full mt-10 px-7 grid grid-rows-2">
       <div className="w-full flex flex-start items-center gap-5">
-        <p className="text-2xl font-bold text-[#791860]">Accomplissements</p>
+        <p className="text-2xl font-bold text-[#000]">Accomplissements</p>
         <button className="px-4 py-2 flex items-center justify-center" onClick={handleClick}>
-          <img src="/arrow-right.png" alt="flèche vers la droite" />
+          <img src="/arrow-right.svg" alt="flèche vers la droite" />
         </button>
       </div>
       <div className="w-full flex flex-start items-center">
