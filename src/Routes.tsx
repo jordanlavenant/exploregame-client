@@ -9,6 +9,7 @@ import AchievementPage from '@pages/Achievements/Achievements'
 import LoginPage from '@pages/Login/Login'
 import RegisterPage from '@pages/Register/RegisterPage'
 import EvolutionScenario from '@pages/Evolutions/EvolutionScenario'
+import Leaderboard from '@pages/Leaderboard/Leaderboard'
 
 const Routes = () => {
   return (
@@ -24,6 +25,7 @@ const Routes = () => {
         <Route path="/profil/update" element={<ProfilModifPage />} />
         <Route path="/achievements" element={<AchievementPage />} />
         <Route path="/evolutions/scenario" element={<EvolutionScenario />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
       </Paths>
     </BrowserRouter>
   )
