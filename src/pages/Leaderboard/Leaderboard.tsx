@@ -1,4 +1,5 @@
 import LeaderboardCell from "@/components/Leaderboard/LeaderboardCell"
+import Header from "@/components/Header"
 
 const Leaderboard = () => {
     const listeTopPlayer = [
@@ -23,7 +24,7 @@ const Leaderboard = () => {
 
     return (
         <div>
-            <h1 className="text-5xl font-bold text-center mt-2">Leaderboard</h1>
+            <Header />
             <LeaderboardCell title="Meilleur joueur" listePlayer={listeTopPlayer} />
             <LeaderboardCell title="Votre classement" listePlayer={listeVous} />
             <LeaderboardCell title="Classement de votre filière" listePlayer={listeTopPlayerFiliere} />
