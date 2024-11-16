@@ -17,11 +17,16 @@ const Leaderboard = () => {
         {nomPlayer: "Pierre", temps: "2:30", top: 52},
     ]
 
+    const listeVous = [
+        {nomPlayer: "Jean", temps: "1:30", top: 10},
+    ]
+
     return (
         <div>
             <h1 className="text-5xl font-bold text-center mt-2">Leaderboard</h1>
             <LeaderboardCell title="Meilleur joueur" listePlayer={listeTopPlayer} />
-            <LeaderboardCell title="Votre Filière" listePlayer={listeTopPlayerFiliere} />
+            <LeaderboardCell title="Votre classement" listePlayer={listeVous} />
+            <LeaderboardCell title="Classement de votre filière" listePlayer={listeTopPlayerFiliere} />
         </div>
     )
 }
