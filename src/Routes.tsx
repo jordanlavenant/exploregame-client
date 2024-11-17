@@ -19,6 +19,7 @@ const Routes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/departments" element={<DepartmentPage />} />
+        <Route path="/departments/:depId" element={<DepartmentPage />} />
         <Route path="/departments/:depId/scenarios/:sceId" element={<ScenarioPage />} />
         <Route path="/profile" element={<ProfilPage username={'@username'} />} />
         <Route path="/profile/informations" element={<ProfilCheckPage />} />

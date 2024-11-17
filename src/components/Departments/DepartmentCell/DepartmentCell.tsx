@@ -16,11 +16,11 @@ const DepartmentCell = ({
   }
 
   return (
-    <div>
+    <section>
       <p>{department.name}</p>
       <p>{department.description}</p>
       <button onClick={handleScript}>Explorer</button>
-    </div>
+    </section>
   )
 }
 
