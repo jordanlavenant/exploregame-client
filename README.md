@@ -1,11 +1,25 @@
 # Explore Game - Client
 
+# Pré-requis
+
+Le projet `exploregame-client` doit être dans le même dossier parent que le projet `exploregame-core`.
+
 # Installation 
 
 Pour installer les dépendances, effectuez la commande à la racine du projet
 
 ```bash
 npm install
+```
+
+Puis installer les dépendances de types-sharing
+
+> ⚠ Nécessite le projet `exploregame-core` dans le même dossier parent
+
+Cette commande permet de copier les types de `exploregame-core` dans le projet `exploregame-client` pour le développement.
+
+```bash
+npm run install:types
 ```
 
 # Configuration
