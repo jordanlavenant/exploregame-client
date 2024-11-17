@@ -1,6 +1,6 @@
 import HomeCell from "@/components/Home/HomeCell"
 import BoutonExplorer from "@/components/Home/BoutonExplorer";
-import Header from "@/components/Header";
+import Header from "@/components/header/header";
 
 const HomePage = () => {
   return (
