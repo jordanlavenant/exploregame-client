@@ -2,7 +2,7 @@ import DepartmentCell from "@/components/Departments/DepartmentCell/DepartmentCe
 import DepartmentHeader from "@/components/Departments/DepartmentHeader/DepartmentHeader"
 import { useCurrentDepartment } from "@/context/CurrentDepartmentContext"
 import { gql, useQuery } from "@apollo/client"
-import { Department } from "api/types/graphql"
+import { Department } from "@/types/graphql"
 import { useNavigate, useParams } from "react-router-dom"
 
 const DEPARTMENTS = gql`

@@ -1,5 +1,12 @@
 import LeaderboardBox from "@components/Leaderboard/LeaderboardBox";
 
+// ! Temporaire pour build
+type LeaderboardBoxProps = {
+    nomPlayer: string;
+    temps: string;
+    top: number;
+}
+
 interface LeaderboardCellProps {
     title: string;
     listePlayer: LeaderboardBoxProps[];

@@ -5,6 +5,7 @@ interface BoutonActivateProps {
 }
 
 const BoutonActivate = ({urlRedirection, nomBouton, activate}: BoutonActivateProps) => {
+    console.log(urlRedirection)
     if (activate) {
         return (
             <button className="px-4 py-3 bg-[#791860] bg-opacity-50 rounded-xl border-[#791860] border-4 text-[#791860] text-center font-bold text-2xl">{nomBouton}</button>

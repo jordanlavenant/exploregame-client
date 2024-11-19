@@ -1,4 +1,4 @@
-import { Department } from "api/types/graphql"
+import { Department } from "@/types/graphql"
 
 const DepartmentHeader = ({
   currentDepartment,

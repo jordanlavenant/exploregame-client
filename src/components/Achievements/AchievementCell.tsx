@@ -1,5 +1,13 @@
 import AchievementBox from "@/components/Achievements/AchievementBox"
 
+// ! Temporaire pour build
+type AchievementBoxProps = {
+    filiere: string;
+    progression: number;
+    remainingSteps: number;
+    scenarioStart: boolean;
+}
+
 interface AchievementCellProps {
     title: string;
     listeAchievements: AchievementBoxProps[];

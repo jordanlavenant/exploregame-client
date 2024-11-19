@@ -1,4 +1,4 @@
-import { Department } from "api/types/graphql"
+import { Department } from "@/types/graphql"
 import { useNavigate } from "react-router-dom"
 
 const DepartmentCell = ({

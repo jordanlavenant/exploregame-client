@@ -3,9 +3,11 @@ import InputUpdate from '@/components/Profil/InputUpdate';
 import BoutonActivate from '@/components/Profil/BoutonActivate';
 
 const ProfilModifPage = () => {
-    const [type, setType] = useState("");
-    const [activation, setActivation] = useState(false);
-    const [inputValue, setInputValue] = useState("");
+    const [type, setType] = useState<string>("");
+    const [activation, setActivation] = useState<boolean>(false);
+    const [inputValue, setInputValue] = useState<string>("");
+
+    console.log(inputValue)
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);

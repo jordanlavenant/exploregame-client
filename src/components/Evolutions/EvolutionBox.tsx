@@ -6,6 +6,7 @@ interface EvolutionBoxProps {
 }
 
 const EvolutionBox = ({ nomEtape, progression, lettre, urlRedirection }: EvolutionBoxProps) => {
+    console.log(urlRedirection)
     if (progression === 100) {    
         return (
             <div className="flex justify-between items-center gap-10 w-full px-4 py-4 h-28 bg-[#B7BF35] bg-opacity-50 rounded-3xl border-4 border-[#E6B711] text-[#000]">
