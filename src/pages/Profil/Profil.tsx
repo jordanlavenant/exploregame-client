@@ -29,8 +29,8 @@ const ProfilPage = ({username="@username"}:ProfilPageProps) => {
                 <BoutonIcon urlRedirection="/share" urlImage="/share.png" nomTitre="Partager mon profil" />
                 <BoutonIcon urlRedirection="/like" urlImage="/Like.png" nomTitre="Aimer par" nbLike={16} />
             </section>
-            <BoutonCell urlRedirection="/profil/check" nomBouton="Informatique" title="Ma filière" />
-            <BoutonCell urlRedirection="/profil/check" nomBouton="Modifier informations" title="Mes informations" />
+            <BoutonCell urlRedirection="/profile/informations" nomBouton="Informatique" title="Ma filière" />
+            <BoutonCell urlRedirection="/profile/informations" nomBouton="Modifier informations" title="Mes informations" />
         </div>
     )
   }

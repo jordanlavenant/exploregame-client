@@ -1,4 +1,5 @@
-interface AchievementBoxProps {
+// ! Temporaire pour build
+type AchievementBoxProps = {
     filiere: string;
     progression: number;
     remainingSteps: number;

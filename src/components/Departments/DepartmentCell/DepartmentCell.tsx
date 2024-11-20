@@ -1,4 +1,4 @@
-import { Department } from "api/types/graphql"
+import { Department } from "@exploregame/types"
 import { useNavigate } from "react-router-dom"
 
 const DepartmentCell = ({
@@ -16,11 +16,11 @@ const DepartmentCell = ({
   }
 
   return (
-    <div>
+    <section>
       <p>{department.name}</p>
       <p>{department.description}</p>
       <button onClick={handleScript}>Explorer</button>
-    </div>
+    </section>
   )
 }
 

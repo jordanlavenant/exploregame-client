@@ -4,9 +4,11 @@ import BoutonActivate from '@/components/Profil/BoutonActivate';
 import { useNavigate } from 'react-router-dom';
 
 const ProfilModifPage = () => {
-    const [type, setType] = useState("");
-    const [activation, setActivation] = useState(false);
-    const [inputValue, setInputValue] = useState("");
+    const [type, setType] = useState<string>("");
+    const [activation, setActivation] = useState<boolean>(false);
+    const [inputValue, setInputValue] = useState<string>("");
+
+    console.log(inputValue)
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);

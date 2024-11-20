@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { createContext, useContext } from "react";
-import { Department } from 'api/types/graphql'
+import { Department } from '@/types/graphql'
 
 export const QUERY = gql`
   query FindDepartments {
