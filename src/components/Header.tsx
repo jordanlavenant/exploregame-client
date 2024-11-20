@@ -1,14 +1,18 @@
-const Header = () => {
-  return (
-    <header className="w-full flex justify-end items-center px-5 py-5">
-        <section className="flex flex-wrap justify-between items-center w-3/5">
-            <img className="w-36" src="/IUTO.png" alt="logo iut" />
-            <button>
-                <img className="w-10" src="/Menu-Burger.png" alt="logo" />
-            </button> 
-        </section>
-    </header>
-  );
-}
+import React from 'react';
+import MenuBurger from './MenuBurger.tsx';
+
+const Header: React.FC = () => {
+    return (
+        <header className="relative w-full flex items-center px-5 py-5">
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+                <img className="w-36" src="/IUTO.png" alt="logo iut" />
+            </div>
+
+            <div className="ml-auto">
+                <MenuBurger />
+            </div>
+        </header>
+    );
+};
 
 export default Header;
