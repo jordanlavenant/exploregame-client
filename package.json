@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "install:types": "npm install ../exploregame-core/api"
+    "pull:types": "npm link ../exploregame-core/exploregame-types/"
   },
   "dependencies": {
     "@apollo/client": "^3.11.8",

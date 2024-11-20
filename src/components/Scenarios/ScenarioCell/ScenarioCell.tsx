@@ -1,4 +1,4 @@
-import { Script } from "@/types/graphql"
+import { Script } from "@exploregame/types"
 
 const ScenarioCell = ({
   scenario

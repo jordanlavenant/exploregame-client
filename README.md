@@ -19,7 +19,7 @@ Puis installer les dépendances de types-sharing
 Cette commande permet de copier les types de `exploregame-core` dans le projet `exploregame-client` pour le développement.
 
 ```bash
-npm run install:types
+npm run pull:types
 ```
 
 # Configuration

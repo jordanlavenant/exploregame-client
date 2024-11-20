@@ -1,4 +1,4 @@
-import { Department } from "@/types/graphql"
+import { Department } from "@exploregame/types"
 
 const DepartmentHeader = ({
   currentDepartment,
