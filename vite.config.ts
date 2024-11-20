@@ -14,7 +14,7 @@ export default defineConfig({
     port: 8920,
     strictPort: true,
     host: true,
-    origin: 'http://localhost:8920',
+    origin: process.env.VITE_ORIGIN || 'http://localhost:8920',
   },
   resolve: {
     alias: {
