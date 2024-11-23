@@ -6,8 +6,8 @@ const ScenarioCell = ({
   scenario: Script
 }) => {
 
-  console.log(scenario)
 
+  
   return (
     <div>
       ScenarioCell
