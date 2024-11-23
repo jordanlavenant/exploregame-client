@@ -5,9 +5,6 @@ const ScenarioHeader = ({
 }: {
   scenario: Script
 }) => {
-
-  console.log(scenario)
-
   return (
     <div className="scenario-header">
     <h1>Scenario Header</h1>

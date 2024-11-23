@@ -10,6 +10,7 @@ import LoginPage from '@pages/Login/Login'
 import RegisterPage from '@pages/Register/RegisterPage'
 import EvolutionScenario from '@pages/Evolutions/EvolutionScenario'
 import Leaderboard from '@pages/Leaderboard/Leaderboard'
+import StepPage from '@pages/Step/Step'
 
 const Routes = () => {
   return (
@@ -21,6 +22,7 @@ const Routes = () => {
         <Route path="/departments" element={<DepartmentPage />} />
         <Route path="/departments/:depId" element={<DepartmentPage />} />
         <Route path="/departments/:depId/scenarios/:sceId" element={<ScenarioPage />} />
+        <Route path="/departments/:depId/scenarios/:sceId/steps/:stepId" element={<StepPage />} />
         <Route path="/profile" element={<ProfilPage username={'@username'} />} />
         <Route path="/profile/informations" element={<ProfilCheckPage />} />
         <Route path="/profile/update" element={<ProfilModifPage />} />

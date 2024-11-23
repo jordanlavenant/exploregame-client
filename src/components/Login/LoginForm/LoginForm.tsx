@@ -8,17 +8,17 @@ import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 
 export const QUERY = gql`
-mutation Login($input: LoginPlayerInput!) {
-  loginPlayer(input: $input) {
-    token
-    player {
-      id
-      firstName
-      lastName
-      email
+  mutation Login($input: LoginPlayerInput!) {
+    loginPlayer(input: $input) {
+      token
+      player {
+        id
+        firstName
+        lastName
+        email
+      }
     }
   }
-}
 `
 
 const formSchema = z.object({
@@ -44,6 +44,7 @@ const LoginForm = () => {
       })
       if (response?.data?.loginPlayer?.token) {
         localStorage.setItem("token", response.data.loginPlayer.token)
+        localStorage.setItem("playerId", response.data.loginPlayer.player.id)
         navigate("/")
       }
     } catch (err) {
