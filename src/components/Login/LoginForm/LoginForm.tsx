@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { z } from "zod"
 
-export const QUERY = gql`
+export const AUTH = gql`
   mutation Login($input: LoginPlayerInput!) {
     loginPlayer(input: $input) {
       token
@@ -32,7 +32,7 @@ const formSchema = z.object({
 
 const LoginForm = () => {
   const navigate = useNavigate()
-  const [login] = useMutation(QUERY)
+  const [login] = useMutation(AUTH)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
@@ -44,7 +44,7 @@ const LoginForm = () => {
       })
       if (response?.data?.loginPlayer?.token) {
         localStorage.setItem("token", response.data.loginPlayer.token)
-        localStorage.setItem("playerId", response.data.loginPlayer.player.id)
+        localStorage.setItem("player", JSON.stringify(response.data.loginPlayer.player))
         navigate("/")
       }
     } catch (err) {

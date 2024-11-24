@@ -9,6 +9,7 @@
       "@context/*": ["./src/context/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@utils/*": ["./src/utils/*"],
+      "@lib/*": ["./src/lib/*"],
       "@types/*": ["./src/types/*"],
     },
     "target": "ES2020",

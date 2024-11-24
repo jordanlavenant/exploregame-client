@@ -11,7 +11,7 @@ const DepartmentCell = ({
   const handleScript = () => {
     //TODO: resume or start scenario
     //TODO: redirect to the correct url
-    navigate(`${department.id}/scenarios/${department.Script[0]!.id}`)
+    navigate(`/departments/${department.id}/scenarios/${department.Script[0]!.id}`)
 
   }
 
