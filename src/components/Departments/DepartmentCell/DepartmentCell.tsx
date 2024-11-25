@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button"
 import { Department } from "@exploregame/types"
 import { useNavigate } from "react-router-dom"
 
@@ -19,7 +20,12 @@ const DepartmentCell = ({
     <section>
       <p>{department.name}</p>
       <p>{department.description}</p>
-      <button onClick={handleScript}>Explorer</button>
+      <Button 
+        onClick={handleScript}
+        variant="default"
+      >
+        Explorer
+      </Button>
     </section>
   )
 }

@@ -4,6 +4,7 @@ import getCurrentPlayer from "@/utils/currentPlayer"
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { PlayerScript, ScriptStep } from "@exploregame/types"
 import { useEffect } from "react"
+import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom"
 
 export const SCENARIO = gql`
@@ -74,6 +75,7 @@ const ScenarioPage = () => {
           }
         }
       })
+      toast.success('Nouveau scénario')
       refetch()
     }
   }, [data, sceId])
@@ -121,10 +123,12 @@ const ScenarioPage = () => {
           remainingTime: 3600
         }
       }
+    }).then(() => {
+      toast.success('Etape sauvegardée')  
+      localStorage.removeItem('scenario')
+      refetch()
+      navigate(`/departments/${depId}`)
     })
-    localStorage.removeItem('scenario')
-    await refetch()
-    navigate(`/departments/${depId}`)
   }
 
   return (

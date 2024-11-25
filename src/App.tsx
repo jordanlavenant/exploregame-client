@@ -1,7 +1,7 @@
 import { CurrentDepartmentProvider } from '@context/CurrentDepartmentContext'
 import { DepartmentProvider } from '@context/DepartmentDataContext'
 import Routes from '@/Routes'
-import { Toaster } from '@components/ui/toaster'
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
