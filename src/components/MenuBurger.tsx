@@ -57,7 +57,7 @@ const MenuBurger: React.FC = () => {
                                     staggerChildren: 0.1, // Animation de chaque élément avec un délai
                                     type: 'spring',
                                     stiffness: 200,
-                                    damping: 25,
+                                    damping: 30,
                                 }}
                             >
                                 <motion.li variants={{ visible: { y: 0 }, hidden: { y: 20 } }}>
