@@ -4,6 +4,9 @@ import { useCurrentDepartment } from "@/context/CurrentDepartmentContext"
 import { gql, useQuery } from "@apollo/client"
 import { Department } from "@exploregame/types"
 import { useNavigate, useParams } from "react-router-dom"
+import BoutonExplorer from "@/components/Home/BoutonExplorer"
+import HomeCell from "@/components/Home/HomeCell"
+
 
 const DEPARTMENTS = gql`
   query FindDepartments {
@@ -31,7 +34,11 @@ const DEPARTMENT = gql`
   }
 `
 
-const DepartmentPage = () => {
+const DepartmentPage = ({
+  department,
+}: {
+  department: Department
+}) => {
   const { depId } = useParams<{ depId: string }>()
   const navigate = useNavigate()
   const { 
@@ -93,6 +100,14 @@ const DepartmentPage = () => {
     setCurrentDepartmentIndex((currentDepartmentIndex - 1 + departments.length) % departments.length)
   }
 
+
+  const handleScript = () => {
+    //TODO: resume or start scenario
+    //TODO: redirect to the correct url
+    navigate(`${department.id}/scenarios/${department.Script[0]!.id}`)
+
+  }
+
   return (
     <main>
       <DepartmentHeader 
@@ -102,6 +117,7 @@ const DepartmentPage = () => {
         handleNextClick={handleNextClick}
         handlePrevClick={handlePrevClick}
       />
+      <BoutonExplorer positionBas={false} urlRedirection={handleScript()} backgroundColor="#BB8BAF" bordercolor="#791860" />
       <DepartmentCell department={currentDepartment} />
     </main>
   )
