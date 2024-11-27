@@ -1,9 +1,10 @@
 import ScenarioCell from "@/components/Scenarios/ScenarioCell/ScenarioCell"
 import ScenarioHeader from "@/components/Scenarios/ScenarioHeader/ScenarioHeader"
 import getCurrentPlayer from "@/utils/currentPlayer"
+import getLocalScenario from "@/utils/localScenario"
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { PlayerScript, ScriptStep } from "@exploregame/types"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom"
 
@@ -14,11 +15,17 @@ export const SCENARIO = gql`
       name
       ScriptStep {
         stepId
+        Step {
+          Questions {
+            id
+          }
+        }
       }
       PlayerScript {
         id
         playerId
         stepId
+        questionId
       }
     }
   }
@@ -57,10 +64,6 @@ const ScenarioPage = () => {
     return data?.script.PlayerScript?.some((playerScript: PlayerScript) => playerScript.playerId === currentPlayer?.id)    
   }
 
-  function getLocalScenario() {
-    return JSON.parse(localStorage.getItem('scenario') as string)
-  }
-
   // ! Create player script if it doesn't exist
   useEffect(() => {
     if (data?.script?.PlayerScript && !alreadyPlayed() && currentPlayer) {
@@ -70,6 +73,7 @@ const ScenarioPage = () => {
             playerId: currentPlayer.id,
             scriptId: sceId,
             stepId: data.script.ScriptStep[0].stepId,
+            questionId: data.script.ScriptStep[0].Step.Questions[0].id,
             score: 0,
             remainingTime: 3600
           }
@@ -80,6 +84,27 @@ const ScenarioPage = () => {
     }
   }, [data, sceId])
 
+  const [currentStep, setCurrentStep] = useState<string | null>(null)
+
+  useEffect(() => {
+    const localScenario = getLocalScenario()
+    if (localScenario && localScenario.stepId) {
+      setCurrentStep(localScenario.stepId)
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const localScenario = getLocalScenario()
+      setCurrentStep(localScenario.stepId)
+    }
+
+    window.addEventListener('storage', handleStorageChange)
+    return () => {
+      window.removeEventListener('storage', handleStorageChange)
+    }
+  }, [])
+
   if (loading) {
     return <header className="header">Loading...</header>
   }
@@ -89,29 +114,31 @@ const ScenarioPage = () => {
 
   const scenario = data.script
   const scriptSteps = scenario.ScriptStep
-  const currentStep = scenario.PlayerScript?.find((playerScript: PlayerScript) => playerScript.playerId === currentPlayer?.id) ?? scenario.ScriptStep[0]
+  const currentStepData = scenario.PlayerScript?.find((playerScript: PlayerScript) => playerScript.playerId === currentPlayer?.id) ?? scenario.ScriptStep[0]
   const playerScript = {
-    id: currentStep.id,
+    id: currentStepData.id,
     scriptId: scenario.id,
     playerId: currentPlayer?.id,
-    stepId: currentStep.stepId,
+    stepId: currentStepData.stepId,
+    questionId: currentStepData.questionId,
   }
   localStorage.setItem('scenario', JSON.stringify(playerScript))
 
   // ! increment local de l'étape
   const incrementStep = () => {
-    const playerScript = getLocalScenario()
-    const currentStepIndex = scriptSteps.findIndex((step: ScriptStep) => step.stepId === playerScript.stepId)
+    const localScenario = getLocalScenario()
+    const currentStepIndex = scriptSteps.findIndex((step: ScriptStep) => step.stepId === localScenario.stepId)
     if (currentStepIndex < scriptSteps.length - 1) {
-      playerScript.stepId = scriptSteps[currentStepIndex + 1].stepId
-      localStorage.setItem('scenario', JSON.stringify(playerScript))
+      localScenario.stepId = scriptSteps[currentStepIndex + 1].stepId
+      localScenario.questionId = scriptSteps[currentStepIndex + 1].Step.Questions[0].id
+      localStorage.setItem('scenario', JSON.stringify(localScenario))
+      setCurrentStep(localScenario.stepId)
     }
   }
 
   // ! sauvegarde de l'étape en base de données
   const saveStep = async () => {
-    const playerScript = getLocalScenario()
-    const { id, scriptId, playerId, stepId } = playerScript
+    const { id, scriptId, playerId, stepId, questionId } = getLocalScenario()
     await updatePlayerScript({
       variables: {
         id,
@@ -119,6 +146,7 @@ const ScenarioPage = () => {
           playerId,
           scriptId,
           stepId,
+          questionId,
           score: 0,
           remainingTime: 3600
         }
@@ -138,7 +166,7 @@ const ScenarioPage = () => {
         saveStep={saveStep}
       />
       <ScenarioCell 
-        currentStep={currentStep.stepId}
+        currentStep={currentStep!}
         incrementStep={incrementStep}
       />
     </main>
