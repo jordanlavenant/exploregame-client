@@ -34,11 +34,7 @@ const DEPARTMENT = gql`
   }
 `
 
-const DepartmentPage = ({
-  department,
-}: {
-  department: Department
-}) => {
+const DepartmentPage = () => {
   const { depId } = useParams<{ depId: string }>()
   const navigate = useNavigate()
   const { 
@@ -100,14 +96,6 @@ const DepartmentPage = ({
     setCurrentDepartmentIndex((currentDepartmentIndex - 1 + departments.length) % departments.length)
   }
 
-
-  const handleScript = () => {
-    //TODO: resume or start scenario
-    //TODO: redirect to the correct url
-    navigate(`${department.id}/scenarios/${department.Script[0]!.id}`)
-
-  }
-
   return (
     <main>
       <DepartmentHeader 
@@ -117,8 +105,12 @@ const DepartmentPage = ({
         handleNextClick={handleNextClick}
         handlePrevClick={handlePrevClick}
       />
-      <BoutonExplorer positionBas={false} urlRedirection={handleScript()} backgroundColor="#BB8BAF" bordercolor="#791860" />
-      <DepartmentCell department={currentDepartment} />
+      <BoutonExplorer positionBas={false} backgroundColor="#BB8BAF" bordercolor="#791860" department={currentDepartment} />
+      <HomeCell title="Bienvenue" />
+      <HomeCell title="Carte" />
+      <HomeCell title="Acutalités" />
+
+      {/* <DepartmentCell department={currentDepartment} /> */}
     </main>
   )
 }
