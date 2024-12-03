@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Department } from "@exploregame/types";
 import { useSwipeable } from "react-swipeable";
+import { useNavigate } from "react-router-dom";
 
 const DepartmentHeader = ({
   currentDepartment,
@@ -44,25 +45,44 @@ const DepartmentHeader = ({
     trackMouse: true,
   });
 
+  const navigate = useNavigate();
+    
+  const UserClick = () => {
+    navigate("/profile");
+  };
+
+  const HomeClick = () => {
+    navigate("/");
+  }
+
   return (
-    <header {...handlers} className="header grid grid-cols-3 items-end p-4 bg-red-300">
-      <button
-        onClick={handlePrevClick}
-        className="text-white px-4 rounded font-bold text-opacity-50 text-2xl"
-        style={{ opacity: leftOpacity }}
-      >
-        {previousDepartment.name}
-      </button>
-      <div className="text-center" style={{ opacity: centerOpacity }}>
-        <h1 className="text-5xl font-bold text-[#fff]">{currentDepartment.name}</h1>
-      </div>
-      <button
-        onClick={handleNextClick}
-        className="text-white px-4 rounded font-bold text-opacity-50 text-2xl"
-        style={{ opacity: rightOpacity }}
-      >
-        {nextDepartment.name}
-      </button>
+    <header {...handlers} className="pt-2 header flex w-full flex-wrap bg-red-300">
+      <section className="flex w-full justify-between px-10">
+        <button onClick={HomeClick}><img className="w-12" src="/home-icon.svg" alt="home" /></button>
+        <button onClick={UserClick}><img className="w-12" src="/user-icon.svg" alt="user" /></button>
+      </section>
+      <section className="grid grid-cols-3 items-end p-4 w-full">
+        <button
+          onClick={handlePrevClick}
+          className="text-white px-4 rounded font-bold text-opacity-50 text-2xl"
+          style={{ opacity: leftOpacity, userSelect: 'none' }}
+        >
+          {previousDepartment.name}
+        </button>
+        <div className="text-center" style={{ opacity: centerOpacity }}>
+          <h1 className="text-4xl font-bold text-[#fff]" style={{ userSelect: 'none' }}>
+            {currentDepartment.name}
+          </h1>
+        </div>
+        <button
+          onClick={handleNextClick}
+          className="text-white px-4 rounded font-bold text-opacity-50 text-2xl"
+          style={{ opacity: rightOpacity, userSelect: 'none' }}
+        >
+          {nextDepartment.name}
+        </button>
+      </section>
+     
     </header>
   );
 };
