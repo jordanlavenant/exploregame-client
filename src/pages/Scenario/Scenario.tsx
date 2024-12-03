@@ -57,7 +57,9 @@ const ScenarioPage = () => {
     if (loading || error) return
 
     const alreadyPlayed = () => {
-      return data.script.PlayerScript.some((playerScript: PlayerScript) => playerScript.playerId === currentPlayer!.id)
+      return data.script.PlayerScript.some(
+        (playerScript: PlayerScript) => 
+          playerScript.playerId === currentPlayer!.id)
     }
 
     const redirect = (
@@ -94,8 +96,11 @@ const ScenarioPage = () => {
     }
 
     const resume = () => {
+      // ! Data
       let playerScript = data.script.PlayerScript.find((playerScript: PlayerScript) => playerScript.playerId === currentPlayer!.id)
       const { id, stepId, questionId } = playerScript
+
+      // ! Redirection
       setLocalScenario(id, currentPlayer!.id, sceId!, stepId, questionId)
       redirect(stepId, questionId)
     }
@@ -107,9 +112,6 @@ const ScenarioPage = () => {
         resume()
       }
     })
-
-
-
   }, [
     currentPlayer,
     data,
