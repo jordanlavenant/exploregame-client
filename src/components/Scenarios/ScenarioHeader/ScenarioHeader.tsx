@@ -1,19 +1,29 @@
+import { Button } from "@/components/ui/button"
 import { Script } from "@exploregame/types"
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import { X } from "lucide-react"
 
 const ScenarioHeader = ({
-  scenario
+  scenario,
+  saveStep
 }: {
   scenario: Script
+  saveStep: () => void
 }) => {
 
   console.log(scenario)
   const progress = 50; // Example progress value
 
   return (
-    <div className="scenario-header">
-      <h1>Scenario Header</h1>
+    <div className="bg-slate-500 p-2 flex justify-between items-center">
+      <Button 
+        variant="default"
+        onClick={saveStep}
+      >
+        <X size={24} />
+        </Button>
+      {scenario.name}
       <Progress
         value={progress}
         className={cn(
