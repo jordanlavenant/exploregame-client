@@ -1,10 +1,11 @@
 interface LeaderboardBoxProps {
     nomPlayer: string;
     temps: string;
+    score: number;
     top: number;
 }
 
-const AchievementBox = ({ nomPlayer, temps, top }: LeaderboardBoxProps) => {
+const AchievementBox = ({ nomPlayer, score, temps, top }: LeaderboardBoxProps) => {
     const handleRetourClick = () => {
         window.location.href = '/profil';
     };
@@ -17,7 +18,7 @@ const AchievementBox = ({ nomPlayer, temps, top }: LeaderboardBoxProps) => {
                     <img src="/user.png" alt="user" className="min-w-5 min-h-5" />
                     <p className="text-2xl font-bold">{nomPlayer}</p>
                 </div>
-                <p className="text-2xl font-bold">{temps}</p>
+                <p className="text-2xl font-bold">{score}</p>
             </div>
         )
     } else if (top === 2) {
@@ -28,7 +29,7 @@ const AchievementBox = ({ nomPlayer, temps, top }: LeaderboardBoxProps) => {
                     <img src="/user.png" alt="user" className="min-w-5 min-h-5" />
                     <p className="text-2xl font-bold">{nomPlayer}</p>
                 </div>
-                <p className="text-2xl font-bold">{temps}</p>
+                <p className="text-2xl font-bold">{score}</p>
             </div>
         )
     } else if (top === 3) {
@@ -39,7 +40,7 @@ const AchievementBox = ({ nomPlayer, temps, top }: LeaderboardBoxProps) => {
                     <img src="/user.png" alt="user" className="min-w-5 min-h-5" />
                     <p className="text-2xl font-bold">{nomPlayer}</p>
                 </div>
-                <p className="text-2xl font-bold">{temps}</p>
+                <p className="text-2xl font-bold">{score}</p>
             </div>
         )
     } else {
@@ -50,7 +51,7 @@ const AchievementBox = ({ nomPlayer, temps, top }: LeaderboardBoxProps) => {
                     <img src="/user.png" alt="user" className="min-w-5 min-h-5" />
                     <p className="text-2xl font-bold">{nomPlayer}</p>
                 </div>
-                <p className="text-2xl font-bold">{temps}</p>
+                <p className="text-2xl font-bold">{score}</p>
             </div>
         )        
     }

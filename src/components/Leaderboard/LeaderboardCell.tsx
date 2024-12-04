@@ -4,6 +4,7 @@ import LeaderboardBox from "@components/Leaderboard/LeaderboardBox";
 type LeaderboardBoxProps = {
     nomPlayer: string;
     temps: string;
+    score: number;
     top: number;
 }
 
@@ -22,6 +23,7 @@ const LeaderboardCell = ({ title, listePlayer }:LeaderboardCellProps) => {
                         key={index}
                         nomPlayer={player.nomPlayer}
                         temps={player.temps}
+                        score={player.score}
                         top={player.top}
                     />
                 ))}
