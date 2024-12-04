@@ -11,6 +11,22 @@ export const QUERY = gql`
       ScriptStep {
         id
         lettre
+        Step {
+          id
+          name
+          Questions {
+            question
+            description
+            questionTypeId
+            Answer {
+              id
+              answer
+            }
+          }
+        }
+      }
+      PlayerScript {
+        stepId
       }
     }
   }
