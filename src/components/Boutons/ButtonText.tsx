@@ -1,3 +1,4 @@
+import { Colors } from '@/utils/colors';
 import React from 'react';
 
 interface BoutonTextProps {
@@ -5,6 +6,8 @@ interface BoutonTextProps {
   value: string;
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
+
+const colors = Colors.getColors();
 
 const TextBouton: React.FC<BoutonTextProps> = ({ placeholder, value, onChange }) => {
   return (

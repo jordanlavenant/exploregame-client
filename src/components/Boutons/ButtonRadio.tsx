@@ -6,10 +6,11 @@ interface RadioButtonProps {
   options: { label: string; value: string }[];
   selectedValue: string;
   onChange: (value: string) => void;
-  colors: Colors; // Ajout d'une instance Colors
 }
 
-const RadioButton: React.FC<RadioButtonProps> = ({ name, options, selectedValue, onChange, colors }) => {
+const colors = Colors.getColors();
+
+const RadioButton: React.FC<RadioButtonProps> = ({ name, options, selectedValue, onChange }) => {
   return (
     <div className="flex flex-col space-y-4">
       {options.map((option) => {
@@ -20,8 +21,8 @@ const RadioButton: React.FC<RadioButtonProps> = ({ name, options, selectedValue,
             key={option.value}
             className={`flex items-center px-4 py-3 rounded-lg cursor-pointer transition-all ${
               isSelected
-                ? `bg-[${colors.primary}] text-white border-2 border-[${colors.secondary}]`
-                : `bg-[${colors.tertiary}] text-black border-2 border-gray-300`
+                ? `bg-[${colors.colorPrimary}] text-white border-2 border-[${colors.colorSecondary}]`
+                : `bg-[${colors.colorTertiary}] text-black border-2 border-gray-300`
             }`}
           >
             <input
@@ -42,7 +43,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({ name, options, selectedValue,
               {isSelected && (
                 <span
                   className={`w-3 h-3 rounded-full ${
-                    isSelected ? `bg-[${colors.primary}]` : ''
+                    isSelected ? `bg-[${colors.colorPrimary}]` : ''
                   }`}
                 ></span>
               )}

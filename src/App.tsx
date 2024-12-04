@@ -2,6 +2,7 @@ import { CurrentDepartmentProvider } from '@context/CurrentDepartmentContext'
 import { DepartmentProvider } from '@context/DepartmentDataContext'
 import Routes from '@/Routes'
 import { Toaster } from 'react-hot-toast';
+import { ColorsDepartmentProvider } from '@context/ColorsDepartmentContext'
 
 function App() {
   return (
@@ -9,7 +10,9 @@ function App() {
       <Toaster />
       <DepartmentProvider>
         <CurrentDepartmentProvider>
-          <Routes />
+          <ColorsDepartmentProvider>
+            <Routes />
+          </ColorsDepartmentProvider>
         </CurrentDepartmentProvider>
       </DepartmentProvider>
     </>

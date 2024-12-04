@@ -20,6 +20,8 @@ const DepartmentHeader = ({
   const [centerOpacity, setCenterOpacity] = useState(1);
   const [rightOpacity, setRightOpacity] = useState(1);
 
+  console.log(currentDepartment.ColorSet.primary);
+
   const handlers = useSwipeable({
     onSwipedLeft: () => {
       setLeftOpacity(0);
