@@ -10,6 +10,13 @@ export const QUESTIONS_RELATED = gql`
       Questions {
         id
         question
+        Answer {
+          id
+          answer
+        }
+        QuestionType {
+          id
+        }
       }
     }
   }
