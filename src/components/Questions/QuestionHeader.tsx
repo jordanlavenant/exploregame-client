@@ -45,7 +45,7 @@ const QuestionHeader = () => {
     <header className="">
       <section className="flex justify-between items-center gap-2 px-6 py-2">
         <button onClick={exit}><img src="/exit.svg" alt="timer" className="w-6" /></button>
-        <h3 className="text-black text-lg font-bold text-center w-full">BATIMENTS ADMINISTRATIF</h3>
+        <h3 className="text-black text-xl font-bold text-center w-full">BATIMENTS ADMINISTRATIF</h3>
       </section>
       <section className="flex justify-center items-center gap-2 px-6 py-2">
         <Progress className="w-full" value={50} />
