@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const MenuBurger: React.FC = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +20,6 @@ const MenuBurger: React.FC = () => {
                     <img className="w-10" src="/Menu-Burger.png" alt="Menu Burger Icon" />
                 </button>
             )}
-
             {isOpen && (
                 <motion.div
                     className="fixed inset-0 bg-[#822369] bg-opacity-100 z-40 flex flex-col items-center justify-between p-8"

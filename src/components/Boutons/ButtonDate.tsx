@@ -1,9 +1,10 @@
+import { Colors } from '@/utils/colors';
 import React from 'react';
 
 interface BoutonDateProps {
     label: string;
     onChange: (date: string) => void;
-    colors?: string[];
+    colors?: Colors;
 }
 
 const ButtonDate: React.FC<BoutonDateProps> = ({ label, onChange }) => {

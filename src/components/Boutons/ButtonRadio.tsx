@@ -1,29 +1,58 @@
 import React from 'react';
+import { Colors } from '@/utils/colors';
 
 interface RadioButtonProps {
-    name: string;
-    options: { label: string; value: string }[];
-    selectedValue: string;
-    onChange: (value: string) => void;
+  name: string;
+  options: { label: string; value: string }[];
+  selectedValue: string;
+  onChange: (value: string) => void;
+  colors: Colors; // Ajout d'une instance Colors
 }
 
-const RadioButton: React.FC<RadioButtonProps> = ({ name, options, selectedValue, onChange }) => {
-    return (
-        <div>
-            {options.map((option) => (
-                <label key={option.value}>
-                    <input
-                        type="radio"
-                        name={name}
-                        value={option.value}
-                        checked={selectedValue === option.value}
-                        onChange={() => onChange(option.value)}
-                    />
-                    {option.label}
-                </label>
-            ))}
-        </div>
-    );
+const RadioButton: React.FC<RadioButtonProps> = ({ name, options, selectedValue, onChange, colors }) => {
+  return (
+    <div className="flex flex-col space-y-4">
+      {options.map((option) => {
+        const isSelected = selectedValue === option.value;
+
+        return (
+          <label
+            key={option.value}
+            className={`flex items-center px-4 py-3 rounded-lg cursor-pointer transition-all ${
+              isSelected
+                ? `bg-[${colors.primary}] text-white border-2 border-[${colors.secondary}]`
+                : `bg-[${colors.tertiary}] text-black border-2 border-gray-300`
+            }`}
+          >
+            <input
+              type="radio"
+              name={name}
+              value={option.value}
+              checked={isSelected}
+              onChange={() => onChange(option.value)}
+              className="hidden"
+            />
+            <span
+              className={`w-6 h-6 flex items-center justify-center rounded-full border-2 mr-3 ${
+                isSelected
+                  ? `border-white bg-white`
+                  : `border-gray-400 bg-transparent`
+              }`}
+            >
+              {isSelected && (
+                <span
+                  className={`w-3 h-3 rounded-full ${
+                    isSelected ? `bg-[${colors.primary}]` : ''
+                  }`}
+                ></span>
+              )}
+            </span>
+            <span className="text-lg font-semibold">{option.label}</span>
+          </label>
+        );
+      })}
+    </div>
+  );
 };
 
 export default RadioButton;
