@@ -11,7 +11,7 @@ const HomePage = () => {
       <HomeCell title="Carte" />
       <HomeCell title="Acutalités" />
       <HomeCell title="Les filières" />
-      <BoutonExplorer />
+      <BoutonExplorer positionBas={true} urlRedirection="/departments" />
     </main>
   )
 }
