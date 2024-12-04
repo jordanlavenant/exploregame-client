@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { Button } from "@/components/ui/button"
 import getCurrentPlayer from "@/utils/currentPlayer"
-import { PlayerScript, Question } from "@exploregame/types"
+import { PlayerScript, Question, Step } from "@exploregame/types"
 import { getLocalScenario, setLocalScenario } from "@/utils/localScenario"
-import { gql, useQuery } from "@apollo/client"
+import { gql, useMutation, useQuery } from "@apollo/client"
 import { lazy, useEffect, useState, Suspense } from "react"
 
 export const PLAYER_SCRIPTS = gql`
@@ -14,6 +14,31 @@ export const PLAYER_SCRIPTS = gql`
       scriptId
       stepId
       questionId
+    }
+  }
+`
+
+export const SCRIPT = gql`
+  query FindScriptById($id: String!) {
+    script(id: $id) {
+      id
+      ScriptStep {
+        id
+        Step {
+          id
+          Questions {
+            id
+          }
+        }
+      }
+    }
+  }
+`
+
+export const UPDATE_PLAYER_SCRIPT = gql`
+  mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
+    updatePlayerScript(id: $id, input: $input) {
+      id
     }
   }
 `
@@ -29,25 +54,51 @@ const QuestionCell = ({
   const localScenario = getLocalScenario()
   const [QuestionModule, setQuestionModule] = useState<React.LazyExoticComponent<any> | null>(null)
 
+  const [updatePlayerScript] = useMutation(UPDATE_PLAYER_SCRIPT)
+
   useEffect(() => {
     if (!localScenario) {
       navigate(`/departments/${depId}`)
     }
   }, [localScenario, navigate, depId])
 
-  const { data, loading, error } = useQuery(PLAYER_SCRIPTS)
+  const { 
+    data: dataPS,
+    loading: loadingPS,
+    error: errorPS
+  } = useQuery(PLAYER_SCRIPTS)
+
+  const { 
+    data: dataScript,
+    loading: loadingScript,
+    error: errorScript
+  } = useQuery(SCRIPT, {
+    variables: { id: sceId }
+  })
+
 
   useEffect(() => {
-    if (loading || error) return
+    if (loadingPS || errorPS) return
 
-    const playerScripts = data.playerScripts
+    const playerScripts = dataPS.playerScripts
     const playerScript = playerScripts.find((ps: PlayerScript) => ps.playerId === currentPlayer!.id && ps.scriptId === sceId)
 
     if (queId !== localScenario.questionId) {
       console.info("Redirecting to the last question answered")
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${playerScript.questionId}`)
     }
-  }, [loading, error, data, currentPlayer, depId, sceId, stepId, queId, localScenario, navigate])
+  }, [
+    loadingPS,
+    errorPS,
+    dataPS,
+    currentPlayer,
+    depId,
+    sceId,
+    stepId,
+    queId,
+    localScenario,
+    navigate
+  ])
 
   // ! Logique du composant
   useEffect(() => {
@@ -55,8 +106,6 @@ const QuestionCell = ({
 
     const question = questions.find((q: Question) => q.id === queId)
     if (!question) return
-
-    console.log(question.QuestionType)
 
     let Component
     switch (question.QuestionType.id) {
@@ -72,13 +121,28 @@ const QuestionCell = ({
     setQuestionModule(() => Component)
   }, [queId, questions])
 
-  if (loading || error || !QuestionModule) return null
+  if (
+    loadingPS || 
+    loadingScript || 
+    errorPS || 
+    errorScript || 
+    !QuestionModule
+  ) return null
 
-  const playerScripts = data.playerScripts
+  const playerScripts = dataPS.playerScripts
   const playerScript = playerScripts.find((ps: PlayerScript) => ps.playerId === currentPlayer!.id && ps.scriptId === sceId)
+
+  const steps = dataScript.script.ScriptStep
+
+  console.log(steps)
 
   const question = questions.find((q: Question) => q.id === queId)
   const nextQuestion = questions[questions.indexOf(question!) + 1]
+
+  const step = steps.find((s: Step) => s.id === stepId)
+  console.log(step)
+
+  const nextStep = steps[steps.indexOf(step) + 1]
 
   function handleAnswer(answer: string) {
     console.log(answer)
@@ -89,7 +153,15 @@ const QuestionCell = ({
         navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
       } else {
         // ! fin de l'étape
-        // TODO: incrémenter l'étapeId
+        updatePlayerScript({
+          variables: {
+            id: playerScript.id,
+            input: {
+              stepId: nextStep.id,
+              questionId: nextStep.Step.Questions[0].id
+            }
+          }
+        }).then(() => navigate(`/departments/${depId}/scenarios/${sceId}`))
       }
       // TODO: mettre à jour le localStorage en incrémentant la questionId
       // TODO: rediriger vers la page de la prochaine question (navigate)

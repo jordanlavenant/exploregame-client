@@ -14,6 +14,7 @@ export const SCENARIO = gql`
       ScriptStep {
         stepId
         Step {
+          id
           Questions {
             id
           }
