@@ -4,6 +4,9 @@ import { useCurrentDepartment } from "@/context/CurrentDepartmentContext"
 import { gql, useQuery } from "@apollo/client"
 import { Department } from "@exploregame/types"
 import { useNavigate, useParams } from "react-router-dom"
+import BoutonExplorer from "@/components/Home/BoutonExplorer"
+import HomeCell from "@/components/Home/HomeCell"
+
 
 const DEPARTMENTS = gql`
   query FindDepartments {
@@ -102,7 +105,12 @@ const DepartmentPage = () => {
         handleNextClick={handleNextClick}
         handlePrevClick={handlePrevClick}
       />
-      <DepartmentCell department={currentDepartment} />
+      <BoutonExplorer positionBas={false} backgroundColor="#BB8BAF" bordercolor="#791860" department={currentDepartment} />
+      <HomeCell title="Bienvenue" />
+      <HomeCell title="Carte" />
+      <HomeCell title="Acutalités" />
+
+      {/* <DepartmentCell department={currentDepartment} /> */}
     </main>
   )
 }
