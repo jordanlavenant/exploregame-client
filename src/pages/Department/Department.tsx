@@ -47,7 +47,7 @@ const DEPARTMENT = gql`
 
 const DepartmentPage = () => {
   const { depId } = useParams<{ depId: string }>()
-  const { colors, setColors } = useColorsDepartments()
+  const { setColors } = useColorsDepartments()
   const navigate = useNavigate()
   const { 
     data,
