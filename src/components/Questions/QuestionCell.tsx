@@ -134,18 +134,13 @@ const QuestionCell = ({
 
   const steps = dataScript.script.ScriptStep
 
-  console.log(steps)
-
   const question = questions.find((q: Question) => q.id === queId)
   const nextQuestion = questions[questions.indexOf(question!) + 1]
 
   const step = steps.find((s: Step) => s.id === stepId)
-  console.log(step)
-
   const nextStep = steps[steps.indexOf(step) + 1]
 
   function handleAnswer(answer: string) {
-    console.log(answer)
     if (true) {
       // ! correct
       if (nextQuestion !== undefined) {
