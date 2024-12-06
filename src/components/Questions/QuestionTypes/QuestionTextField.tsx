@@ -1,5 +1,6 @@
+import SubmitQuestion from "@/components/SubmitQuestion/SubmitQuestion"
 import { Form } from "@/components/ui/form"
-import { gql, useQuery } from "@apollo/client"
+import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 import { Question } from "@exploregame/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
@@ -13,20 +14,21 @@ const formSchema = z.object({
 
 const QuestionTextField = ({
   question,
-  handleAnswer
+  checkAnswer,
+  next
 } : {
   question: Question
-  handleAnswer: (answer: string) => void
+  checkAnswer: (answer: string) => boolean
+  next: () => void
 }) => {
-
+  const { questionState } = useCurrentQuestionState()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
 
   async function submit(data: z.infer<typeof formSchema>) {
     try {
-      console.log(data)
-      handleAnswer(data.answer)
+      !questionState ? checkAnswer(data.answer) : next()
     } catch (err) {
       console.error("Erreur de connexion:", err)
     }
@@ -41,7 +43,7 @@ const QuestionTextField = ({
             className="border-2 border-gray-300 p-2 rounded-md"
             {...form.register("answer")}
           />
-          <button className="bg-blue-500 text-white p-2 rounded-md mt-2" type="submit">Valider</button>
+          <SubmitQuestion question={question} />
         </div>
       </form>
     </Form>

@@ -5,6 +5,7 @@ import { PlayerScript, Question, Step } from "@exploregame/types"
 import { getLocalScenario, setLocalScenario } from "@/utils/localScenario"
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { lazy, useEffect, useState, Suspense } from "react"
+import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 
 export const PLAYER_SCRIPTS = gql`
   query FindPlayerScripts {
@@ -35,11 +36,29 @@ export const SCRIPT = gql`
   }
 `
 
+export const QUESTION = gql`
+  query FindQuestionById($id: String!) {
+    question(id: $id) {
+      id
+      Answer {
+        id
+        answer
+        isCorrect
+      }
+    }
+  }`
+
 export const UPDATE_PLAYER_SCRIPT = gql`
   mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
     updatePlayerScript(id: $id, input: $input) {
       id
     }
+  }
+`
+
+export const CHECK_ANSWER = gql`
+  mutation checkAnswer($input: CheckAnswerInput!) {
+    checkAnswer(input: $input)
   }
 `
 
@@ -50,11 +69,13 @@ const QuestionCell = ({
 }) => {
   const navigate = useNavigate()
   const { depId, sceId, stepId, queId } = useParams()
+  const { questionState, setQuestionState } = useCurrentQuestionState()
   const currentPlayer = getCurrentPlayer()
   const localScenario = getLocalScenario()
   const [QuestionModule, setQuestionModule] = useState<React.LazyExoticComponent<any> | null>(null)
 
   const [updatePlayerScript] = useMutation(UPDATE_PLAYER_SCRIPT)
+  const [verifyAnswer] = useMutation(CHECK_ANSWER)
 
   useEffect(() => {
     if (!localScenario) {
@@ -75,7 +96,6 @@ const QuestionCell = ({
   } = useQuery(SCRIPT, {
     variables: { id: sceId }
   })
-
 
   useEffect(() => {
     if (loadingPS || errorPS) return
@@ -135,45 +155,66 @@ const QuestionCell = ({
   const steps = dataScript.script.ScriptStep
 
   const question = questions.find((q: Question) => q.id === queId)
+
   const nextQuestion = questions[questions.indexOf(question!) + 1]
 
   const step = steps.find((s: Step) => s.id === stepId)
   const nextStep = steps[steps.indexOf(step) + 1]
 
-  function handleAnswer(answer: string) {
-    if (true) {
-      // ! correct
-      if (nextQuestion !== undefined) {
-        setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
-        navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
-      } else {
-        // ! fin de l'étape
-        updatePlayerScript({
-          variables: {
-            id: playerScript.id,
-            input: {
-              stepId: nextStep.id,
-              questionId: nextStep.Step.Questions[0].id
-            }
+  function checkAnswer(answer: string) {
+    try {
+      verifyAnswer({
+        variables: {
+          input: {
+            questionId: question!.id,
+            answer
           }
-        }).then(() => navigate(`/departments/${depId}/scenarios/${sceId}`))
-      }
-      // TODO: mettre à jour le localStorage en incrémentant la questionId
-      // TODO: rediriger vers la page de la prochaine question (navigate)
-    } else {
-      // ! incorrect
-      // TODO: pénaliser le joueur (score)
+        }
+      }).then((response) => {
+        console.log(response.data.checkAnswer)
+        if (response.data.checkAnswer) {
+          //TODO: envoyé correcte
+        } else {
+          //TODO: envoyé incorrecte
+        }
+        setQuestionState(true)
+      })
+    } catch (error) {
+      console.error(error)
     }
   }
 
+  function next() {
+    if (nextQuestion !== undefined) {
+      setQuestionState(false)
+      setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
+      navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
+    } else {
+      updatePlayerScript({
+        variables: {
+          id: playerScript.id,
+          input: {
+            stepId: nextStep.id,
+            questionId: nextStep.Step.Questions[0].id
+          }
+        }
+      })
+      .then(() => setQuestionState(false))
+      .then(() => navigate(`/departments/${depId}/scenarios/${sceId}`))
+    }
+  }
+  
   return (
     <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <QuestionModule 
-          question={question!} 
-          handleAnswer={handleAnswer}
-        />
-      </Suspense>
+      {QuestionModule && (
+        <Suspense fallback={<div>Loading...</div>}>
+          <QuestionModule 
+            question={question}
+            checkAnswer={checkAnswer}
+            next={next}
+          />
+        </Suspense>
+      )}
     </div>
   )
 }
