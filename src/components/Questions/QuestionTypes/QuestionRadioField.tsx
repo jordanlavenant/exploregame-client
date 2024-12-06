@@ -34,7 +34,7 @@ const QuestionRadioField = ({
 
   async function submit(data: z.infer<typeof formSchema>) {
     try {
-      !questionState ? checkAnswer(data.answer) : next()
+      !questionState.answered ? checkAnswer(data.answer) : next()
     } catch (err) {
       console.error("Erreur de connexion:", err)
     }

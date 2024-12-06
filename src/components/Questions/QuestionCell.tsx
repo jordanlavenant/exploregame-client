@@ -171,13 +171,17 @@ const QuestionCell = ({
           }
         }
       }).then((response) => {
-        console.log(response.data.checkAnswer)
-        if (response.data.checkAnswer) {
+        let correct = response.data.checkAnswer
+        console.log(correct)
+        if (correct) {
           //TODO: envoyé correcte
         } else {
           //TODO: envoyé incorrecte
         }
-        setQuestionState(true)
+        setQuestionState({
+          answered: true,
+          correct
+        })
       })
     } catch (error) {
       console.error(error)
@@ -186,7 +190,10 @@ const QuestionCell = ({
 
   function next() {
     if (nextQuestion !== undefined) {
-      setQuestionState(false)
+      setQuestionState({
+        answered: false,
+        correct: false
+      })
       setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
     } else {
@@ -199,7 +206,10 @@ const QuestionCell = ({
           }
         }
       })
-      .then(() => setQuestionState(false))
+      .then(() => setQuestionState({
+        answered: false,
+        correct: false
+      }))
       .then(() => navigate(`/departments/${depId}/scenarios/${sceId}`))
     }
   }
