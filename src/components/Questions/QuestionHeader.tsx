@@ -40,6 +40,7 @@ const QuestionHeader = () => {
     clearLocalScenario()
     navigate(`/departments/${depId}`)
   }
+  
   return (
     <header className="bg-slate-600">
       <Button onClick={exit}>
