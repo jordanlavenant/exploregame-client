@@ -1,4 +1,3 @@
-import DepartmentCell from "@/components/Departments/DepartmentCell/DepartmentCell"
 import DepartmentHeader from "@/components/Departments/DepartmentHeader/DepartmentHeader"
 import { useCurrentDepartment } from "@/context/CurrentDepartmentContext"
 import { gql, useQuery } from "@apollo/client"

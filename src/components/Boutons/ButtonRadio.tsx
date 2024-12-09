@@ -1,5 +1,5 @@
 import React from 'react';
-import { Colors } from '@/utils/colors';
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 
 interface RadioButtonProps {
   name: string;
@@ -8,7 +8,7 @@ interface RadioButtonProps {
   onChange: (value: string) => void;
 }
 
-const colors = Colors.getColors();
+const colors = useColorsDepartments();
 
 const RadioButton: React.FC<RadioButtonProps> = ({ name, options, selectedValue, onChange }) => {
   return (
@@ -21,8 +21,8 @@ const RadioButton: React.FC<RadioButtonProps> = ({ name, options, selectedValue,
             key={option.value}
             className={`flex items-center px-4 py-3 rounded-lg cursor-pointer transition-all ${
               isSelected
-                ? `bg-[${colors.colorPrimary}] text-white border-2 border-[${colors.colorSecondary}]`
-                : `bg-[${colors.colorTertiary}] text-black border-2 border-gray-300`
+                ? `bg-[${colors.colors.primary}] text-white border-2 border-[${colors.colors.secondary}]`
+                : `bg-[${colors.colors.tertiary}] text-black border-2 border-gray-300`
             }`}
           >
             <input
@@ -43,7 +43,7 @@ const RadioButton: React.FC<RadioButtonProps> = ({ name, options, selectedValue,
               {isSelected && (
                 <span
                   className={`w-3 h-3 rounded-full ${
-                    isSelected ? `bg-[${colors.colorPrimary}]` : ''
+                    isSelected ? `bg-[${colors.colors.primary}]` : ''
                   }`}
                 ></span>
               )}

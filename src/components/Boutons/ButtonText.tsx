@@ -1,4 +1,4 @@
-import { Colors } from '@/utils/colors';
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext";
 import React from 'react';
 
 interface BoutonTextProps {
@@ -7,20 +7,21 @@ interface BoutonTextProps {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const colors = Colors.getColors();
-
 const TextBouton: React.FC<BoutonTextProps> = ({ placeholder, value, onChange }) => {
+  const colors = useColorsDepartments();
+
   return (
-    <div className="flex items-center px-4 py-2 border rounded-lg bg-gray-100 border-gray-300 focus-within:ring-2 focus-within:ring-gray-400">
+    <div className="flex items-center px-4 py-2 border rounded-lg" style={{ backgroundColor: colors.colors.secondary, borderColor: colors.colors.primary }}>
       {/* Icône */}
-      <span className="text-gray-500 mr-2"></span>
+      <span className="mr-2" style={{ color: colors.colors.tertiary }}></span>
       {/* Champ Texte */}
       <input
         type="text"
         placeholder={placeholder || "Écrire ici"}
         value={value}
         onChange={onChange}
-        className="flex-1 bg-transparent outline-none text-gray-700 placeholder-gray-400"
+        className="flex-1 bg-transparent outline-none placeholder-gray-500"
+        style={{ color: colors.colors.primary }}
       />
     </div>
   );

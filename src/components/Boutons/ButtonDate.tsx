@@ -1,4 +1,4 @@
-import { Colors } from '@/utils/colors';
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 import React from 'react';
 
 interface BoutonDateProps {
@@ -6,7 +6,7 @@ interface BoutonDateProps {
     onChange: (date: string) => void;
 }
 
-const colors = Colors.getColors();
+const colors = useColorsDepartments();
 
 const ButtonDate: React.FC<BoutonDateProps> = ({ label, onChange }) => {
     const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
