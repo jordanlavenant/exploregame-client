@@ -38,11 +38,14 @@ const QuestionTextField = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)}>
         <div className="flex flex-col">
-          <label className="text-lg font-bold">{question.question}</label>
-          <input
-            className="border-2 border-gray-300 p-2 rounded-md"
-            {...form.register("answer")}
-          />
+          <section className="grid grid-row gap-y-2 mx-8">
+            <label className="text-2xl font-bold text-gray-500 w-full text-center my-4">{question.question}</label>
+            <input
+              className="bg-gray-100 text-black border-gray-200 p-4 border-4 rounded-3xl font-bold text-2xl flex justify-center items-center"
+              {...form.register("answer")}
+            >
+            </input>
+          </section>
           <SubmitQuestion question={question} />
         </div>
       </form>

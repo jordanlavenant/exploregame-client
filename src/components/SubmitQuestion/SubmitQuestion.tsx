@@ -12,7 +12,7 @@ const SubmitQuestion = ({
 
   // TODO: faire le front propre mon léo d'amour  
   return (
-    <section className="fixed bottom-0 h-44 w-full p-2 space-y-2">
+    <section className="fixed bottom-8 h-44 w-full p-2 space-y-2">
         <div className={
           `grid grid-cols-6 min-h-24 
           ${questionState.answered 
@@ -37,12 +37,14 @@ const SubmitQuestion = ({
             </>
           )}
         </div>
-      <button
-        className="bg-blue-500 text-white h-14 p-2 w-full rounded-md"
-        type="submit"
-      >
-        {!questionState.answered ? "Valider" : "Continuer"}
-      </button>
+      <div className="flex flex-wrap justify-center items-center gap-4 px-6 py-2 w-full">
+        <button
+          className="p-4 mx-2 border-4 rounded-3xl font-bold text-2xl text-white bg-yellow-400 border-yellow-600 w-full"
+          type="submit"
+        >
+          {!questionState.answered ? "Valider" : "Continuer"}
+        </button>
+      </div>
     </section>
   )
 }
