@@ -1,4 +1,3 @@
-import DepartmentCell from "@/components/Departments/DepartmentCell/DepartmentCell"
 import DepartmentHeader from "@/components/Departments/DepartmentHeader/DepartmentHeader"
 import { useCurrentDepartment } from "@/context/CurrentDepartmentContext"
 import { gql, useQuery } from "@apollo/client"
@@ -6,6 +5,7 @@ import { Department } from "@exploregame/types"
 import { useNavigate, useParams } from "react-router-dom"
 import BoutonExplorer from "@/components/Home/BoutonExplorer"
 import HomeCell from "@/components/Home/HomeCell"
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 
 
 const DEPARTMENTS = gql`
@@ -16,6 +16,11 @@ const DEPARTMENTS = gql`
       description
       Script {
         id
+      }
+      ColorSet {
+        primary
+        secondary
+        tertiary
       }
     }
   }
@@ -30,12 +35,18 @@ const DEPARTMENT = gql`
       Script {
         id
       }
+      ColorSet {
+        primary
+        secondary
+        tertiary
+      }
     }
   }
 `
 
 const DepartmentPage = () => {
   const { depId } = useParams<{ depId: string }>()
+  const { setColors } = useColorsDepartments()
   const navigate = useNavigate()
   const { 
     data,
@@ -82,6 +93,8 @@ const DepartmentPage = () => {
   } else {
     currentDepartment = departments![currentDepartmentIndex!]
   }
+
+  setColors(currentDepartment.ColorSet)
 
   const previousDepartment = departments![(currentDepartmentIndex! - 1 + departments!.length) % departments!.length]
   const nextDepartment = departments![(currentDepartmentIndex! + 1) % departments!.length]
