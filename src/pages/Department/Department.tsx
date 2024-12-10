@@ -118,7 +118,7 @@ const DepartmentPage = () => {
         handleNextClick={handleNextClick}
         handlePrevClick={handlePrevClick}
       />
-      <BoutonExplorer positionBas={false} backgroundColor="#BB8BAF" bordercolor="#791860" department={currentDepartment} />
+      <BoutonExplorer positionBas={false} department={currentDepartment} />
       <HomeCell title="Bienvenue" />
       <HomeCell title="Carte" />
       <HomeCell title="Acutalités" />

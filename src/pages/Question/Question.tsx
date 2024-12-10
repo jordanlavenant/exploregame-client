@@ -2,7 +2,6 @@ import QuestionCell from "@/components/Questions/QuestionCell"
 import QuestionHeader from "@/components/Questions/QuestionHeader"
 import { gql, useQuery } from "@apollo/client"
 import { useParams } from "react-router-dom"
-
 export const QUESTIONS_RELATED = gql`
   query FindStepById($id: String!) {
     step(id: $id) {
