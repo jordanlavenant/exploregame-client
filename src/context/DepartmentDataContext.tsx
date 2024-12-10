@@ -1,6 +1,6 @@
 import { gql, useQuery } from "@apollo/client";
 import { createContext, useContext } from "react";
-import { Department } from '@/types/graphql'
+import { Department } from "@exploregame/types";
 
 export const QUERY = gql`
   query FindDepartments {
@@ -10,6 +10,11 @@ export const QUERY = gql`
       description
       Script {
         id
+      }
+      ColorSet {
+        primary
+        secondary
+        tertiary
       }
     }
   }
