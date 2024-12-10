@@ -41,6 +41,7 @@ const QuestionHeader = () => {
     clearLocalScenario()
     navigate(`/departments/${depId}`)
   }
+  
   return (
     <header className="">
       <section className="flex justify-between items-center gap-2 px-6 py-2">

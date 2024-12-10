@@ -5,6 +5,7 @@ import { gql, useMutation, useQuery } from "@apollo/client"
 import { PlayerScript } from "@exploregame/types"
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom"
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 
 export const SCENARIO = gql`
   query FindScenarioById($id: String!) {
@@ -14,6 +15,7 @@ export const SCENARIO = gql`
       ScriptStep {
         stepId
         Step {
+          id
           Questions {
             id
           }
@@ -41,7 +43,8 @@ const ScenarioPage = () => {
   const navigate = useNavigate()
   const currentPlayer = getCurrentPlayer()
   const { depId, sceId } = useParams()
-
+  const { colors } = useColorsDepartments()
+  console.log(colors)
   const [createPlayerScript] = useMutation(CREATE_PLAYER_SCRIPT)
   const { data, loading, error, refetch } = useQuery(SCENARIO, {
     variables: { id: sceId }

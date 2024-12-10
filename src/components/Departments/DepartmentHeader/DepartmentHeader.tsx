@@ -56,7 +56,7 @@ const DepartmentHeader = ({
   }
 
   return (
-    <header {...handlers} className="pt-2 header flex w-full flex-wrap bg-red-300">
+    <header {...handlers} className="pt-2 header flex w-full flex-wrap" style={{ backgroundColor: currentDepartment.ColorSet.primary }}>
       <section className="flex w-full justify-between px-10">
         <button onClick={HomeClick}><img className="w-12" src="/home-icon.svg" alt="home" /></button>
         <button onClick={UserClick}><img className="w-12" src="/user-icon.svg" alt="user" /></button>
