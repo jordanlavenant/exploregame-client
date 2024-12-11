@@ -43,7 +43,7 @@ const QuestionHeader = () => {
   }
   
   return (
-    <header className="">
+    <header className="mt-5">
       <section className="flex justify-between items-center gap-2 px-6 py-2">
         <button onClick={exit}><img src="/exit.svg" alt="timer" className="w-6" /></button>
         <h3 className="text-black text-xl font-bold text-center w-full">BATIMENTS ADMINISTRATIF</h3>
