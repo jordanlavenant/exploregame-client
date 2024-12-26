@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { Button } from "@/components/ui/button"
 import getCurrentPlayer from "@/utils/currentPlayer"
 import { PlayerScript, Question, Step } from "@exploregame/types"
 import { getLocalScenario, setLocalScenario } from "@/utils/localScenario"
@@ -7,6 +6,7 @@ import { gql, useMutation, useQuery } from "@apollo/client"
 import { lazy, useEffect, useState, Suspense } from "react"
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 import { useNextStep } from "@/context/NextStepContext"
+import Hint from "@/components/Hint/Hint"
 
 export const PLAYER_SCRIPTS = gql`
   query FindPlayerScripts {
@@ -48,7 +48,8 @@ export const QUESTION = gql`
         isCorrect
       }
     }
-  }`
+  }
+`
 
 export const UPDATE_PLAYER_SCRIPT = gql`
   mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
@@ -212,6 +213,7 @@ const QuestionCell = ({
     <div>
       {QuestionModule && (
         <Suspense fallback={<div>Loading...</div>}>
+          <Hint question={question} />
           <QuestionModule 
             question={question}
             checkAnswer={checkAnswer}

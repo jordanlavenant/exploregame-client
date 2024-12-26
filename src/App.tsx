@@ -12,8 +12,8 @@ function App() {
       <Toaster />
       <DepartmentProvider>
         <CurrentDepartmentProvider>
-           <NextStepProvider>
-             <ColorsDepartmentProvider>
+          <NextStepProvider>
+            <ColorsDepartmentProvider>
               <CurrentQuestionStateProvider>
                 <Routes />
               </CurrentQuestionStateProvider>
