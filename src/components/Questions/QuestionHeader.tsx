@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { Button } from "@components/ui/button"
+import { Progress } from "@components/ui/progress"
 import { X } from "lucide-react"
 import { gql, useMutation } from "@apollo/client"
 import { clearLocalScenario, getLocalScenario } from "@/utils/localScenario"
@@ -42,10 +43,15 @@ const QuestionHeader = () => {
   }
   
   return (
-    <header className="bg-slate-600">
-      <Button onClick={exit}>
-        <X size={24} />
-      </Button>
+    <header className="mt-5">
+      <section className="flex justify-between items-center gap-2 px-6 py-2">
+        <button onClick={exit}><img src="/exit.svg" alt="timer" className="w-6" /></button>
+        <h3 className="text-black text-xl font-bold text-center w-full">BATIMENTS ADMINISTRATIF</h3>
+      </section>
+      <section className="flex justify-center items-center gap-2 px-6 py-2">
+        <Progress className="w-full" value={50} />
+        <img src="/locker.svg" alt="timer" className="w-8 translate-x-[-1em] translate-y-[-0.4em]" />
+      </section>
     </header>
   )
 }
