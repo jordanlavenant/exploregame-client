@@ -7,6 +7,7 @@ import { lazy, useEffect, useState, Suspense } from "react"
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 import { useNextStep } from "@/context/NextStepContext"
 import Hint from "@/components/Hint/Hint"
+import { useHints } from "@/context/HintContext"
 
 export const PLAYER_SCRIPTS = gql`
   query FindPlayerScripts {
@@ -76,6 +77,7 @@ const QuestionCell = ({
   const { setStepProps } = useNextStep()
   const currentPlayer = getCurrentPlayer()
   const localScenario = getLocalScenario()
+  const { setHintsOpened } = useHints()
   const [QuestionModule, setQuestionModule] = useState<React.LazyExoticComponent<any> | null>(null)
 
   const [verifyAnswer] = useMutation(CHECK_ANSWER)
@@ -174,7 +176,7 @@ const QuestionCell = ({
           }
         }
       }).then((response) => {
-        let correct = response.data.checkAnswer
+        const correct = response.data.checkAnswer
         console.log(correct)
         if (correct) {
           //TODO: envoyé correcte
@@ -197,6 +199,7 @@ const QuestionCell = ({
         answered: false,
         correct: false
       })
+      setHintsOpened([false, false, false])
       setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
     } else {
@@ -205,6 +208,7 @@ const QuestionCell = ({
         nextStep: nextStep,
         playerScriptId: playerScript.id
       })
+      setHintsOpened([false, false, false])
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}`)
     }
   }
