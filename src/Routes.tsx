@@ -12,6 +12,7 @@ import EvolutionScenario from '@pages/Evolutions/EvolutionScenario'
 import Leaderboard from '@pages/Leaderboard/Leaderboard'
 import QuestionPage from '@pages/Question/Question'
 import StepPage from '@pages/Step/StepPage'
+import MapPage from '@pages/Map/Map'
 
 const Routes = () => {
   return (
@@ -31,6 +32,7 @@ const Routes = () => {
         <Route path="/achievements" element={<AchievementPage />} />
         <Route path="/evolutions/scenario" element={<EvolutionScenario />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/map" element={<MapPage />} />
       </Paths>
     </BrowserRouter>
   )

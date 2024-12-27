@@ -72,7 +72,7 @@ const MenuBurger: React.FC = () => {
                                     <a href="/" className="hover:underline">ACTUALITES</a>
                                 </motion.li>
                                 <motion.li variants={{ visible: { y: 0 }, hidden: { y: 20 } }}>
-                                    <a href="/" className="hover:underline">CARTE</a>
+                                    <a href="/map" className="hover:underline">CARTE</a>
                                 </motion.li>
                                 <motion.li variants={{ visible: { y: 0 }, hidden: { y: 20 } }}>
                                     <a href="/" className="hover:underline">LES BDE</a>
