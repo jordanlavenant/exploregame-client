@@ -1,5 +1,6 @@
 import BoutonCell from "@/components/Profil/BoutonCell"
 import BoutonIcon from "@/components/Profil/BoutonIcon"
+import BoutonLogout from "@/components/Profil/BoutonLogout"
 import AchievementCarousel from "@/components/Achievements/AchievementCarousel"
 import Header from "@/components/Header"
 
@@ -31,6 +32,7 @@ const ProfilPage = ({username="@username"}:ProfilPageProps) => {
             </section>
             <BoutonCell urlRedirection="/profile/informations" nomBouton="Informatique" title="Ma filière" />
             <BoutonCell urlRedirection="/profile/informations" nomBouton="Modifier informations" title="Mes informations" />
+            <BoutonLogout urlRedirection="/login" nomBouton="Se déconnecter" />
         </div>
     )
   }
