@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { z } from "zod"
+import BoutonSubmit from "./BoutonSubmit"
 
 export const AUTH = gql`
   mutation Login($input: LoginPlayerInput!) {
@@ -60,11 +61,11 @@ const LoginForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              {/* <FormLabel>Email</FormLabel> */}
               <FormControl>
                 <Input placeholder="Email" {...field} />
               </FormControl>
-              <FormDescription>Enter your email</FormDescription>
+              {/* <FormDescription>Enter your email</FormDescription> */}
               <FormMessage />
             </FormItem>
           )}
@@ -74,16 +75,20 @@ const LoginForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
+                <Input type="password" placeholder="Mot de passe" {...field} />
               </FormControl>
-              <FormDescription>Enter your password</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Login</Button>
+        <button className="text-[#791860] text-center font-bold text-2xl w-full"
+          type="button" onClick={() => navigate("/register")}
+          >Pas encore de compte ?
+        </button>
+        <div className="flex justify-center items-center w-full my-20">
+          <BoutonSubmit nomBouton="Se connecter" activate={form.formState.isValid} />
+        </div>
       </form>
     </Form>
   )   
