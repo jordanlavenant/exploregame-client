@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from "react"
+import React, { createContext, useContext, useEffect, useState } from "react"
 
 interface Colors {
   primary: string
@@ -7,21 +7,28 @@ interface Colors {
 }
 
 interface ColorsDepartmentContextType {
-  colors: Colors
   setColors: React.Dispatch<React.SetStateAction<Colors>>
+  getColors: () => Colors
 }
 
 const ColorsDepartmentContext = createContext<ColorsDepartmentContextType | undefined>(undefined)
 
 export const ColorsDepartmentProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [colors, setColors] = useState<Colors>({
-    primary: '',
-    secondary: '',
-    tertiary: ''
+  const [colors, setColors] = useState<Colors>(() => {
+    const storedColors = localStorage.getItem('colors')
+    return storedColors ? JSON.parse(storedColors) : { primary: '', secondary: '', tertiary: '' }
   })
 
+  useEffect(() => {
+    localStorage.setItem('colors', JSON.stringify(colors))
+  }, [colors])
+
+  const getColors = () => {
+    return JSON.parse(localStorage.getItem('colors')!)
+  }
+
   return (
-    <ColorsDepartmentContext.Provider value={{ colors, setColors }}>
+    <ColorsDepartmentContext.Provider value={{ setColors, getColors }}>
         {children}
     </ColorsDepartmentContext.Provider>
   )

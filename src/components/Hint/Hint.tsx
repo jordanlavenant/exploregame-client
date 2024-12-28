@@ -10,11 +10,12 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "../ui/button"
-import { BoxIcon, Lightbulb, X } from "lucide-react"
+import { BoxIcon, Lightbulb, ShieldQuestion, X } from "lucide-react"
 import { Hint as HintType, Question } from "@exploregame/types"
 import { gql, useQuery } from "@apollo/client"
 import { useHints } from "@/context/HintContext"
 import { useState } from "react"
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 
 export const QUESTION = gql`
   query FindQuestionById($id: String!) {
@@ -40,6 +41,8 @@ const Hint = ({
   question: Question
 }) => {
   const { questionState } = useCurrentQuestionState()
+  const { getColors } = useColorsDepartments()
+  const { primary } = getColors()
   const { hintsOpened, setHintsOpened } = useHints()
   const [ hintState, setHintState ] = useState<HintState>({
     revealed: false,
@@ -71,16 +74,17 @@ const Hint = ({
       <AlertDialogTrigger>
         <Button 
           variant="default"
-          className="z-10 absolute m-2 bottom-28 right-0 w-14 h-14 rounded-full text-white"
+          className={`z-10 fixed m-2 bottom-28 right-0 w-14 h-14 rounded-full text-white`}
+          style={{ backgroundColor: primary }}
         >
-          <BoxIcon size={24} />
+          <ShieldQuestion size={48} />
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="grid grid-rows-3 h-full my-20 bg-transparent border-transparent shadow-none">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex flex-col items-center gap-y-8">
-            <Lightbulb size={48} className="text-yellow-500" />
-            <p className="text-yellow-500 text-4xl font-bold">
+            <Lightbulb size={48} style={{ color: primary }} />
+            <p className='text-4xl font-bold' style={{ color: primary }}>
               {hintState.revealed ? `Indice : ${hintState.type}` : "Niveau d'indice"}
             </p>
           </AlertDialogTitle>
@@ -118,7 +122,7 @@ const Hint = ({
             className="bg-transparent border-transparent shadow-none text-yellow-500 w-16 h-16"
             onClick={() => setHintState({ revealed: false, type: null, hint: null })}
           >
-            <X size={32} />
+            <X size={32} style={{ color: primary }}/>
           </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>

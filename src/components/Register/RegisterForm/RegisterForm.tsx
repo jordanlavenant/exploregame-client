@@ -29,9 +29,15 @@ const formSchema = z.object({
   password: z.string().min(1, {
     message: 'Le mot de passe est requis',
   }),
+    username: z.string().min(1, {
+        message: 'Le nom d\'utilisateur est requis',
+    }),
+    filiere: z.string().min(1, {
+        message: 'La filière est requise',
+    }),
 })
 
-const LoginForm = () => {
+const RegisterForm = () => {
   const navigate = useNavigate()
   const [login] = useMutation(AUTH)
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,11 +64,35 @@ const LoginForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
+          name="filiere"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="filiere" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Input placeholder="Email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -81,15 +111,15 @@ const LoginForm = () => {
           )}
         />
         <button className="text-[#791860] text-center font-bold text-2xl w-full"
-          type="button" onClick={() => navigate("/register")}
-          >Pas encore de compte ?
+          type="button" onClick={() => navigate("/login")}
+          >Déjà un compte ?
         </button>
         <div className="flex justify-center items-center w-full my-20">
-          <BoutonSubmit nomBouton="SE CONNECTER" activate={form.formState.isValid} />
+          <BoutonSubmit nomBouton="INSCRIPTION" activate={form.formState.isValid} />
         </div>
       </form>
     </Form>
   )   
 }
 
-export default LoginForm
+export default RegisterForm;

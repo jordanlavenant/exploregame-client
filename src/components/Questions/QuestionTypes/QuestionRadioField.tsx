@@ -1,8 +1,10 @@
 import SubmitQuestion from "@/components/SubmitQuestion/SubmitQuestion";
 import { Form } from "@/components/ui/form";
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext";
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext";
 import { Maybe, Question } from "@exploregame/types"
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleDot } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -21,13 +23,15 @@ const formSchema = z.object({
 const QuestionRadioField = ({
   question,
   checkAnswer,
-  next
+  next,
 }: {
   question: Question
   checkAnswer: (answer: string) => void
   next: () => void
 }) => {
   const { questionState } = useCurrentQuestionState()
+  const { getColors } = useColorsDepartments()
+  const { primary, secondary } = getColors()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
@@ -47,25 +51,35 @@ const QuestionRadioField = ({
     <Form {...form}>
       <form onSubmit={form.handleSubmit(submit)}>
         <div className="flex flex-col">
-          <label className="text-lg font-bold">{question.question}</label>
-          <section className="grid grid-row gap-y-2 mx-8">
-          {answers.map((answer, index) => (
-            <button
-              key={index}
-              type="button"
-              className={`${form.watch("answer") === answer.answer ? "bg-blue-500 text-white" : "bg-gray-300"} p-2 rounded-md`}
-              onClick={() => {
-                if (form.watch("answer") === answer.answer) {
-                  form.setValue("answer", "")
-                  return
+          <div className="flex justify-center items-center h-96">
+            <section className="grid grid-row gap-y-2 mx-8 w-full">
+            <label className="text-2xl font-bold text-gray-500 w-full text-center my-4">{question.question}</label>
+            {answers.map((answer, index) => (
+              <button
+                key={index}
+                disabled={questionState.answered}
+                type="button"
+                className='bg-gray-100 text-gray-400  border-gray-200 p-4 border-4 rounded-3xl font-bold text-2xl flex justify-center items-center'
+                style={form.watch("answer") === answer.answer 
+                  ? { backgroundColor: secondary, color: primary, borderColor: primary } 
+                  : {}
                 }
-                form.setValue("answer", answer.answer)
-              }}
-            >
-              {answer.answer}
-            </button>
-          ))}
-          </section>
+                onClick={() => {
+                  if (form.watch("answer") === answer.answer) {
+                    form.setValue("answer", "")
+                    return
+                  }
+                  form.setValue("answer", answer.answer)
+                }}
+              >
+                {form.watch('answer') === answer.answer && <CircleDot size={32} className={`text-[${primary}]`} />}
+                <p className="w-full">
+                  {answer.answer}
+                </p>
+              </button>
+            ))}
+            </section>
+          </div>
           <SubmitQuestion question={question} />
         </div>
       </form>

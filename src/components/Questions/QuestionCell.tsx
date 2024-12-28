@@ -177,7 +177,6 @@ const QuestionCell = ({
         }
       }).then((response) => {
         const correct = response.data.checkAnswer
-        console.log(correct)
         if (correct) {
           //TODO: envoyé correcte
         } else {
