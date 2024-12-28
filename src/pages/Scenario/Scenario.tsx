@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import getCurrentPlayer from "@/utils/currentPlayer"
 import { setLocalScenario } from "@/utils/localScenario"
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { PlayerScript } from "@exploregame/types"
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom"
-import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 
 export const SCENARIO = gql`
   query FindScenarioById($id: String!) {
@@ -90,7 +89,7 @@ const ScenarioPage = () => {
         }
       }).then(response => {
         // ! Redirection
-        let idPlayerScript = response.data.createPlayerScript.id
+        const idPlayerScript = response.data.createPlayerScript.id
         setLocalScenario(idPlayerScript, currentPlayer!.id, sceId!, initScenarioData.stepId, initScenarioData.questionId)
         redirect(initScenarioData.stepId, initScenarioData.questionId)
       })
@@ -98,7 +97,7 @@ const ScenarioPage = () => {
 
     const resume = () => {
       // ! Data
-      let playerScript = data.script.PlayerScript.find((playerScript: PlayerScript) => playerScript.playerId === currentPlayer!.id)
+      const playerScript = data.script.PlayerScript.find((playerScript: PlayerScript) => playerScript.playerId === currentPlayer!.id)
       const { id, stepId, questionId } = playerScript
 
       // ! Redirection
