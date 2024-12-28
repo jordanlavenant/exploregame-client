@@ -1,6 +1,6 @@
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 import { Question } from "@exploregame/types"
-import { Check, Flag } from "lucide-react"
 
 const SubmitQuestion = ({
   question,
@@ -8,9 +8,11 @@ const SubmitQuestion = ({
   question: Question
 }) => {
   const { questionState } = useCurrentQuestionState()
+  const { getColors } = useColorsDepartments()
+  const { primary, secondary } = getColors()
 
+  console.log(question)
 
-  // TODO: faire le front propre mon léo d'amour  
   return (
     <section 
     className={`${questionState.answered 
@@ -38,14 +40,18 @@ const SubmitQuestion = ({
             </>
           )}
         </div>
-      <div className="flex flex-wrap justify-center items-center gap-4 px-6 py-2 w-full">
+      <div className="flex flex-wrap justify-center items-center gap-4 py-2 w-full">
         <button
           className={`${questionState.answered 
             ? questionState.correct 
               ? 'p-4 mx-2 border-4 rounded-3xl font-bold text-2xl text-white bg-[#46E54E] border-[#3cd943] w-full' 
               : 'p-4 mx-2 border-4 rounded-3xl font-bold text-2xl text-white bg-[#E54646] border-[#C53030] w-full' 
-            : 'p-4 mx-2 border-4 rounded-3xl font-bold text-2xl text-white bg-yellow-400 border-yellow-600 w-full'}`
+            : `p-4 border-4 rounded-3xl font-bold text-2xl text-white w-full`}`
           }
+          style={!questionState.answered ? {
+            backgroundColor: secondary,
+            borderColor: primary
+          } : {}}
           type="submit"
         >
           {!questionState.answered ? "Valider" : "Continuer"}

@@ -13,7 +13,7 @@ const ProfilCheckPage = () => {
     }, [navigate])
 
     const handleClick = () => {
-      navigate("/profil");
+      navigate("/profile");
     };
 
     return (
@@ -24,10 +24,10 @@ const ProfilCheckPage = () => {
                 </button>
                 <h1 className="text-center text-5xl text-[#000] font-bold">Mes informations</h1>
             </div>
-            <BoutonCell urlRedirection="/profil/update?type=filiere" nomBouton="Informatique" title="Ma filière" />
-            <BoutonCell urlRedirection="/profil/update?type=username" nomBouton="@Username" title="Username" />
-            <BoutonCell urlRedirection="/profil/update?type=mail" nomBouton="user@gmail.com" title="Mail" />
-            <BoutonCell urlRedirection="/profil/update?type=password" nomBouton="********" title="Mot de passe" />
+            <BoutonCell urlRedirection="/profile/update?type=filiere" nomBouton="Informatique" title="Ma filière" />
+            <BoutonCell urlRedirection="/profile/update?type=username" nomBouton="@Username" title="Username" />
+            <BoutonCell urlRedirection="/profile/update?type=mail" nomBouton="user@gmail.com" title="Mail" />
+            <BoutonCell urlRedirection="/profile/update?type=password" nomBouton="********" title="Mot de passe" />
         </div>
     )
   }

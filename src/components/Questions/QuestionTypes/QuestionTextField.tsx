@@ -50,7 +50,7 @@ const colors = ({ currentDepartment }: colors) => {
       <form onSubmit={form.handleSubmit(submit)}>
         <div className="flex flex-col">
           <div className="flex justify-center items-center h-96">
-            <section className="grid grid-row gap-y-2 mx-8">
+            <section className="grid grid-row gap-y-2 mx-2">
               <label className="text-2xl font-bold text-gray-500 w-full text-center my-4">
                 {question.question}
               </label>

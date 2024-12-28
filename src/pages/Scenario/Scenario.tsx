@@ -43,8 +43,6 @@ const ScenarioPage = () => {
   const navigate = useNavigate()
   const currentPlayer = getCurrentPlayer()
   const { depId, sceId } = useParams()
-  const { colors } = useColorsDepartments()
-  console.log(colors)
   const [createPlayerScript] = useMutation(CREATE_PLAYER_SCRIPT)
   const { data, loading, error, refetch } = useQuery(SCENARIO, {
     variables: { id: sceId }

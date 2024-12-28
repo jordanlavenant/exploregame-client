@@ -36,7 +36,7 @@ const ProfilModifPage = () => {
     };
 
     const handleClick = () => {
-      navigate("/profil/check");
+      navigate("/profile/check");
     };
 
     return (
@@ -49,7 +49,7 @@ const ProfilModifPage = () => {
             </div>
             <section className="w-full py-40 px-7 grid grid-rows-2 gap-32">
                 <InputUpdate typeInput={type} onChange={handleInputChange} />
-                <BoutonActivate urlRedirection="/profil/check" nomBouton="Modifier" activate={activation} />
+                <BoutonActivate urlRedirection="/profile/check" nomBouton="Modifier" activate={activation} />
             </section>
         </div>
     )
