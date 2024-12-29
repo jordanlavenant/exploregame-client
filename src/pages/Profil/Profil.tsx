@@ -1,13 +1,25 @@
 import BoutonCell from "@/components/Profil/BoutonCell"
 import BoutonIcon from "@/components/Profil/BoutonIcon"
+import BoutonLogout from "@/components/Profil/BoutonLogout"
 import AchievementCarousel from "@/components/Achievements/AchievementCarousel"
 import Header from "@/components/Header"
+import { useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 
 interface ProfilPageProps {
     username: string;
 }
 
 const ProfilPage = ({username="@username"}:ProfilPageProps) => {
+    const navigate = useNavigate()
+    
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+        if (!token) {
+          navigate("/login")
+        }
+    }, [navigate])
+
     const listeAchievements = [
         ({nom: 'Accomplissement 1', filiere: 'GEA', urlImage: '/succes.png'}),
         ({nom: 'Accomplissement 2', filiere: 'INFO', urlImage: '/succes.png'}),
@@ -31,6 +43,7 @@ const ProfilPage = ({username="@username"}:ProfilPageProps) => {
             </section>
             <BoutonCell urlRedirection="/profile/informations" nomBouton="Informatique" title="Ma filière" />
             <BoutonCell urlRedirection="/profile/informations" nomBouton="Modifier informations" title="Mes informations" />
+            <BoutonLogout urlRedirection="/login" nomBouton="Se déconnecter" />
         </div>
     )
   }

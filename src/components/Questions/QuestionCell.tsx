@@ -1,11 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom"
-import { Button } from "@/components/ui/button"
 import getCurrentPlayer from "@/utils/currentPlayer"
 import { PlayerScript, Question, Step } from "@exploregame/types"
 import { getLocalScenario, setLocalScenario } from "@/utils/localScenario"
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { lazy, useEffect, useState, Suspense } from "react"
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
+import { useNextStep } from "@/context/NextStepContext"
+import Hint from "@/components/Hint/Hint"
+import { useHints } from "@/context/HintContext"
 
 export const PLAYER_SCRIPTS = gql`
   query FindPlayerScripts {
@@ -25,6 +27,7 @@ export const SCRIPT = gql`
       id
       ScriptStep {
         id
+        lettre
         Step {
           id
           Questions {
@@ -46,7 +49,8 @@ export const QUESTION = gql`
         isCorrect
       }
     }
-  }`
+  }
+`
 
 export const UPDATE_PLAYER_SCRIPT = gql`
   mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
@@ -69,12 +73,13 @@ const QuestionCell = ({
 }) => {
   const navigate = useNavigate()
   const { depId, sceId, stepId, queId } = useParams()
-  const { questionState, setQuestionState } = useCurrentQuestionState()
+  const { setQuestionState } = useCurrentQuestionState()
+  const { setStepProps } = useNextStep()
   const currentPlayer = getCurrentPlayer()
   const localScenario = getLocalScenario()
+  const { setHintsOpened } = useHints()
   const [QuestionModule, setQuestionModule] = useState<React.LazyExoticComponent<any> | null>(null)
 
-  const [updatePlayerScript] = useMutation(UPDATE_PLAYER_SCRIPT)
   const [verifyAnswer] = useMutation(CHECK_ANSWER)
 
   useEffect(() => {
@@ -171,8 +176,7 @@ const QuestionCell = ({
           }
         }
       }).then((response) => {
-        let correct = response.data.checkAnswer
-        console.log(correct)
+        const correct = response.data.checkAnswer
         if (correct) {
           //TODO: envoyé correcte
         } else {
@@ -194,23 +198,17 @@ const QuestionCell = ({
         answered: false,
         correct: false
       })
+      setHintsOpened([false, false, false])
       setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
     } else {
-      updatePlayerScript({
-        variables: {
-          id: playerScript.id,
-          input: {
-            stepId: nextStep.id,
-            questionId: nextStep.Step.Questions[0].id
-          }
-        }
+      setStepProps({
+        currentStep: step,
+        nextStep: nextStep,
+        playerScriptId: playerScript.id
       })
-      .then(() => setQuestionState({
-        answered: false,
-        correct: false
-      }))
-      .then(() => navigate(`/departments/${depId}/scenarios/${sceId}`))
+      setHintsOpened([false, false, false])
+      navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}`)
     }
   }
   
@@ -218,6 +216,7 @@ const QuestionCell = ({
     <div>
       {QuestionModule && (
         <Suspense fallback={<div>Loading...</div>}>
+          <Hint question={question} />
           <QuestionModule 
             question={question}
             checkAnswer={checkAnswer}

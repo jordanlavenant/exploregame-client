@@ -40,11 +40,10 @@ export const CREATE_PLAYER_SCRIPT = gql`
 `;
 
 const ScenarioPage = () => {
-  const navigate = useNavigate();
-  const currentPlayer = getCurrentPlayer();
-  const { depId, sceId } = useParams();
-  const { colors } = useColorsDepartments();
-  const [createPlayerScript] = useMutation(CREATE_PLAYER_SCRIPT);
+  const navigate = useNavigate()
+  const currentPlayer = getCurrentPlayer()
+  const { depId, sceId } = useParams()
+  const [createPlayerScript] = useMutation(CREATE_PLAYER_SCRIPT)
   const { data, loading, error, refetch } = useQuery(SCENARIO, {
     variables: { id: sceId },
   });
