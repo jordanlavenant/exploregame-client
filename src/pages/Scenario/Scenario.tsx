@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect } from "react";
 import getCurrentPlayer from "@/utils/currentPlayer";
 import { setLocalScenario } from "@/utils/localScenario";
 import { gql, useMutation, useQuery } from "@apollo/client";
@@ -6,7 +6,6 @@ import { PlayerScript } from "@exploregame/types";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { useColorsDepartments } from "@/context/ColorsDepartmentContext";
-import Discussion from "@/components/Scenarios/Discussion"; 
 
 export const SCENARIO = gql`
   query FindScenarioById($id: String!) {
@@ -28,15 +27,6 @@ export const SCENARIO = gql`
         stepId
         questionId
       }
-      CharacterStep {
-        id
-        textOrder
-        Character {
-          id
-          nomPerso
-          image
-        }
-      }
     }
   }
 `;
@@ -55,12 +45,12 @@ const ScenarioPage = () => {
   const { depId, sceId } = useParams();
   const { colors } = useColorsDepartments();
   const [createPlayerScript] = useMutation(CREATE_PLAYER_SCRIPT);
-
   const { data, loading, error, refetch } = useQuery(SCENARIO, {
     variables: { id: sceId },
   });
 
-  const [isDiscussionComplete, setIsDiscussionComplete] = useState(false); // État pour suivre l'état de la discussion
+  console.log(data);
+  console.log(colors);
 
   useEffect(() => {
     if (!currentPlayer) {
@@ -85,6 +75,7 @@ const ScenarioPage = () => {
     };
 
     const init = () => {
+      // ! Data
       const initScenarioData = {
         playerId: currentPlayer!.id,
         scriptId: sceId,
@@ -92,6 +83,7 @@ const ScenarioPage = () => {
         questionId: data.script.ScriptStep[0].Step.Questions[0].id,
       };
 
+      // ! Mutation
       createPlayerScript({
         variables: {
           input: {
@@ -101,6 +93,7 @@ const ScenarioPage = () => {
           },
         },
       }).then((response) => {
+        // ! Redirection
         let idPlayerScript = response.data.createPlayerScript.id;
         setLocalScenario(
           idPlayerScript,
@@ -114,12 +107,14 @@ const ScenarioPage = () => {
     };
 
     const resume = () => {
+      // ! Data
       let playerScript = data.script.PlayerScript.find(
         (playerScript: PlayerScript) =>
           playerScript.playerId === currentPlayer!.id
       );
       const { id, stepId, questionId } = playerScript;
 
+      // ! Redirection
       setLocalScenario(id, currentPlayer!.id, sceId!, stepId, questionId);
       redirect(stepId, questionId);
     };
@@ -131,30 +126,10 @@ const ScenarioPage = () => {
         resume();
       }
     });
-  }, [
-    currentPlayer,
-    data,
-    loading,
-    error,
-    refetch,
-    createPlayerScript,
-    navigate,
-    sceId,
-    depId,
-  ]);
+  }, [currentPlayer, data, loading, error, refetch, createPlayerScript]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-
-  // Gérer l'affichage des questions après la discussion
-  if (!isDiscussionComplete) {
-    return (
-      <Discussion
-        characterSteps={data.script.CharacterStep} // Passez les données nécessaires
-        onFinish={() => setIsDiscussionComplete(true)} // Callback pour signaler la fin de la discussion
-      />
-    );
-  }
 
   return <p>Redirection en cours...</p>;
 };
