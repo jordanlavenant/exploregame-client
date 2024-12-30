@@ -2,9 +2,10 @@ import { useEffect } from "react"
 import getCurrentPlayer from "@/utils/currentPlayer"
 import { setLocalScenario } from "@/utils/localScenario"
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { PlayerScript } from "@exploregame/types"
+import { PlayerScript, ScriptStep } from "@exploregame/types"
 import toast from "react-hot-toast"
 import { useNavigate, useParams } from "react-router-dom"
+import { useScriptProgress } from "@/context/ScriptProgressContext"
 
 export const SCENARIO = gql`
   query FindScenarioById($id: String!) {
@@ -41,6 +42,7 @@ export const CREATE_PLAYER_SCRIPT = gql`
 const ScenarioPage = () => {
   const navigate = useNavigate()
   const currentPlayer = getCurrentPlayer()
+  const { setTotalQuestions, setCurrentQuestion } = useScriptProgress()
   const { depId, sceId } = useParams()
   const [createPlayerScript] = useMutation(CREATE_PLAYER_SCRIPT)
   const { data, loading, error, refetch } = useQuery(SCENARIO, {
@@ -55,6 +57,13 @@ const ScenarioPage = () => {
     }
 
     if (loading || error) return
+
+    console.log(data.script.ScriptStep)
+
+    const totalQuestions = data.script.ScriptStep.reduce((acc: number, scriptStep: ScriptStep) => {
+      return acc + scriptStep.Step.Questions.length
+    }, 0)
+    setTotalQuestions(totalQuestions)
 
     const alreadyPlayed = () => {
       return data.script.PlayerScript.some(
@@ -107,6 +116,7 @@ const ScenarioPage = () => {
 
     refetch().then(() => {
       if (!alreadyPlayed()) {
+        setCurrentQuestion(0)
         init() 
       } else {
         resume()

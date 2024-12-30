@@ -9,7 +9,7 @@ const HomePage = () => {
       <Header />
       <HomeCell title="Bienvenue" />
       <HomeCell title="Carte" />
-      <HomeCell title="Acutalités" />
+      <HomeCell title="Actualités" />
       <HomeCell title="Les filières" />
       <BoutonExplorer positionBas={true} urlRedirection="/departments" />
     </main>

@@ -2,58 +2,83 @@ import { useEffect, useRef } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import MenuBurger from '@/components/MenuBurger'
+import { gql, useQuery } from '@apollo/client'
 
-const MapPage = () => {
-  const mapContainerRef = useRef<HTMLDivElement | null>(null);
-  const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY;
-
-  useEffect(() => {
-    const fetchDepartments = async () => {
-      try {
-        const response = await fetch('src/constant/departments.json')
-        const data = await response.json()
-
-        if (mapContainerRef.current) {
-          const map = new maplibregl.Map({
-            container: mapContainerRef.current,
-            style: `https://api.maptiler.com/maps/basic/style.json?key=${MAPTILER_KEY}`,
-            center: [1.9263836, 47.8438305],
-            zoom: 1,
-            maxZoom: 20,
-            minZoom: 1,
-            maxBounds: [
-              [1.924, 47.8428],
-              [1.928, 47.8448]
-            ],
-          })
-
-          // Add markers with labels from the fetched data
-          data.forEach((department: { id: number, name: string, coordinates: [number, number]}) => {
-            const popup = new maplibregl.Popup({ offset: 25 })
-              .setText(department.name)
-              .on('open', () => {
-                const popupElement = document.querySelector('.maplibregl-popup-content')
-                if (popupElement) {
-                  popupElement.addEventListener('click', () => {
-                    window.location.href = "/departments/" + department.id
-                  })
-                }
-              })
-            new maplibregl.Marker()
-              .setLngLat([department.coordinates[1], department.coordinates[0]])
-              .setPopup(popup)
-              .addTo(map)
-          })
-
-          return () => map.remove()
-        }
-      } catch (error) {
-        console.error('Error fetching departments:', error)
+export const DEPARTMENTS = gql`
+  query FindDepartments {
+    departments {
+      id
+      name
+      latitude
+      longitude
+      ColorSet {
+        primary
       }
     }
+  }
+`
 
-    fetchDepartments()
-  }, [MAPTILER_KEY])
+const MapPage = () => {
+  const mapContainerRef = useRef<HTMLDivElement | null>(null)
+  const markersRef = useRef<maplibregl.Marker[]>([])
+  const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY
+
+  const distance = 0.002
+
+  const { loading, error, data } = useQuery(DEPARTMENTS)
+
+  useEffect(() => {
+    if (loading || error || !data) return
+
+    if (mapContainerRef.current) {
+      const map = new maplibregl.Map({
+        container: mapContainerRef.current,
+        style: `https://api.maptiler.com/maps/basic/style.json?key=${MAPTILER_KEY}`,
+        center: [1.9268501, 47.8439263],
+        zoom: 16.5,
+        maxZoom: 20,
+        minZoom: 1,
+        maxBounds: [
+          [1.9268501 - distance, 47.8439263 - distance],
+          [1.9268501 + distance, 47.8439263 + distance]
+        ],
+      })
+
+      // Add markers with labels from the fetched data
+      data.departments.forEach((department: { id: number, name: string, latitude: number, longitude: number, ColorSet: { primary: string } }) => {
+        const popup = new maplibregl.Popup({ offset: 25 })
+          .setText(department.name)
+          .on('open', () => {
+            const popupElement = document.querySelector('.maplibregl-popup-content')
+            if (popupElement) {
+              popupElement.addEventListener('click', () => {
+                window.location.href = "/departments/" + department.id
+              })
+            }
+          })
+
+        const marker = new maplibregl.Marker(
+          {
+            color: department.ColorSet.primary,
+            scale: 1.5,
+          }
+        )
+          .setLngLat([department.longitude, department.latitude])
+          .setPopup(popup)
+          .addTo(map)
+      
+        markersRef.current.push(marker)
+      })
+
+      return () => {
+        markersRef.current.forEach(marker => marker.remove())
+        map.remove()
+      }
+    }
+  }, [loading, error, data, MAPTILER_KEY])
+
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error: {error.message}</p>
 
   return (
     <section>
