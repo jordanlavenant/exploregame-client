@@ -119,7 +119,8 @@ const Hint = ({
         )}
         <AlertDialogFooter className="fixed top-0 left-0">
           <AlertDialogCancel
-            className="bg-transparent border-transparent shadow-none text-yellow-500 w-16 h-16"
+          // TODO LEO
+            className="bg-transparent border-transparent shadow-none text-yellow-500 w-16 h-16 absolute top-0 left-0"
             onClick={() => setHintState({ revealed: false, type: null, hint: null })}
           >
             <X size={32} style={{ color: primary }}/>
