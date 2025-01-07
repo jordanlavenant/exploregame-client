@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "../ui/button"
-import { BoxIcon, Lightbulb, ShieldQuestion, X } from "lucide-react"
+import { BoxIcon, Lightbulb, CircleHelp, X } from "lucide-react"
 import { Hint as HintType, Question } from "@exploregame/types"
 import { gql, useQuery } from "@apollo/client"
 import { useHints } from "@/context/HintContext"
@@ -74,15 +74,15 @@ const Hint = ({
       <AlertDialogTrigger>
         <Button 
           variant="default"
-          className={`z-10 fixed m-2 bottom-28 right-0 w-14 h-14 rounded-full text-white`}
+          className="z-10 fixed m-2 bottom-28 right-0 w-14 h-14 rounded-full text-white"
           style={{ backgroundColor: primary }}
         >
-          <ShieldQuestion size={48} />
+          <CircleHelp style={{ width: '100%', height: '100%' }} />
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent className="grid grid-rows-3 h-full my-20 bg-transparent border-transparent shadow-none">
+      <AlertDialogContent className="flex flex-col gap-y-24 min-w-full h-full bg-transparent border-transparent shadow-none">
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex flex-col items-center gap-y-8">
+          <AlertDialogTitle className="mt-24 flex flex-col items-center gap-y-8 min-w-full">
             <Lightbulb size={48} style={{ color: primary }} />
             <p className='text-4xl font-bold' style={{ color: primary }}>
               {hintState.revealed ? `Indice : ${hintState.type}` : "Niveau d'indice"}
@@ -91,7 +91,7 @@ const Hint = ({
           <AlertDialogDescription></AlertDialogDescription>
         </AlertDialogHeader>
         {!hintState.revealed ? (
-          <section className="flex flex-col gap-8">
+          <section className="flex flex-col gap-8 w-full">
             {hints.map((hint: HintType) => {
               const hintId = parseInt(hint.hintLevelId) - 1
               return (
@@ -106,7 +106,8 @@ const Hint = ({
                     })
                   }}
                   variant="ghost"
-                  className="text-white font-bold text-3xl"
+                  className="text-white font-bold text-3xl hover:bg-transparent" 
+                  style={{ color: primary }}
                   key={hint.id}
                 >
                   {hint.hintLevelId === '1' ? "Petit" : hint.hintLevelId === '2' ? "Moyen" : "Grand"}
@@ -119,11 +120,11 @@ const Hint = ({
         )}
         <AlertDialogFooter className="fixed top-0 left-0">
           <AlertDialogCancel
-          // TODO LEO
-            className="bg-transparent border-transparent shadow-none text-yellow-500 w-16 h-16 absolute top-0 left-0"
+            className="bg-transparent border-transparent hover:bg-transparent w-16 h-16 absolute top-0 left-0"
+            style={{ color: primary }}
             onClick={() => setHintState({ revealed: false, type: null, hint: null })}
           >
-            <X size={32} style={{ color: primary }}/>
+            <X size={48} style={{ color: '#000', width: '100%', height: '100%' }}/>
           </AlertDialogCancel>
         </AlertDialogFooter>
       </AlertDialogContent>
