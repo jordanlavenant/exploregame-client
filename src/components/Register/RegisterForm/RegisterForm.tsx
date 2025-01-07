@@ -62,18 +62,28 @@ const RegisterForm = () => {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="filiere"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input placeholder="filiere" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                   <FormField
+                    control={form.control}
+                    name="departmentId"
+                    render={({ field }) => (
+                        <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                            <FormLabel style={{ minWidth: '100px' }}>Filière</FormLabel>
+                            <FormControl>
+                                <select {...field}>
+                                    <option value="" disabled selected>
+                                        Sélectionnez une filière
+                                    </option>
+                                    {departmentsData?.departments.map((department: any) => (
+                                        <option key={department.id} value={department.id}>
+                                            {department.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
         <FormField
           control={form.control}
           name="email"
