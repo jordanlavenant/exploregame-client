@@ -1,4 +1,3 @@
-import DepartmentCell from "@/components/Departments/DepartmentCell/DepartmentCell"
 import DepartmentHeader from "@/components/Departments/DepartmentHeader/DepartmentHeader"
 import { useCurrentDepartment } from "@/context/CurrentDepartmentContext"
 import { gql, useQuery } from "@apollo/client"
@@ -6,6 +5,7 @@ import { Department } from "@exploregame/types"
 import { useNavigate, useParams } from "react-router-dom"
 import BoutonExplorer from "@/components/Home/BoutonExplorer"
 import HomeCell from "@/components/Home/HomeCell"
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 
 
 const DEPARTMENTS = gql`
@@ -16,6 +16,11 @@ const DEPARTMENTS = gql`
       description
       Script {
         id
+      }
+      ColorSet {
+        primary
+        secondary
+        tertiary
       }
     }
   }
@@ -30,12 +35,18 @@ const DEPARTMENT = gql`
       Script {
         id
       }
+      ColorSet {
+        primary
+        secondary
+        tertiary
+      }
     }
   }
 `
 
 const DepartmentPage = () => {
   const { depId } = useParams<{ depId: string }>()
+  const { setColors } = useColorsDepartments()
   const navigate = useNavigate()
   const { 
     data,
@@ -83,6 +94,9 @@ const DepartmentPage = () => {
     currentDepartment = departments![currentDepartmentIndex!]
   }
 
+  const colors = currentDepartment.ColorSet
+  setColors(colors)
+
   const previousDepartment = departments![(currentDepartmentIndex! - 1 + departments!.length) % departments!.length]
   const nextDepartment = departments![(currentDepartmentIndex! + 1) % departments!.length]
 
@@ -105,10 +119,24 @@ const DepartmentPage = () => {
         handleNextClick={handleNextClick}
         handlePrevClick={handlePrevClick}
       />
-      <BoutonExplorer positionBas={false} backgroundColor="#BB8BAF" bordercolor="#791860" department={currentDepartment} />
-      <HomeCell title="Bienvenue" />
-      <HomeCell title="Carte" />
-      <HomeCell title="Acutalités" />
+      <BoutonExplorer 
+        positionBas={false}
+        backgroundColor={colors.secondary}
+        bordercolor={colors.primary}
+        department={currentDepartment}
+      />
+      <HomeCell 
+        title="Bienvenue"
+        colors={colors}
+      />
+      <HomeCell 
+        title="Carte"
+        colors={colors}
+      />
+      <HomeCell
+        title="Acutalités"
+        colors={colors}
+      />
 
       {/* <DepartmentCell department={currentDepartment} /> */}
     </main>
