@@ -1,0 +1,50 @@
+[
+    {
+        "id": 1,
+        "name": "BUT Informatique",
+        "coordinates": [
+            47.8433084,
+            1.9267556
+        ]
+    },
+    {
+        "id": 2,
+        "name": "BUT GEA",
+        "coordinates": [
+            47.8437317,
+            1.9263861
+        ]
+    },
+    {
+        "id": 3,
+        "name": "BUT GMP",
+        "coordinates": [
+            47.8440098,
+            1.9263063
+        ]
+    },
+    {
+        "id": 4,
+        "name": "BUT QLIO",
+        "coordinates": [
+            47.8441395,
+            1.927583
+        ]
+    },
+    {
+        "id": 5,
+        "name": "BUT Chimie",
+        "coordinates": [
+            47.8439269,
+            1.927661
+        ]
+    },
+    {
+        "id": 5,
+        "name": "BUT MT2E",
+        "coordinates": [
+            47.8435985,
+            1.9257699
+        ]
+    }
+]

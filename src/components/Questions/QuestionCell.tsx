@@ -8,6 +8,7 @@ import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 import { useNextStep } from "@/context/NextStepContext"
 import Hint from "@/components/Hint/Hint"
 import { useHints } from "@/context/HintContext"
+import { useScriptProgress } from "@/context/ScriptProgressContext"
 
 export const PLAYER_SCRIPTS = gql`
   query FindPlayerScripts {
@@ -74,6 +75,7 @@ const QuestionCell = ({
   const navigate = useNavigate()
   const { depId, sceId, stepId, queId } = useParams()
   const { setQuestionState } = useCurrentQuestionState()
+  const { setCurrentQuestion } = useScriptProgress()
   const { setStepProps } = useNextStep()
   const currentPlayer = getCurrentPlayer()
   const localScenario = getLocalScenario()
@@ -193,6 +195,7 @@ const QuestionCell = ({
   }
 
   function next() {
+    setCurrentQuestion((prev) => prev + 1)
     if (nextQuestion !== undefined) {
       setQuestionState({
         answered: false,
