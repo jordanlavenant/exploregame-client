@@ -214,7 +214,7 @@ const RegisterForm: React.FC = () => {
                             <FormControl>
                                 <select {...field}>
                                     <option value="" disabled selected>
-                                        Sélectionnez un genre
+                                        Sélectionnez une filière
                                     </option>
                                     {departmentsData?.departments.map((department: any) => (
                                         <option key={department.id} value={department.id}>
