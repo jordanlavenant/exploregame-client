@@ -89,7 +89,7 @@ const MapPage = () => {
         <MenuBurger />
       </div>
       <div ref={mapContainerRef} className='h-screen'>
-        Chargement de la carte
+        {MAPTILER_KEY ? null : <p className='text-3xl font-bold text-red-500'>Please provide a MapTiler API key in the .env file</p>}
       </div>
     </section>
   )
