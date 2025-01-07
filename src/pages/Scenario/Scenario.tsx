@@ -49,7 +49,6 @@ const ScenarioPage = () => {
   });
 
   console.log(data);
-  console.log(colors);
 
   useEffect(() => {
     if (!currentPlayer) {

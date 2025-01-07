@@ -5,6 +5,8 @@ interface BoutonExplorerProps {
     positionBas: boolean;
     urlRedirection?: string;
     department?: Department;
+    bordercolor?: string;
+    backgroundColor?: string;
 }
 
 const BoutonExplorer = ({positionBas, urlRedirection, bordercolor, backgroundColor, department}: BoutonExplorerProps) => {
