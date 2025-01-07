@@ -80,11 +80,10 @@ Puis
 docker compose up --build
 ```
 
-# Routes
+# Logins
 
-- `/` : Page d'accueil
-- `/login` : Page de connexion
-- `/register` : Page d'inscription
-- `/profile` : Page de profil
-- `/departments` : Page de liste des départements
-- `/department/:depId/scenarios/:sceId` : Page de scénario du département
+Vous pouvez vous connecter avec les logins suivants : 
+
+- `joe@doe.com` / `joe`
+- `jane@doe.com` / `jane`
+- `john@doe.com` / `john`

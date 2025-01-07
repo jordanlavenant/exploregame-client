@@ -7,19 +7,20 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import { z } from "zod"
+import BoutonSubmit from "@/components/ui/BoutonSubmit"
 
-export const QUERY = gql`
-mutation Login($input: LoginPlayerInput!) {
-  loginPlayer(input: $input) {
-    token
-    player {
-      id
-      firstName
-      lastName
-      email
+export const AUTH = gql`
+  mutation Login($input: LoginPlayerInput!) {
+    loginPlayer(input: $input) {
+      token
+      player {
+        id
+        firstName
+        lastName
+        email
+      }
     }
   }
-}
 `
 
 const formSchema = z.object({
@@ -33,7 +34,7 @@ const formSchema = z.object({
 
 const LoginForm = () => {
   const navigate = useNavigate()
-  const [login] = useMutation(QUERY)
+  const [login] = useMutation(AUTH)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
@@ -45,7 +46,7 @@ const LoginForm = () => {
       })
       if (response?.data?.loginPlayer) {
         localStorage.setItem("token", response.data.loginPlayer.token)
-        localStorage.setItem("player", response.data.loginPlayer.player.id)
+        localStorage.setItem("player", JSON.stringify(response.data.loginPlayer.player))
         navigate("/")
       }
     } catch (err) {
@@ -61,11 +62,9 @@ const LoginForm = () => {
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="Email" {...field} />
               </FormControl>
-              <FormDescription>Enter your email</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -75,16 +74,20 @@ const LoginForm = () => {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
+                <Input type="password" placeholder="Mot de passe" {...field} />
               </FormControl>
-              <FormDescription>Enter your password</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Login</Button>
+        <button className="text-[#791860] text-center font-bold text-2xl w-full"
+          type="button" onClick={() => navigate("/register")}
+          >Pas encore de compte ?
+        </button>
+        <div className="flex justify-center items-center w-full my-20">
+          <BoutonSubmit nomBouton="SE CONNECTER" activate={form.formState.isValid} />
+        </div>
       </form>
     </Form>
   )   

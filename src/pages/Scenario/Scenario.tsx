@@ -1,43 +1,142 @@
-import ScenarioCell from "@/components/Scenarios/ScenarioCell/ScenarioCell"
-import ScenarioHeader from "@/components/Scenarios/ScenarioHeader/ScenarioHeader"
-import { gql, useQuery } from "@apollo/client"
-import { useParams } from "react-router-dom"
+import { useEffect } from "react"
+import getCurrentPlayer from "@/utils/currentPlayer"
+import { setLocalScenario } from "@/utils/localScenario"
+import { gql, useMutation, useQuery } from "@apollo/client"
+import { PlayerScript, ScriptStep } from "@exploregame/types"
+import toast from "react-hot-toast"
+import { useNavigate, useParams } from "react-router-dom"
+import { useScriptProgress } from "@/context/ScriptProgressContext"
 
-export const QUERY = gql`
+export const SCENARIO = gql`
   query FindScenarioById($id: String!) {
     script(id: $id) {
       id
       name
       ScriptStep {
+        stepId
+        Step {
+          id
+          Questions {
+            id
+          }
+        }
+      }
+      PlayerScript {
         id
-        lettre
+        playerId
+        stepId
+        questionId
       }
     }
   }
 `
 
+export const CREATE_PLAYER_SCRIPT = gql`
+  mutation createPlayerScript($input: CreatePlayerScriptInput!) {
+    createPlayerScript(input: $input) {
+      id
+    }
+  }
+`
+
 const ScenarioPage = () => {
-  const { sceId } = useParams()
-  const { data, loading, error } = useQuery(QUERY, {
+  const navigate = useNavigate()
+  const currentPlayer = getCurrentPlayer()
+  const { setTotalQuestions, setCurrentQuestion } = useScriptProgress()
+  const { depId, sceId } = useParams()
+  const [createPlayerScript] = useMutation(CREATE_PLAYER_SCRIPT)
+  const { data, loading, error, refetch } = useQuery(SCENARIO, {
     variables: { id: sceId }
   })
 
-  if (loading) {
-    return <header className="header">Loading...</header>
-  }
-  if (error) {
-    return <header className="header">Error</header>
-  }
+  useEffect(() => {
+    if (!currentPlayer) {
+      toast.error("You must be logged in to play a scenario.")
+      navigate("/login")
+      return
+    }
 
-  const scenario = data.script
+    if (loading || error) return
+
+    console.log(data.script.ScriptStep)
+
+    const totalQuestions = data.script.ScriptStep.reduce((acc: number, scriptStep: ScriptStep) => {
+      return acc + scriptStep.Step.Questions.length
+    }, 0)
+    setTotalQuestions(totalQuestions)
+
+    const alreadyPlayed = () => {
+      return data.script.PlayerScript.some(
+        (playerScript: PlayerScript) => 
+          playerScript.playerId === currentPlayer!.id)
+    }
+
+    const redirect = (
+      stepId: string,
+      questionId: string
+    ) => {
+      navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${questionId}`)
+    }
+
+    const init = () => {
+      // ! Data
+      const initScenarioData = {
+        playerId: currentPlayer!.id,
+        scriptId: sceId,
+        stepId: data.script.ScriptStep[0].stepId,
+        questionId: data.script.ScriptStep[0].Step.Questions[0].id
+      }
+
+      // ! Mutation
+      createPlayerScript({
+        variables: {
+          input: {
+            ...initScenarioData,
+            score: 0,
+            remainingTime: 3600
+          }
+        }
+      }).then(response => {
+        // ! Redirection
+        const idPlayerScript = response.data.createPlayerScript.id
+        setLocalScenario(idPlayerScript, currentPlayer!.id, sceId!, initScenarioData.stepId, initScenarioData.questionId)
+        redirect(initScenarioData.stepId, initScenarioData.questionId)
+      })
+    }
+
+    const resume = () => {
+      // ! Data
+      const playerScript = data.script.PlayerScript.find((playerScript: PlayerScript) => playerScript.playerId === currentPlayer!.id)
+      const { id, stepId, questionId } = playerScript
+
+      // ! Redirection
+      setLocalScenario(id, currentPlayer!.id, sceId!, stepId, questionId)
+      redirect(stepId, questionId)
+    }
+
+    refetch().then(() => {
+      if (!alreadyPlayed()) {
+        setCurrentQuestion(0)
+        init() 
+      } else {
+        resume()
+      }
+    })
+  }, [
+    currentPlayer,
+    data,
+    loading,
+    error,
+    refetch,
+    createPlayerScript
+  ])
+
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
 
   return (
-    <main>
-      <ScenarioHeader scenario={scenario} />
-      <ScenarioCell scenario={scenario} />
-    </main>
+    <p>Redirection en cours...</p>
   )
-
 }
 
 export default ScenarioPage

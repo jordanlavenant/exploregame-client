@@ -2,6 +2,7 @@ import LeaderboardCell from "@/components/Leaderboard/LeaderboardCell"
 import { gql, useQuery } from "@apollo/client"
 import { PlayerScript } from "@exploregame/types"
 import { Player } from "@exploregame/types"
+import Header from "@/components/Header"
 
 const GET_CURRENT_PLAYER = gql`
     query GetCurrentPlayer($id: String!) {

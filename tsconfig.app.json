@@ -9,7 +9,9 @@
       "@context/*": ["./src/context/*"],
       "@hooks/*": ["./src/hooks/*"],
       "@utils/*": ["./src/utils/*"],
+      "@lib/*": ["./src/lib/*"],
       "@types/*": ["./src/types/*"],
+      "@constnat/*": ["./src/constant/*"]
     },
     "target": "ES2020",
     "useDefineForClassFields": true,

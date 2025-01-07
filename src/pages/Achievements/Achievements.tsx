@@ -1,4 +1,5 @@
 import AchievementCell from "@/components/Achievements/AchievementCell"
+import Header from "@/components/Header";
 
 const AchievementPage = () => {
     const listeAchievementsOtenus = [
@@ -19,6 +20,7 @@ const AchievementPage = () => {
     return (
         <div>
             <link rel="stylesheet" href="./styles/achievements.css"/>
+            <Header />
             <section className="w-full mt-10 px-7 flex flex-wrap gap-5">
                 <AchievementCell title='Obtenu'
                     listeAchievements={listeAchievementsOtenus}
