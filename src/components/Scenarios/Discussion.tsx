@@ -14,6 +14,10 @@ const Discussion: React.FC<DiscussionProps> = ({ characterSteps, onFinish }) => 
   const { getColors } = useColorsDepartments();
   const { primary } = getColors();
 
+  if(characterSteps.length === 0) {
+    onFinish();
+  }
+
   // Passe à la prochaine bulle ou appelle `onFinish` si c'est la fin
   const handleNext = () => {
     if (currentIndex < characterSteps.length - 1) {
@@ -33,8 +37,9 @@ const Discussion: React.FC<DiscussionProps> = ({ characterSteps, onFinish }) => 
   return (
     <div
       ref={scrollRef} // Conteneur défilable
-      className="flex flex-col gap-4 p-4 h-full w-full overflow-y-auto bg-gray-100"
+      className="fixed top-16 left-0 right-0 bottom-0 flex flex-col gap-4 p-4 overflow-y-auto"
       onClick={handleNext} // Clique pour avancer
+      style={{ marginTop: '8vh' }}
     >
       {characterSteps.slice(0, currentIndex + 1).map((step, index) => {
         const character = step.Character;

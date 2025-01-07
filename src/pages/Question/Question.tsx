@@ -63,10 +63,10 @@ const QuestionPage = () => {
   console.log(discussion)
 
   return (
-    <main>
+    <main className="flex-1 flex flex-col h-full">
       <QuestionHeader />
       {!showQuestions ? (
-        <Discussion characterSteps={discussion} onFinish={handleFinishDiscussion} />
+        <Discussion characterSteps={discussion} onFinish={handleFinishDiscussion}/>
       ) : (
         <QuestionCell questions={questions} />
       )}
