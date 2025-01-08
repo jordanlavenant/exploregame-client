@@ -11,6 +11,7 @@ import bcrypt from 'bcryptjs';
 import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import BoutonSubmit from "@/components/ui/BoutonSubmit";
+import { color } from "framer-motion";
 
 export const REGISTER = gql`
   mutation createPlayer($input: CreatePlayerInput!) {
@@ -109,7 +110,6 @@ const RegisterForm: React.FC = () => {
           name="firstName"
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Prénom</FormLabel>
               <FormControl>
                 <Input placeholder="Prénom" {...field} />
               </FormControl>
@@ -122,7 +122,6 @@ const RegisterForm: React.FC = () => {
           name="lastName"
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Nom</FormLabel>
               <FormControl>
                 <Input placeholder="Nom" {...field} />
               </FormControl>
@@ -135,7 +134,6 @@ const RegisterForm: React.FC = () => {
           name="genderId"
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Genre</FormLabel>
               <FormControl>
                 <select {...field}>
                   <option value="" disabled selected>
@@ -157,7 +155,6 @@ const RegisterForm: React.FC = () => {
           name="departmentId"
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Filière</FormLabel>
               <FormControl>
                 <select {...field}>
                   <option value="" disabled selected>
@@ -179,7 +176,6 @@ const RegisterForm: React.FC = () => {
           name="email"
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Email</FormLabel>
               <FormControl>
                 <Input placeholder="Email" {...field} />
               </FormControl>
@@ -194,7 +190,6 @@ const RegisterForm: React.FC = () => {
             const [showPassword, setShowPassword] = useState(false);   
             return (
               <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <FormLabel style={{ minWidth: '100px' }}>Mot de passe</FormLabel>
                 <div style={{ position: 'relative', width: '100%' }}>
                   <Input
                     type={showPassword ? "text" : "password"}
@@ -216,9 +211,9 @@ const RegisterForm: React.FC = () => {
                     }}
                   >
                     {showPassword ? (
-                      <EyeOff size={20} />
+                      <EyeOff size={32} style={{ color: "#9ca3af" }} />
                     ) : (
-                      <Eye size={20} />
+                      <Eye size={32} style={{ color: "#9ca3af"}} />
                     )}
                   </button>
                 </div>
