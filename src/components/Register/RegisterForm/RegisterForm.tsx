@@ -1,6 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {  Select,
+  SelectGroup,
+  SelectValue,
+  SelectTrigger,
+  SelectContent,
+  SelectLabel,
+  SelectItem,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton } from "@/components/ui/select";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -135,16 +145,21 @@ const RegisterForm: React.FC = () => {
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <FormControl>
-                <select {...field}>
-                  <option value="" disabled selected>
-                      Sélectionnez un genre
-                  </option>
-                  {genresData?.genders?.map((genre: any) => (
-                    <option key={genre.id} value={genre.id}>
-                      {genre.gender}
-                    </option>
-                  ))}
-                </select>
+                <Select {...field}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Sélectionnez un genre" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      <SelectLabel>Genres</SelectLabel>
+                      {genresData?.genders?.map((genre: any) => (
+                        <SelectItem key={genre.id} value={genre.id}>
+                          {genre.gender}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+              </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -156,16 +171,21 @@ const RegisterForm: React.FC = () => {
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <FormControl>
-                <select {...field}>
-                  <option value="" disabled selected>
-                    Sélectionnez une filière
-                  </option>
-                  {departmentsData?.departments.map((department: any) => (
-                    <option key={department.id} value={department.id}>
-                      {department.name}
-                    </option>
-                  ))}
-                </select>
+              <Select {...field}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sélectionnez une filière" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Filières</SelectLabel>
+                    {departmentsData?.departments.map((department: any) => (
+                      <SelectItem key={department.id} value={department.id}>
+                        {department.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
               </FormControl>
               <FormMessage />
             </FormItem>
