@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router-dom';
-import { Department } from "@exploregame/types"
+import { Department } from "@exploregame/types";
 
 interface BoutonExplorerProps {
     positionBas: boolean;
     urlRedirection?: string;
-    backgroundColor?: string;
-    bordercolor?: string;
     department?: Department;
+    bordercolor?: string;
+    backgroundColor?: string;
 }
 
 const BoutonExplorer = ({positionBas, urlRedirection, bordercolor, backgroundColor, department}: BoutonExplorerProps) => {
