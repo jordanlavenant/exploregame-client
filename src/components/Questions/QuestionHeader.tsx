@@ -4,6 +4,7 @@ import { Lock } from "lucide-react"
 import { gql, useMutation } from "@apollo/client"
 import { clearLocalScenario, getLocalScenario } from "@/utils/localScenario"
 import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
+import { useScriptProgress } from "@/context/ScriptProgressContext"
 
 export const UPDATE_PLAYER_SCRIPT = gql`
   mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
@@ -17,9 +18,10 @@ const QuestionHeader = () => {
   const navigate = useNavigate()
   const { depId } = useParams() 
   const { getColors } = useColorsDepartments()
+  const { currentQuestion, totalQuestions } = useScriptProgress()
   const { primary } = getColors()
   // TODO: get the progress from the context
-  const progress = 50
+  const progress = totalQuestions === 0 ? 0 : (currentQuestion / totalQuestions) * 100
 
   const [updatePlayerScript] = useMutation(UPDATE_PLAYER_SCRIPT)
 

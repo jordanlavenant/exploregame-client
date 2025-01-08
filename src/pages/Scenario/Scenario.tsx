@@ -1,11 +1,11 @@
-import { useEffect } from "react";
-import getCurrentPlayer from "@/utils/currentPlayer";
-import { setLocalScenario } from "@/utils/localScenario";
-import { gql, useMutation, useQuery } from "@apollo/client";
-import { PlayerScript } from "@exploregame/types";
-import toast from "react-hot-toast";
-import { useNavigate, useParams } from "react-router-dom";
-import { useColorsDepartments } from "@/context/ColorsDepartmentContext";
+import { useEffect } from "react"
+import getCurrentPlayer from "@/utils/currentPlayer"
+import { setLocalScenario } from "@/utils/localScenario"
+import { gql, useMutation, useQuery } from "@apollo/client"
+import { PlayerScript, ScriptStep } from "@exploregame/types"
+import toast from "react-hot-toast"
+import { useNavigate, useParams } from "react-router-dom"
+import { useScriptProgress } from "@/context/ScriptProgressContext"
 
 export const SCENARIO = gql`
   query FindScenarioById($id: String!) {
@@ -42,6 +42,7 @@ export const CREATE_PLAYER_SCRIPT = gql`
 const ScenarioPage = () => {
   const navigate = useNavigate()
   const currentPlayer = getCurrentPlayer()
+  const { setTotalQuestions, setCurrentQuestion } = useScriptProgress()
   const { depId, sceId } = useParams()
   const [createPlayerScript] = useMutation(CREATE_PLAYER_SCRIPT)
   const { data, loading, error, refetch } = useQuery(SCENARIO, {
@@ -57,7 +58,14 @@ const ScenarioPage = () => {
       return;
     }
 
-    if (loading || error) return;
+    if (loading || error) return
+
+    console.log(data.script.ScriptStep)
+
+    const totalQuestions = data.script.ScriptStep.reduce((acc: number, scriptStep: ScriptStep) => {
+      return acc + scriptStep.Step.Questions.length
+    }, 0)
+    setTotalQuestions(totalQuestions)
 
     const alreadyPlayed = () => {
       return data.script.PlayerScript.some(
@@ -92,25 +100,16 @@ const ScenarioPage = () => {
         },
       }).then((response) => {
         // ! Redirection
-        let idPlayerScript = response.data.createPlayerScript.id;
-        setLocalScenario(
-          idPlayerScript,
-          currentPlayer!.id,
-          sceId!,
-          initScenarioData.stepId,
-          initScenarioData.questionId
-        );
-        redirect(initScenarioData.stepId, initScenarioData.questionId);
-      });
-    };
+        const idPlayerScript = response.data.createPlayerScript.id
+        setLocalScenario(idPlayerScript, currentPlayer!.id, sceId!, initScenarioData.stepId, initScenarioData.questionId)
+        redirect(initScenarioData.stepId, initScenarioData.questionId)
+      })
+    }
 
     const resume = () => {
       // ! Data
-      let playerScript = data.script.PlayerScript.find(
-        (playerScript: PlayerScript) =>
-          playerScript.playerId === currentPlayer!.id
-      );
-      const { id, stepId, questionId } = playerScript;
+      const playerScript = data.script.PlayerScript.find((playerScript: PlayerScript) => playerScript.playerId === currentPlayer!.id)
+      const { id, stepId, questionId } = playerScript
 
       // ! Redirection
       setLocalScenario(id, currentPlayer!.id, sceId!, stepId, questionId);
@@ -119,7 +118,8 @@ const ScenarioPage = () => {
 
     refetch().then(() => {
       if (!alreadyPlayed()) {
-        init();
+        setCurrentQuestion(0)
+        init() 
       } else {
         resume();
       }

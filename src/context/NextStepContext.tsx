@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from "react";
 interface NextStep {
   currentStep: Step
   nextStep: Step
-  playerScriptId: String
+  playerScriptId: string
 }
 
 interface NextStepContextType {

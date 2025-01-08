@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button"
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -43,7 +44,7 @@ const LoginForm = () => {
       const response = await login({
         variables: { input: data },
       })
-      if (response?.data?.loginPlayer?.token) {
+      if (response?.data?.loginPlayer) {
         localStorage.setItem("token", response.data.loginPlayer.token)
         localStorage.setItem("player", JSON.stringify(response.data.loginPlayer.player))
         navigate("/")

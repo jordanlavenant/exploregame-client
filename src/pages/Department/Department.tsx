@@ -134,7 +134,7 @@ const DepartmentPage = () => {
         colors={colors}
       />
       <HomeCell
-        title="Acutalités"
+        title="Actualités"
         colors={colors}
       />
 
