@@ -6,6 +6,8 @@ import { useNextStep } from "@/context/NextStepContext"
 import { Lock } from 'lucide-react'
 import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
+import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
+import { useDepartments } from "@/context/DepartmentDataContext"
 
 export const UPDATE_PLAYER_SCRIPT = gql`
   mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
@@ -16,6 +18,10 @@ export const UPDATE_PLAYER_SCRIPT = gql`
 `
 
 const StepLetter = () => {
+  const { getColors } = useColorsDepartments()
+  const { primary, secondary } = getColors()
+  const { departments } = useDepartments()
+
   const navigate = useNavigate()
   const { depId, sceId } = useParams()
   const [updatePlayerScript] = useMutation(UPDATE_PLAYER_SCRIPT)
@@ -52,35 +58,46 @@ const StepLetter = () => {
   }, [isRevealed])
 
   return (
-    // <section>
-    //   <Button onClick={handleNext}>Next</Button>
-    //   {currentStep.lettre}
-    // </section>
     <div className="min-h-screen bg-white px-4 py-8 flex flex-col">
     <link rel="stylesheet" href="./styles/stepLetter.css"/>
     {/* Header */}
-    <h1 className="text-[#F4C430] text-2xl font-bold text-center mb-12">
-      SCENARIO QLIO
+    <h1 className="text-[#000] text-2xl font-bold text-center mb-12">
+      SCENARIO {departments?.find(dep => dep.id === depId)?.name.toUpperCase()}
     </h1>
 
     {/* Progress Indicator */}
-    <div className="w-full max-w-[280px] mx-auto mb-16">
+    <div className="w-full mx-auto mb-16">
       <div className="relative flex items-center justify-between">
         {/* Line connecting circles */}
-        <div className="absolute left-0 right-0 h-[2px] bg-[#F4C430]" />
+        <div className="absolute left-0 right-0 h-[2px]" style={{ backgroundColor: secondary }} />
         
         {/* Circles */}
         <motion.div 
-          className={`relative z-10 w-10 h-10 rounded-full bg-[#F4C430] flex items-center justify-center text-white font-semibold ${!isRevealed ? 'blur-sm' : ''}`}
+          className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center text-black font-semibold ${!isRevealed ? 'blur-sm' : ''}`}
           animate={{ filter: isRevealed ? 'blur(0px)' : 'blur(4px)' }}
           transition={{ duration: 0.3, delay: 1.5 }}
+          style={{ backgroundColor: secondary }}
         >
           {currentStep.lettre}
         </motion.div>
-        <div className="relative z-10 w-10 h-10 rounded-full bg-[#F4C430] flex items-center justify-center">
+        <div className="relative z-10 w-10 h-10 rounded-full flex items-center justify-center"
+        style={{ backgroundColor: secondary }}>
           <Lock className="w-5 h-5 text-black" />
         </div>
-        <div className="relative z-10 w-10 h-10 rounded-full bg-[#F4C430] flex items-center justify-center">
+        <div className="relative z-10 w-10 h-10 rounded-full flex items-center justify-center"
+        style={{ backgroundColor: secondary }}>
+          <Lock className="w-5 h-5 text-black" />
+        </div>
+        <div className="relative z-10 w-10 h-10 rounded-full flex items-center justify-center"
+        style={{ backgroundColor: secondary }}>
+          <Lock className="w-5 h-5 text-black" />
+        </div>
+        <div className="relative z-10 w-10 h-10 rounded-full flex items-center justify-center"
+        style={{ backgroundColor: secondary }}>
+          <Lock className="w-5 h-5 text-black" />
+        </div>
+        <div className="relative z-10 w-10 h-10 rounded-full flex items-center justify-center"
+        style={{ backgroundColor: secondary }}>
           <Lock className="w-5 h-5 text-black" />
         </div>
       </div>
@@ -92,7 +109,7 @@ const StepLetter = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="text-[#F4C430] text-xl"
+        className="text-[#000] text-3xl"
       >
         La lettre secrete est
       </motion.p>
@@ -112,7 +129,8 @@ const StepLetter = () => {
             damping: 20,
             onComplete: () => setIsRevealed(true)
           }}
-          className={`text-[#F4C430] text-8xl font-bold ${isGlowing ? 'animate-glow' : ''}`}
+          className={`text-8xl font-bold ${isGlowing ? 'animate-glow' : ''}`}
+          style={{ color: secondary }}
         >
           {currentStep.lettre}
         </motion.div>
@@ -132,7 +150,8 @@ const StepLetter = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, delay: 1.8 }}
-      className="w-full max-w-[280px] mx-auto py-4 px-8 bg-[#F4C430] rounded-full text-white font-semibold hover:bg-[#E3B420] transition-colors"
+      className="p-4 border-4 rounded-3xl font-bold text-2xl text-white w-full"
+      style={{ backgroundColor: secondary, borderColor: primary }}
       onClick={handleNext}
     >
       Suivant
