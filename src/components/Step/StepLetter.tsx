@@ -30,6 +30,15 @@ const StepLetter = () => {
 
   const [isRevealed, setIsRevealed] = useState(false)
   const [isGlowing, setIsGlowing] = useState(false)
+  const [isButtonVisible, setIsButtonVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsButtonVisible(true)
+    }, 2400)
+
+    return () => clearTimeout(timer);
+  }, [])
 
   const { playerScriptId, currentStep, nextStep } = stepProps
   
@@ -153,6 +162,7 @@ const StepLetter = () => {
       className="p-4 border-4 rounded-3xl font-bold text-2xl text-white w-full"
       style={{ backgroundColor: secondary, borderColor: primary }}
       onClick={handleNext}
+      disabled={!isButtonVisible}
     >
       Suivant
     </motion.button>
