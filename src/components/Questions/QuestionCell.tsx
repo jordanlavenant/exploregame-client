@@ -3,7 +3,7 @@ import getCurrentPlayer from "@/utils/currentPlayer"
 import { PlayerScript, Question, Step } from "@exploregame/types"
 import { getLocalScenario, setLocalScenario } from "@/utils/localScenario"
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { lazy, useEffect, useState, Suspense } from "react"
+import { lazy, useEffect, useState, Suspense, LazyExoticComponent, ComponentType } from "react"
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 import { useNextStep } from "@/context/NextStepContext"
 import Hint from "@/components/Hint/Hint"
@@ -83,7 +83,11 @@ const QuestionCell = ({
   const currentPlayer = getCurrentPlayer()
   const localScenario = getLocalScenario()
   const { setHintsOpened } = useHints()
-  const [QuestionModule, setQuestionModule] = useState<React.LazyExoticComponent<any> | null>(null)
+  const [QuestionModule, setQuestionModule] = useState<LazyExoticComponent<ComponentType<{
+    question: Question
+    checkAnswer: (answer: string) => void
+    next: () => void
+  }>> | null>(null)
 
   const [verifyAnswer] = useMutation(CHECK_ANSWER)
 
@@ -130,7 +134,6 @@ const QuestionCell = ({
     navigate
   ])
 
-  // ! Logique du composant
   useEffect(() => {
     if (!queId) return
 
@@ -218,7 +221,7 @@ const QuestionCell = ({
   
   return (
     <div>
-      {QuestionModule && (
+      {QuestionModule && question && (
         <Suspense fallback={<div>Loading...</div>}>
           <Hint question={question} />
           <QuestionModule 

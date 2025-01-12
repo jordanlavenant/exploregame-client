@@ -18,7 +18,7 @@ const QuestionTextField = ({
   next
 } : {
   question: Question
-  checkAnswer: (answer: string) => boolean
+  checkAnswer: (answer: string) => void
   next: () => void
 }) => {
   const { questionState } = useCurrentQuestionState()
