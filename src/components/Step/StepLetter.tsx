@@ -81,7 +81,8 @@ const StepLetter = () => {
     })
     .then(() => setQuestionState({
       answered: false,
-      correct: false
+      correct: false,
+      answer: ''
     }))
     .then(() => navigate(`/departments/${depId}/scenarios/${sceId}`))
   }

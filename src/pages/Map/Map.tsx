@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import MenuBurger from '@/components/MenuBurger'
@@ -22,12 +22,27 @@ const MapPage = () => {
   const mapContainerRef = useRef<HTMLDivElement | null>(null)
   const markersRef = useRef<maplibregl.Marker[]>([])
   const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
 
   const distance = 0.002
 
   const { loading, error, data } = useQuery(DEPARTMENTS)
 
   useEffect(() => {
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isOnline) return
     if (loading || error || !data) return
 
     if (mapContainerRef.current) {
@@ -75,8 +90,9 @@ const MapPage = () => {
         map.remove()
       }
     }
-  }, [loading, error, data, MAPTILER_KEY])
+  }, [isOnline, loading, error, data, MAPTILER_KEY])
 
+  if (!isOnline) return <p>Error: No internet connection</p>
   if (loading) return <p>Loading...</p>
   if (error) return <p>Error: {error.message}</p>
 

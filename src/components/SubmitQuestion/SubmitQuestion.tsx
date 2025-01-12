@@ -43,7 +43,7 @@ const SubmitQuestion = ({
                 </div>
               </div>
               <div className="flex justify-start items-center text-xl">
-                <p className={questionState.correct ? 'text-[#46E54E] font-bold' : 'text-[#C53030] font-bold'}>{questionState.correct ? '' : 'Bonne réponse :'} <span className={questionState.correct ? 'font-thin' : 'font-thin'}>{questionState.correct ? '' : 'Leclerc Charles'}</span></p>
+                <p className={questionState.correct ? 'text-[#46E54E] font-bold' : 'text-[#C53030] font-bold'}>{questionState.correct ? '' : 'Bonne réponse :'} <span className={questionState.correct ? 'font-thin' : 'font-thin'}>{questionState.correct ? '' : questionState.answer}</span></p>
               </div>
             </>
           )}

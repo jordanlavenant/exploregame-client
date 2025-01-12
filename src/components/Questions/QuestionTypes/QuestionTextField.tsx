@@ -18,7 +18,7 @@ const QuestionTextField = ({
   next
 } : {
   question: Question
-  checkAnswer: (answer: string) => boolean
+  checkAnswer: (answer: string) => void
   next: () => void
 }) => {
   const { questionState } = useCurrentQuestionState()
@@ -54,11 +54,10 @@ const QuestionTextField = ({
                   <div className="relative w-full">
                     <img src="/icon-write.svg" alt="icon" className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6" />
                     <input
-                      defaultValue={""}
+                      {...form.register("answer")}
                       disabled={questionState.answered}
                       className={`bg-gray-100 text-gray-400 border-gray-200 p-4 pl-12 border-4 rounded-3xl font-bold text-2xl w-full`}
                       placeholder="Écrivez ici"
-                      {...form.register("answer")}
                     />
                   </div>
                 </section>

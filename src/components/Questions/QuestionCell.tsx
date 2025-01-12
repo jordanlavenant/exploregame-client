@@ -3,7 +3,7 @@ import getCurrentPlayer from "@/utils/currentPlayer"
 import { PlayerScript, Question, Step } from "@exploregame/types"
 import { getLocalScenario, setLocalScenario } from "@/utils/localScenario"
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { lazy, useEffect, useState, Suspense } from "react"
+import { lazy, useEffect, useState, Suspense, LazyExoticComponent, ComponentType } from "react"
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 import { useNextStep } from "@/context/NextStepContext"
 import Hint from "@/components/Hint/Hint"
@@ -63,7 +63,10 @@ export const UPDATE_PLAYER_SCRIPT = gql`
 
 export const CHECK_ANSWER = gql`
   mutation checkAnswer($input: CheckAnswerInput!) {
-    checkAnswer(input: $input)
+    checkAnswer(input: $input) {
+      isCorrect
+      correctAnswer
+    }
   }
 `
 
@@ -80,7 +83,11 @@ const QuestionCell = ({
   const currentPlayer = getCurrentPlayer()
   const localScenario = getLocalScenario()
   const { setHintsOpened } = useHints()
-  const [QuestionModule, setQuestionModule] = useState<React.LazyExoticComponent<any> | null>(null)
+  const [QuestionModule, setQuestionModule] = useState<LazyExoticComponent<ComponentType<{
+    question: Question
+    checkAnswer: (answer: string) => void
+    next: () => void
+  }>> | null>(null)
 
   const [verifyAnswer] = useMutation(CHECK_ANSWER)
 
@@ -127,7 +134,6 @@ const QuestionCell = ({
     navigate
   ])
 
-  // ! Logique du composant
   useEffect(() => {
     if (!queId) return
 
@@ -178,15 +184,12 @@ const QuestionCell = ({
           }
         }
       }).then((response) => {
-        const correct = response.data.checkAnswer
-        if (correct) {
-          //TODO: envoyé correcte
-        } else {
-          //TODO: envoyé incorrecte
-        }
+        const correct = response.data.checkAnswer.isCorrect
+        const answer = response.data.checkAnswer.correctAnswer
         setQuestionState({
           answered: true,
-          correct
+          correct,
+          answer,
         })
       })
     } catch (error) {
@@ -199,7 +202,8 @@ const QuestionCell = ({
     if (nextQuestion !== undefined) {
       setQuestionState({
         answered: false,
-        correct: false
+        correct: false,
+        answer: ''
       })
       setHintsOpened([false, false, false])
       setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
@@ -217,7 +221,7 @@ const QuestionCell = ({
   
   return (
     <div>
-      {QuestionModule && (
+      {QuestionModule && question && (
         <Suspense fallback={<div>Loading...</div>}>
           <Hint question={question} />
           <QuestionModule 
