@@ -60,7 +60,6 @@ const QuestionPage = () => {
 
   const questions = data.step.Questions
   const discussion = data.step.CharacterStep
-  console.log(discussion)
 
   return (
     <main className="flex-1 flex flex-col h-full">

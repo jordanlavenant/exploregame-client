@@ -1453,10 +1453,10 @@
   dependencies:
     levn "^0.4.1"
 
-"@exploregame/types@^1.0.6":
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/@exploregame/types/-/types-1.0.7.tgz#3193fe8d7945670b78d7ed688f937309e85067ab"
-  integrity sha512-gyNiDGh63SJv0jsAIo0qpQtoJBhPb+d2qcbasvfVgaCIs2oujJL5rhIOlPReCOHoTg/k5ARdo4kFxE3bJnqYcA==
+"@exploregame/types@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@exploregame/types/-/types-1.1.0.tgz#b624d43ea0af8c883e6087ecb87e646da9fd713b"
+  integrity sha512-KiIRO62lWPKWACCIyyy6zSx+dw5ROw1QDyuZ8apVmco07QalYo8zZOn2K1HFTNnwcAxT8SwraVDcs2LEiTZG3g==
 
 "@fastify/accept-negotiator@^1.0.0":
   version "1.1.0"
