@@ -63,7 +63,10 @@ export const UPDATE_PLAYER_SCRIPT = gql`
 
 export const CHECK_ANSWER = gql`
   mutation checkAnswer($input: CheckAnswerInput!) {
-    checkAnswer(input: $input)
+    checkAnswer(input: $input) {
+      isCorrect
+      correctAnswer
+    }
   }
 `
 
@@ -178,15 +181,12 @@ const QuestionCell = ({
           }
         }
       }).then((response) => {
-        const correct = response.data.checkAnswer
-        if (correct) {
-          //TODO: envoyé correcte
-        } else {
-          //TODO: envoyé incorrecte
-        }
+        const correct = response.data.checkAnswer.isCorrect
+        const answer = response.data.checkAnswer.correctAnswer
         setQuestionState({
           answered: true,
-          correct
+          correct,
+          answer,
         })
       })
     } catch (error) {
@@ -199,7 +199,8 @@ const QuestionCell = ({
     if (nextQuestion !== undefined) {
       setQuestionState({
         answered: false,
-        correct: false
+        correct: false,
+        answer: ''
       })
       setHintsOpened([false, false, false])
       setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)

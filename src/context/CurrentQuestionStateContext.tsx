@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from "react";
 interface QuestionState {
   answered: boolean
   correct: boolean
+  answer: string
 }
 
 const CurrentQuestionStateContext = createContext<{
@@ -11,7 +12,8 @@ const CurrentQuestionStateContext = createContext<{
 }>({
     questionState: {
       answered: false,
-      correct: false
+      correct: false,
+      answer: ''
     },
     setQuestionState: () => {}
 });
@@ -19,7 +21,8 @@ const CurrentQuestionStateContext = createContext<{
 export const CurrentQuestionStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [questionState, setQuestionState] = useState<QuestionState>({
     answered: false,
-    correct: false
+    correct: false,
+    answer: ''
   })
 
   return (
