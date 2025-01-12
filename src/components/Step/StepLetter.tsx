@@ -1,7 +1,6 @@
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 import { gql, useMutation } from "@apollo/client"
 import { useNavigate, useParams } from "react-router-dom"
-import { Button } from "../ui/button"
 import { useNextStep } from "@/context/NextStepContext"
 import { Lock } from 'lucide-react'
 import { motion } from 'framer-motion'
@@ -23,7 +22,7 @@ const StepLetter = () => {
   const { departments } = useDepartments()
 
   const navigate = useNavigate()
-  const { depId, sceId } = useParams()
+  const { depId, sceId, stepId } = useParams()
   const [updatePlayerScript] = useMutation(UPDATE_PLAYER_SCRIPT)
   const { setQuestionState } = useCurrentQuestionState()
   const { stepProps } = useNextStep()
@@ -43,6 +42,19 @@ const StepLetter = () => {
   const { playerScriptId, currentStep, nextStep } = stepProps
   
   const handleNext = () => {
+    if (nextStep === undefined) {
+      updatePlayerScript({
+        variables: {
+          id: playerScriptId,
+          input: {
+            stepId: stepId,
+            questionId: currentStep.Step.Questions[currentStep.Step.Questions.length - 1].id,
+            completed: true
+          }
+        }
+      }).then(() => navigate(`/departments/${depId}`))
+      return
+    }
     updatePlayerScript({
       variables: {
         id: playerScriptId,
@@ -164,7 +176,7 @@ const StepLetter = () => {
       onClick={handleNext}
       disabled={!isButtonVisible}
     >
-      Suivant
+      {nextStep === undefined ? 'Terminer' : 'Continuer'}
     </motion.button>
   </div>
   )

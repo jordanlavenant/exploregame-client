@@ -94,6 +94,7 @@ const ScenarioPage = () => {
         variables: {
           input: {
             ...initScenarioData,
+            completed: false,
             score: 0,
             remainingTime: 3600,
           },

@@ -5,7 +5,6 @@ import { Question } from "@exploregame/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Department } from "@exploregame/types"
 
 const formSchema = z.object({
   answer: z.string().min(1, {
@@ -25,6 +24,9 @@ const QuestionTextField = ({
   const { questionState } = useCurrentQuestionState()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      answer: "",
+    },
   })
 
   async function submit(data: z.infer<typeof formSchema>) {
@@ -34,16 +36,6 @@ const QuestionTextField = ({
       console.error("Erreur de connexion:", err)
     }
   }
-
-interface colors {
-  currentDepartment: Department
-}
-
-const colors = ({ currentDepartment }: colors) => {
-    return {
-        backgroundColor: currentDepartment.ColorSet.primary
-    }
-}
 
   return (
     <Form {...form}>
@@ -62,6 +54,7 @@ const colors = ({ currentDepartment }: colors) => {
                   <div className="relative w-full">
                     <img src="/icon-write.svg" alt="icon" className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6" />
                     <input
+                      defaultValue={""}
                       disabled={questionState.answered}
                       className={`bg-gray-100 text-gray-400 border-gray-200 p-4 pl-12 border-4 rounded-3xl font-bold text-2xl w-full`}
                       placeholder="Écrivez ici"
