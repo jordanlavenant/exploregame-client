@@ -1,11 +1,23 @@
 import { useEffect, useState } from 'react';
 import InputUpdate from '@/components/Profil/InputUpdate';
 import BoutonActivate from '@/components/Profil/BoutonActivate';
+import { useNavigate } from "react-router-dom";
 
 const ProfilModifPage = () => {
-    const [type, setType] = useState("");
-    const [activation, setActivation] = useState(false);
-    const [inputValue, setInputValue] = useState("");
+    const navigate = useNavigate();
+        
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+        if (!token) {
+          navigate("/login")
+        }
+    }, [navigate])
+
+    const [type, setType] = useState<string>("");
+    const [activation, setActivation] = useState<boolean>(false);
+    const [inputValue, setInputValue] = useState<string>("");
+
+    console.log(inputValue)
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
@@ -23,12 +35,21 @@ const ProfilModifPage = () => {
         setActivation(value.trim().length > 0);
     };
 
+    const handleClick = () => {
+      navigate("/profile/check");
+    };
+
     return (
-        <div className="">
-            <div className="w-full text-center text-4xl mt-10 text-[#000] font-bold">Modifier {title}</div>
+        <div>
+            <div className="w-full flex justify-center items-center mt-10 gap-10">
+                <button onClick={handleClick}>
+                    <img src="/arrow-left.svg" alt="back" className="w-9" />
+                </button>
+                <h1 className="text-center text-5xl text-[#000] font-bold">Modifier {title}</h1>
+            </div>
             <section className="w-full py-40 px-7 grid grid-rows-2 gap-32">
                 <InputUpdate typeInput={type} onChange={handleInputChange} />
-                <BoutonActivate urlRedirection="/profil/check" nomBouton="Modifier" activate={activation} />
+                <BoutonActivate urlRedirection="/profile/check" nomBouton="Modifier" activate={activation} />
             </section>
         </div>
     )

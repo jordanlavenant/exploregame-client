@@ -9,6 +9,10 @@ import AchievementPage from '@pages/Achievements/Achievements'
 import LoginPage from '@pages/Login/Login'
 import RegisterPage from '@pages/Register/RegisterPage'
 import EvolutionScenario from '@pages/Evolutions/EvolutionScenario'
+import Leaderboard from '@pages/Leaderboard/Leaderboard'
+import QuestionPage from '@pages/Question/Question'
+import StepPage from '@pages/Step/StepPage'
+import MapPage from '@pages/Map/Map'
 
 const Routes = () => {
   return (
@@ -18,12 +22,17 @@ const Routes = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/departments" element={<DepartmentPage />} />
+        <Route path="/departments/:depId" element={<DepartmentPage />} />
         <Route path="/departments/:depId/scenarios/:sceId" element={<ScenarioPage />} />
-        <Route path="/profil" element={<ProfilPage username={'@username'} />} />
-        <Route path="/profil/check" element={<ProfilCheckPage />} />
-        <Route path="/profil/update" element={<ProfilModifPage />} />
+        <Route path="/departments/:depId/scenarios/:sceId/steps/:stepId" element={<StepPage />} />
+        <Route path="/departments/:depId/scenarios/:sceId/steps/:stepId/questions/:queId" element={<QuestionPage />} />
+        <Route path="/profile" element={<ProfilPage username={'@username'} />} />
+        <Route path="/profile/informations" element={<ProfilCheckPage />} />
+        <Route path="/profile/update" element={<ProfilModifPage />} />
         <Route path="/achievements" element={<AchievementPage />} />
         <Route path="/evolutions/scenario" element={<EvolutionScenario />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/map" element={<MapPage />} />
       </Paths>
     </BrowserRouter>
   )

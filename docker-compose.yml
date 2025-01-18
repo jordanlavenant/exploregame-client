@@ -1,0 +1,12 @@
+services:
+  app:
+    image: exploregame-client
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      NODE_ENV: production
+    ports:
+      - "8920:8920"
+    env_file:
+      - .env

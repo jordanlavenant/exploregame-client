@@ -1,16 +1,25 @@
-import { Script } from "api/types/graphql"
+import StepCell from "@/components/Step/StepCell/StepCell"
+import { Button } from "@/components/ui/button"
+import getCurrentPlayer from "@/utils/currentPlayer"
 
 const ScenarioCell = ({
-  scenario
+  currentStep,
+  incrementStep
 }: {
-  scenario: Script
+  currentStep: string
+  incrementStep: () => void
 }) => {
-
-  console.log(scenario)
+  const currentPlayer = getCurrentPlayer()
 
   return (
     <div>
       ScenarioCell
+      <p>{currentPlayer?.firstName}</p>
+      <Button onClick={incrementStep}>Next step</Button>
+      <StepCell 
+        currentStep={currentStep}
+        incrementStep={incrementStep} 
+      />
     </div>
   )
 }

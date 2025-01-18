@@ -1,4 +1,5 @@
-import { Department } from "api/types/graphql"
+import { Button } from "@/components/ui/button"
+import { Department } from "@exploregame/types"
 import { useNavigate } from "react-router-dom"
 
 const DepartmentCell = ({
@@ -11,16 +12,21 @@ const DepartmentCell = ({
   const handleScript = () => {
     //TODO: resume or start scenario
     //TODO: redirect to the correct url
-    navigate(`${department.id}/scenarios/${department.Script[0]!.id}`)
+    navigate(`/departments/${department.id}/scenarios/${department.Script[0]!.id}`)
 
   }
 
   return (
-    <div>
+    <section>
       <p>{department.name}</p>
       <p>{department.description}</p>
-      <button onClick={handleScript}>Explorer</button>
-    </div>
+      <Button 
+        onClick={handleScript}
+        variant="default"
+      >
+        Explorer
+      </Button>
+    </section>
   )
 }
 
