@@ -2,7 +2,6 @@ import LeaderboardCell from "@/components/Leaderboard/LeaderboardCell"
 import { gql, useQuery } from "@apollo/client"
 import { PlayerScript } from "@exploregame/types"
 import { Player } from "@exploregame/types"
-import { useNavigate } from "react-router-dom"
 
 const GET_CURRENT_PLAYER = gql`
   query GetCurrentPlayer($id: String!) {
@@ -62,7 +61,7 @@ const aggregateAndSortPlayers = (playerScripts: PlayerScript[]) => {
 }
 
 const Leaderboard = () => {
-  const navigate = useNavigate() 
+  // const navigate = useNavigate() 
 
   const currentPlayer = JSON.parse(localStorage.getItem("player")!)  
 
@@ -130,27 +129,27 @@ const Leaderboard = () => {
   const currentPlayerDepartment = currentPlayerData.player.Department.name || "Inconnu";
   const playerScriptByFilliere = newSortedPlayer.filter(
       (player) => player.departement === currentPlayerData.player.Department.name
-  );
+  )
 
-  const listeTopPlayer = [
-      {nomPlayer: "Jean", temps: "1:30", top: 1},
-      {nomPlayer: "Paul", temps: "1:45", top: 2},
-      {nomPlayer: "Jacques", temps: "2:00", top: 3},
-      {nomPlayer: "Marie", temps: "2:15", top: 4},
-      {nomPlayer: "Pierre", temps: "2:30", top: 5},
-  ]
+  // const listeTopPlayer = [
+  //     {nomPlayer: "Jean", temps: "1:30", top: 1},
+  //     {nomPlayer: "Paul", temps: "1:45", top: 2},
+  //     {nomPlayer: "Jacques", temps: "2:00", top: 3},
+  //     {nomPlayer: "Marie", temps: "2:15", top: 4},
+  //     {nomPlayer: "Pierre", temps: "2:30", top: 5},
+  // ]
 
-  const listeTopPlayerFiliere = [
-      {nomPlayer: "Jean", temps: "1:30", score: 100, top: 10},
-      {nomPlayer: "Paul", temps: "1:45", score: 95, top: 24},
-      {nomPlayer: "Jacques", temps: "2:00", score: 90, top: 39},
-      {nomPlayer: "Marie", temps: "2:15", score: 85, top: 40},
-      {nomPlayer: "Pierre", temps: "2:30", score: 80, top: 52},
-  ]
+  // const listeTopPlayerFiliere = [
+  //     {nomPlayer: "Jean", temps: "1:30", score: 100, top: 10},
+  //     {nomPlayer: "Paul", temps: "1:45", score: 95, top: 24},
+  //     {nomPlayer: "Jacques", temps: "2:00", score: 90, top: 39},
+  //     {nomPlayer: "Marie", temps: "2:15", score: 85, top: 40},
+  //     {nomPlayer: "Pierre", temps: "2:30", score: 80, top: 52},
+  // ]
 
-  const listeVous = [
-      {nomPlayer: "Jean", temps: "1:30", top: 10, score: 100},
-  ]
+  // const listeVous = [
+  //     {nomPlayer: "Jean", temps: "1:30", top: 10, score: 100},
+  // ]
 
   return (
       <div>

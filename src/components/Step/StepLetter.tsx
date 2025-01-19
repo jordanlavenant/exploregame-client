@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 import { useDepartments } from "@/context/DepartmentDataContext"
-import { ScriptStep, Step } from "@exploregame/types"
+import { ScriptStep } from "@exploregame/types"
 
 export const UPDATE_PLAYER_SCRIPT = gql`
   mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
@@ -54,6 +54,7 @@ const StepLetter = () => {
     return () => clearTimeout(timer);
   }, [])
 
+  if (!stepProps) return
   const { playerScriptId, currentStep, nextStep } = stepProps
   
   const handleNext = () => {
@@ -63,7 +64,7 @@ const StepLetter = () => {
           id: playerScriptId,
           input: {
             stepId: stepId,
-            questionId: currentStep.Step.Questions[currentStep.Step.Questions.length - 1].id,
+            questionId: currentStep.Step.Questions?.[currentStep.Step.Questions.length - 1]?.id ?? '',
             completed: true
           }
         }
@@ -75,7 +76,7 @@ const StepLetter = () => {
         id: playerScriptId,
         input: {
           stepId: nextStep.id,
-          questionId: nextStep.Step.Questions[0].id
+          questionId: nextStep?.Step?.Questions?.[0]?.id ?? ''
         }
       }
     })

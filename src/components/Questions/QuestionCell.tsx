@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom"
 import getCurrentPlayer from "@/utils/currentPlayer"
-import { PlayerScript, Question, Step } from "@exploregame/types"
+import { PlayerScript, Question, ScriptStep, Step } from "@exploregame/types"
 import { getLocalScenario, setLocalScenario } from "@/utils/localScenario"
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { lazy, useEffect, useState, Suspense, LazyExoticComponent, ComponentType } from "react"
@@ -171,8 +171,8 @@ const QuestionCell = ({
 
   const nextQuestion = questions[questions.indexOf(question!) + 1]
 
-  const step = steps.find((s: Step) => s.id === stepId)
-  const nextStep = steps[steps.indexOf(step) + 1]
+  const scriptStep: ScriptStep = steps.find((s: Step) => s.id === stepId)
+  const nextScriptStep: ScriptStep = steps[steps.indexOf(scriptStep) + 1]
 
   function checkAnswer(answer: string) {
     try {
@@ -210,8 +210,8 @@ const QuestionCell = ({
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
     } else {
       setStepProps({
-        currentStep: step,
-        nextStep: nextStep,
+        currentStep: scriptStep,
+        nextStep: nextScriptStep,
         playerScriptId: playerScript.id
       })
       setHintsOpened([false, false, false])

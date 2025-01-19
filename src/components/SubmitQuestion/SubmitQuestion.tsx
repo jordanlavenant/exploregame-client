@@ -1,13 +1,8 @@
 import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
-import { Question } from "@exploregame/types"
 import { useState, useEffect } from "react"
 
-const SubmitQuestion = ({
-  question,
-} : {
-  question: Question
-}) => {
+const SubmitQuestion = () => {
   const { questionState } = useCurrentQuestionState()
   const { getColors } = useColorsDepartments()
   const { primary, secondary } = getColors()
