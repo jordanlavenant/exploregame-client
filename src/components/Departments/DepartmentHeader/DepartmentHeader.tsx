@@ -41,7 +41,8 @@ const DepartmentHeader = ({
         setRightOpacity(1);
       }, 300);
     },
-    preventDefaultTouchmoveEvent: true,
+    //TODO: fix this V
+    // preventDefaultTouchmoveEvent: true,
     trackMouse: true,
   });
 

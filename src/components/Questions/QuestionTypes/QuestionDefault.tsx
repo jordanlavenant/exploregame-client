@@ -9,6 +9,7 @@ const QuestionDefault = ({
   checkAnswer: (answer: string) => void
   next: () => void
 }) => {
+  console.log(checkAnswer, next)
   return (
     <div>
       <h1>QuestionDefault</h1>

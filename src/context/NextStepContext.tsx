@@ -1,9 +1,9 @@
-import { Step } from "@exploregame/types";
+import { ScriptStep } from "@exploregame/types";
 import { createContext, useContext, useState } from "react";
 
 interface NextStep {
-  currentStep: Step
-  nextStep: Step
+  currentStep: ScriptStep
+  nextStep: ScriptStep
   playerScriptId: string
 }
 

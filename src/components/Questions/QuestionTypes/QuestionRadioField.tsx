@@ -80,7 +80,7 @@ const QuestionRadioField = ({
             ))}
             </section>
           </div>
-          <SubmitQuestion question={question} />
+          <SubmitQuestion />
         </div>
       </form>
     </Form>

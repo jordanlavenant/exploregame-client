@@ -41,7 +41,7 @@ const Discussion: React.FC<DiscussionProps> = ({ characterSteps, onFinish }) => 
       onClick={handleNext} // Clique pour avancer
       style={{ marginTop: '8vh' }}
     >
-      {characterSteps.slice(0, currentIndex + 1).map((step, index) => {
+      {characterSteps.slice(0, currentIndex + 1).map((step) => {
         const character = step.Character;
         const text = step.text;
         const isLeft = characterSteps[0].Character.id === character.id; // Place le premier personnage à gauche
