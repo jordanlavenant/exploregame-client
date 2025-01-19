@@ -7,6 +7,6 @@ services:
     environment:
       NODE_ENV: production
     ports:
-      - "8920:8920"
+      - "8920:3000"
     env_file:
       - .env
