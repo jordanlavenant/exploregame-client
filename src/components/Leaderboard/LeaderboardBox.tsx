@@ -6,6 +6,7 @@ interface LeaderboardBoxProps {
 }
 
 const AchievementBox = ({ nomPlayer, score, temps, top }: LeaderboardBoxProps) => {
+    console.log(temps)
     const handleRetourClick = () => {
         window.location.href = '/profile';
     };
