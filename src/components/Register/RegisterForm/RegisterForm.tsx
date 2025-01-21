@@ -42,26 +42,14 @@ export const GET_GENRES = gql`
 `
 
 interface FormSchema {
-  firstName: string;
-  lastName: string;
-  genderId: string;
-  email: string;
+  username: string;
   hashedPassword: string;
   departmentId: string;
 }
 
 const formSchema: z.ZodSchema<FormSchema> = z.object({
-  firstName: z.string().min(1, {
-    message: 'Le prénom est requis',
-  }),
-  lastName: z.string().min(1, {
-    message: 'Le nom est requis',
-  }),
-  genderId: z.string().min(1, {
-    message: 'Le genre est requis',
-  }),
-  email: z.string().email({
-    message: 'Entrer une adresse email valide',
+  username: z.string().min(1,{
+    message: 'Entrer un username valide',
   }),
   hashedPassword: z.string().min(6, {
     message: 'Le mot de passe doit contenir au moins 6 caractères',
@@ -105,58 +93,9 @@ const RegisterForm: React.FC = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Prénom</FormLabel>
-              <FormControl>
-                <Input placeholder="Prénom" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Nom</FormLabel>
-              <FormControl>
-                <Input placeholder="Nom" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="genderId"
-          render={({ field }) => (
-            <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Genre</FormLabel>
-              <FormControl>
-                <select {...field}>
-                  <option value="" disabled selected>
-                      Sélectionnez un genre
-                  </option>
-                  {genresData?.genders?.map((genre: any) => (
-                    <option key={genre.id} value={genre.id}>
-                      {genre.gender}
-                    </option>
-                  ))}
-                </select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="departmentId"
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Filière</FormLabel>
               <FormControl>
                 <select {...field}>
                   <option value="" disabled selected>
@@ -175,12 +114,11 @@ const RegisterForm: React.FC = () => {
         />
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Email" {...field} />
+                <Input placeholder="username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -193,7 +131,6 @@ const RegisterForm: React.FC = () => {
             const [showPassword, setShowPassword] = useState(false);   
             return (
               <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <FormLabel style={{ minWidth: '100px' }}>Mot de passe</FormLabel>
                 <div style={{ position: 'relative', width: '100%' }}>
                   <Input
                     type={showPassword ? "text" : "password"}

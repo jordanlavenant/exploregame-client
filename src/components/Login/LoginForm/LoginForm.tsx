@@ -22,9 +22,14 @@ export const AUTH = gql`
   }
 `
 
-const formSchema = z.object({
-  email: z.string().email({
-    message: 'Entrer une adresse email valide',
+interface FormSchema {
+  username: string;
+  password: string;
+}
+
+const formSchema: z.ZodSchema<FormSchema> = z.object({
+  username: z.string().min(1, {
+    message: 'Entrer un username valide',
   }),
   password: z.string().min(1, {
     message: 'Le mot de passe est requis',
@@ -58,11 +63,11 @@ const LoginForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Email" {...field} />
+                <Input placeholder="username" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
