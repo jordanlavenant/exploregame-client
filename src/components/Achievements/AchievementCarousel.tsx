@@ -8,15 +8,15 @@ interface AchievementProps {
 }
 
 interface AchievementCellProps {
-  listeAchievements: AchievementProps[];
+  listeAchievements: AchievementProps[]
 }
 
 const AchievementCell = ({ listeAchievements }: AchievementCellProps) => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleClick = () => {
-    navigate('/achievements');
-  };
+    navigate('/achievements')
+  }
 
   return (
     <section className="w-full mt-10 px-7 grid grid-rows-2">
@@ -26,7 +26,7 @@ const AchievementCell = ({ listeAchievements }: AchievementCellProps) => {
           <img src="/arrow-right.svg" alt="flèche vers la droite" />
         </button>
       </div>
-      <div className="w-full flex flex-start items-center">
+      <div className="w-full flex flex-start flex-wrap gap-2 items-center">
         {listeAchievements.map((achievement, index) => (
           <Achievement
             key={index}
@@ -37,7 +37,7 @@ const AchievementCell = ({ listeAchievements }: AchievementCellProps) => {
         ))}
       </div>
     </section>
-  );
-};
+  )
+}
 
 export default AchievementCell;

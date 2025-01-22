@@ -26,7 +26,7 @@ const Routes = () => {
         <Route path="/departments/:depId/scenarios/:sceId" element={<ScenarioPage />} />
         <Route path="/departments/:depId/scenarios/:sceId/steps/:stepId" element={<StepPage />} />
         <Route path="/departments/:depId/scenarios/:sceId/steps/:stepId/questions/:queId" element={<QuestionPage />} />
-        <Route path="/profile" element={<ProfilPage username={'@username'} />} />
+        <Route path="/profile" element={<ProfilPage />} />
         <Route path="/profile/informations" element={<ProfilCheckPage />} />
         <Route path="/profile/update" element={<ProfilModifPage />} />
         <Route path="/achievements" element={<AchievementPage />} />

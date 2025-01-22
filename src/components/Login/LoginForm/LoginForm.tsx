@@ -14,9 +14,7 @@ export const AUTH = gql`
       token
       player {
         id
-        firstName
-        lastName
-        email
+        username
       }
     }
   }
@@ -29,7 +27,7 @@ interface FormSchema {
 
 const formSchema: z.ZodSchema<FormSchema> = z.object({
   username: z.string().min(1, {
-    message: 'Entrer un username valide',
+    message: "Entrer un nom d'utilisateur valide",
   }),
   password: z.string().min(1, {
     message: 'Le mot de passe est requis',
@@ -67,7 +65,7 @@ const LoginForm = () => {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="username" {...field} />
+                <Input placeholder="Nom d'utilsateur" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

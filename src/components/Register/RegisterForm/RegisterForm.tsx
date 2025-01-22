@@ -15,9 +15,6 @@ export const REGISTER = gql`
   mutation createPlayer($input: CreatePlayerInput!) {
     createPlayer(input: $input) {
         id
-        firstName
-        lastName
-        email
     }
   }
 `
@@ -31,16 +28,6 @@ export const GET_DEPARTMENTS = gql`
   }
 `
 
-
-export const GET_GENRES = gql`
-  query getGenders {
-    genders {
-      id
-      gender
-    }
-  }
-`
-
 interface FormSchema {
   username: string;
   hashedPassword: string;
@@ -49,13 +36,13 @@ interface FormSchema {
 
 const formSchema: z.ZodSchema<FormSchema> = z.object({
   username: z.string().min(1,{
-    message: 'Entrer un username valide',
+    message: "Entrer un nom d'utilisateur valide",
   }),
   hashedPassword: z.string().min(6, {
     message: 'Le mot de passe doit contenir au moins 6 caractères',
   }),
   departmentId: z.string().min(1, {
-    message: 'La filière est requise',
+    message: 'Le département est requis',
   }),
 })
 
@@ -63,7 +50,6 @@ const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
   const [register] = useMutation(REGISTER);
   const { data: departmentsData } = useQuery(GET_DEPARTMENTS);
-  const { data: genresData } = useQuery(GET_GENRES);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
@@ -118,7 +104,7 @@ const RegisterForm: React.FC = () => {
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
               <FormControl>
-                <Input placeholder="username" {...field} />
+                <Input placeholder="Nom d'utilisateur" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
