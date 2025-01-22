@@ -65,7 +65,7 @@ export const CHECK_ANSWER = gql`
   mutation checkAnswer($input: CheckAnswerInput!) {
     checkAnswer(input: $input) {
       isCorrect
-      correctAnswer
+      correctAnswers
     }
   }
 `
@@ -85,7 +85,7 @@ const QuestionCell = ({
   const { setHintsOpened } = useHints()
   const [QuestionModule, setQuestionModule] = useState<LazyExoticComponent<ComponentType<{
     question: Question
-    checkAnswer: (answer: string) => void
+    checkAnswer: (answers: string[]) => void
     next: () => void
   }>> | null>(null)
 
@@ -148,6 +148,9 @@ const QuestionCell = ({
       case "2":
         Component = lazy(() => import("./QuestionTypes/QuestionRadioField"))
         break
+      case "3":
+        Component = lazy(() => import("./QuestionTypes/QuestionMultiple"))
+        break
       default:
         Component = lazy(() => import("./QuestionTypes/QuestionDefault"))
     }
@@ -174,22 +177,23 @@ const QuestionCell = ({
   const scriptStep: ScriptStep = steps.find((s: Step) => s.id === stepId)
   const nextScriptStep: ScriptStep = steps[steps.indexOf(scriptStep) + 1]
 
-  function checkAnswer(answer: string) {
+  function checkAnswer(userAnswers: string[]) {
     try {
       verifyAnswer({
         variables: {
           input: {
             questionId: question!.id,
-            answer
+            answers: userAnswers
           }
         }
       }).then((response) => {
         const correct = response.data.checkAnswer.isCorrect
-        const answer = response.data.checkAnswer.correctAnswer
+        const answers = response.data.checkAnswer.correctAnswers
         setQuestionState({
+          userAnswers,
           answered: true,
           correct,
-          answer,
+          answers
         })
       })
     } catch (error) {
@@ -201,9 +205,10 @@ const QuestionCell = ({
     setCurrentQuestion((prev) => prev + 1)
     if (nextQuestion !== undefined) {
       setQuestionState({
+        userAnswers: [],
         answered: false,
         correct: false,
-        answer: ''
+        answers: []
       })
       setHintsOpened([false, false, false])
       setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
@@ -224,11 +229,13 @@ const QuestionCell = ({
       {QuestionModule && question && (
         <Suspense fallback={<div>Loading...</div>}>
           <Hint question={question} />
-          <QuestionModule 
-            question={question}
-            checkAnswer={checkAnswer}
-            next={next}
-          />
+          <section className="pt-8">
+            <QuestionModule 
+              question={question}
+              checkAnswer={checkAnswer}
+              next={next}
+            />
+          </section>
         </Suspense>
       )}
     </div>

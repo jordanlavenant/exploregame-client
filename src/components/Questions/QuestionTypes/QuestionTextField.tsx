@@ -18,7 +18,7 @@ const QuestionTextField = ({
   next
 } : {
   question: Question
-  checkAnswer: (answer: string) => void
+  checkAnswer: (answers: string[]) => void
   next: () => void
 }) => {
   const { questionState } = useCurrentQuestionState()
@@ -30,8 +30,9 @@ const QuestionTextField = ({
   })
 
   async function submit(data: z.infer<typeof formSchema>) {
+    const answer = [data.answer]
     try {
-      !questionState.answered ? checkAnswer(data.answer) : next()
+      !questionState.answered ? checkAnswer(answer) : next()
     } catch (err) {
       console.error("Erreur de connexion:", err)
     }
