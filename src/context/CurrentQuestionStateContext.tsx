@@ -1,9 +1,10 @@
 import { createContext, useContext, useState } from "react";
 
 interface QuestionState {
+  userAnswers: string[]
   answered: boolean
   correct: boolean
-  answer: string
+  answers: string[]
 }
 
 const CurrentQuestionStateContext = createContext<{
@@ -11,18 +12,20 @@ const CurrentQuestionStateContext = createContext<{
     setQuestionState: React.Dispatch<React.SetStateAction<QuestionState>>
 }>({
     questionState: {
+      userAnswers: [],
       answered: false,
       correct: false,
-      answer: ''
+      answers: [],
     },
     setQuestionState: () => {}
 });
 
 export const CurrentQuestionStateProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [questionState, setQuestionState] = useState<QuestionState>({
+    userAnswers: [],
     answered: false,
     correct: false,
-    answer: ''
+    answers: [],
   })
 
   return (

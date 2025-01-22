@@ -81,9 +81,10 @@ const StepLetter = () => {
       }
     })
     .then(() => setQuestionState({
+      userAnswers: [],
       answered: false,
       correct: false,
-      answer: ''
+      answers: []
     }))
     .then(() => navigate(`/departments/${depId}/scenarios/${sceId}`))
   }

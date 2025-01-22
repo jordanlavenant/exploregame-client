@@ -6,7 +6,7 @@ const QuestionDefault = ({
   next,
 }: {
   question: Question
-  checkAnswer: (answer: string) => void
+  checkAnswer: (answers: string[]) => void
   next: () => void
 }) => {
   console.log(checkAnswer, next)
