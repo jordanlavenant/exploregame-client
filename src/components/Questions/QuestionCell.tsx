@@ -18,6 +18,8 @@ export const PLAYER_SCRIPTS = gql`
       scriptId
       stepId
       questionId
+      score
+      remainingTime
     }
   }
 `
@@ -157,7 +159,7 @@ const QuestionCell = ({
   ) return null
 
   const playerScripts = dataPS.playerScripts
-  const playerScript = playerScripts.find((ps: PlayerScript) => ps.playerId === currentPlayer!.id && ps.scriptId === sceId)
+  var playerScript = playerScripts.find((ps: PlayerScript) => ps.playerId === currentPlayer!.id && ps.scriptId === sceId)
 
   const steps = dataScript.script.ScriptStep
 
@@ -179,10 +181,11 @@ const QuestionCell = ({
         }
       }).then((response) => {
         const correct = response.data.checkAnswer
+        const updatedPlayerScript = { ...playerScript };
         if (correct) {
-          //TODO: envoyé correcte
+          updatedPlayerScript.score += 100
         } else {
-          //TODO: envoyé incorrecte
+          updatedPlayerScript.score -= 0
         }
         setQuestionState({
           answered: true,
@@ -214,12 +217,35 @@ const QuestionCell = ({
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}`)
     }
   }
+
+  const applyPenalty = (importance: string) => {
+    let penalty = 0
+    switch (importance) {
+      case "1":
+        penalty = 60
+        break
+      case "2":
+        penalty = 120
+        break
+      case "3":
+        penalty = 180
+        break
+      default:
+        break
+    }
+    console.log(playerScript.ramainingTime)
+    playerScript.remainingTime -= penalty
+    console.log(playerScript.ramainingTime)
+  }
   
   return (
     <div>
       {QuestionModule && (
         <Suspense fallback={<div>Loading...</div>}>
-          <Hint question={question} />
+          <Hint 
+            question={question}
+            penalty={applyPenalty}
+           />
           <QuestionModule 
             question={question}
             checkAnswer={checkAnswer}

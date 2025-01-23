@@ -29,18 +29,22 @@ export const QUESTION = gql`
     }
   }
 `
+
 interface HintState {
   revealed: boolean;
   type: string | null;
   hint: string | null;
 }
 
-const Hint = ({
-  question
-} : {
+const Hint = (
+  {
+    question, 
+    penalty
+  } : {
+  penalty: (importance: string) => void; 
   question: Question
 }) => {
-  const { questionState } = useCurrentQuestionState()
+  const { questionState, setQuestionState } = useCurrentQuestionState()
   const { getColors } = useColorsDepartments()
   const { primary } = getColors()
   const { hintsOpened, setHintsOpened } = useHints()
@@ -62,10 +66,16 @@ const Hint = ({
   const hints = data.question.Hint
 
   const handleHint = (hintId: number) => {
+    penalty(hints[hintId].hintLevelId);
     setHintsOpened((prevHintsOpened) => {
       const newHintsOpened = [...prevHintsOpened]
       newHintsOpened[hintId] = true
       return newHintsOpened
+    })
+    setHintState({
+      revealed: true,
+      type: hintLevels[hintId],
+      hint: hints[hintId].help
     })
   }
 
@@ -97,14 +107,7 @@ const Hint = ({
               return (
                 <Button 
                   disabled={hintsOpened[hintId]}
-                  onClick={() => {
-                    handleHint(hintId)
-                    setHintState({
-                      revealed: true,
-                      type: hintLevels[hintId],
-                      hint: hint.help
-                    })
-                  }}
+                  onClick={() => handleHint(hintId)}
                   variant="ghost"
                   className="text-white font-bold text-3xl hover:bg-transparent" 
                   style={{ color: primary }}
