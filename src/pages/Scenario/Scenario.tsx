@@ -26,6 +26,7 @@ export const SCENARIO = gql`
         playerId
         stepId
         questionId
+        completed
       }
     }
   }
@@ -47,20 +48,16 @@ const ScenarioPage = () => {
   const [createPlayerScript] = useMutation(CREATE_PLAYER_SCRIPT)
   const { data, loading, error, refetch } = useQuery(SCENARIO, {
     variables: { id: sceId },
-  });
-
-  console.log(data);
+  })
 
   useEffect(() => {
     if (!currentPlayer) {
       toast.error("You must be logged in to play a scenario.");
-      navigate("/login");
-      return;
+      navigate("/login")
+      return
     }
 
     if (loading || error) return
-
-    console.log(data.script.ScriptStep)
 
     const totalQuestions = data.script.ScriptStep.reduce((acc: number, scriptStep: ScriptStep) => {
       return acc + scriptStep.Step.Questions.length
@@ -71,14 +68,21 @@ const ScenarioPage = () => {
       return data.script.PlayerScript.some(
         (playerScript: PlayerScript) =>
           playerScript.playerId === currentPlayer!.id
-      );
-    };
+      )
+    }
+
+    const alreadyCompleted = () => {
+      return data.script.PlayerScript.some(
+        (playerScript: PlayerScript) =>
+          playerScript.playerId === currentPlayer!.id && playerScript.completed
+      )
+    }
 
     const redirect = (stepId: string, questionId: string) => {
       navigate(
         `/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${questionId}`
-      );
-    };
+      )
+    }
 
     const init = () => {
       // ! Data
@@ -94,6 +98,7 @@ const ScenarioPage = () => {
         variables: {
           input: {
             ...initScenarioData,
+            completed: false,
             score: 0,
             remainingTime: 3600,
           },
@@ -114,22 +119,28 @@ const ScenarioPage = () => {
       // ! Redirection
       setLocalScenario(id, currentPlayer!.id, sceId!, stepId, questionId);
       redirect(stepId, questionId);
-    };
+    }
+
+    if (alreadyCompleted()) {
+      toast.success("Vous avez déjà terminé ce scénario")
+      navigate(`/departments/${depId}`)
+      return
+    }
 
     refetch().then(() => {
       if (!alreadyPlayed()) {
         setCurrentQuestion(0)
         init() 
       } else {
-        resume();
+        resume()
       }
-    });
-  }, [currentPlayer, data, loading, error, refetch, createPlayerScript]);
+    })
+  }, [currentPlayer, data, loading, error, refetch, createPlayerScript])
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error.message}</div>
 
-  return <p>Redirection en cours...</p>;
-};
+  return <p>Redirection en cours...</p>
+}
 
 export default ScenarioPage;

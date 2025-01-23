@@ -24,3 +24,5 @@ api/db/migrations/*
 !.yarn/sdks
 !.yarn/versions
 .vscode/
+
+yarn.lock

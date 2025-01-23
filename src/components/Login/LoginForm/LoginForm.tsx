@@ -1,6 +1,5 @@
 
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { gql, useMutation } from "@apollo/client"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -15,17 +14,20 @@ export const AUTH = gql`
       token
       player {
         id
-        firstName
-        lastName
-        email
+        username
       }
     }
   }
 `
 
-const formSchema = z.object({
-  email: z.string().email({
-    message: 'Entrer une adresse email valide',
+interface FormSchema {
+  username: string;
+  password: string;
+}
+
+const formSchema: z.ZodSchema<FormSchema> = z.object({
+  username: z.string().min(1, {
+    message: "Entrer un nom d'utilisateur valide",
   }),
   password: z.string().min(1, {
     message: 'Le mot de passe est requis',
@@ -59,11 +61,11 @@ const LoginForm = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input placeholder="Email" {...field} />
+                <Input placeholder="Nom d'utilsateur" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

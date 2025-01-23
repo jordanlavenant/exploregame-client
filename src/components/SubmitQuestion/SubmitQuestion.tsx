@@ -1,17 +1,20 @@
 import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
-import { Question } from "@exploregame/types"
+import { useState, useEffect } from "react"
 
-const SubmitQuestion = ({
-  question,
-} : {
-  question: Question
-}) => {
+const SubmitQuestion = () => {
   const { questionState } = useCurrentQuestionState()
   const { getColors } = useColorsDepartments()
   const { primary, secondary } = getColors()
 
-  console.log(question)
+  const [isDisabled, setIsDisabled] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsDisabled(false)
+    }, 500)
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <section 
@@ -35,7 +38,12 @@ const SubmitQuestion = ({
                 </div>
               </div>
               <div className="flex justify-start items-center text-xl">
-                <p className={questionState.correct ? 'text-[#46E54E] font-bold' : 'text-[#C53030] font-bold'}>{questionState.correct ? '' : 'Bonne réponse :'} <span className={questionState.correct ? 'font-thin' : 'font-thin'}>{questionState.correct ? '' : 'Leclerc Charles'}</span></p>
+              <p className={questionState.correct ? 'text-[#46E54E] font-bold' : 'text-[#C53030] font-bold'}>
+                {questionState.correct ? '' : 'Bonne réponse :'} 
+                <span className={questionState.correct ? 'font-thin' : 'font-thin'}>
+                  {questionState.correct ? '' : questionState.answers.join(' , ')}
+                </span>
+              </p>
               </div>
             </>
           )}
@@ -46,13 +54,14 @@ const SubmitQuestion = ({
             ? questionState.correct 
               ? 'p-4 mx-2 border-4 rounded-3xl font-bold text-2xl text-white bg-[#46E54E] border-[#3cd943] w-full' 
               : 'p-4 mx-2 border-4 rounded-3xl font-bold text-2xl text-white bg-[#E54646] border-[#C53030] w-full' 
-            : `p-4 border-4 rounded-3xl font-bold text-2xl text-white w-full`}`
+            : `p-4 border-4 rounded-3xl font-bold text-2xl text-white w-full transition-opacity duration-500 ${isDisabled ? 'opacity-0' : 'opacity-100'}`}`
           }
           style={!questionState.answered ? {
             backgroundColor: secondary,
             borderColor: primary
           } : {}}
           type="submit"
+          disabled={isDisabled}
         >
           {!questionState.answered ? "Valider" : "Continuer"}
         </button>

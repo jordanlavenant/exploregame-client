@@ -8,12 +8,13 @@ interface BoutonTextProps {
 }
 
 const TextBouton: React.FC<BoutonTextProps> = ({ placeholder, value, onChange }) => {
-  const colors = useColorsDepartments();
+  const { getColors } = useColorsDepartments()
+  const { primary, secondary, tertiary } = getColors()
 
   return (
-    <div className="flex items-center px-4 py-2 border rounded-lg" style={{ backgroundColor: colors.colors.secondary, borderColor: colors.colors.primary }}>
+    <div className="flex items-center px-4 py-2 border rounded-lg" style={{ backgroundColor: secondary, borderColor: primary }}>
       {/* Icône */}
-      <span className="mr-2" style={{ color: colors.colors.tertiary }}></span>
+      <span className="mr-2" style={{ color: tertiary }}></span>
       {/* Champ Texte */}
       <input
         type="text"
@@ -21,7 +22,7 @@ const TextBouton: React.FC<BoutonTextProps> = ({ placeholder, value, onChange })
         value={value}
         onChange={onChange}
         className="flex-1 bg-transparent outline-none placeholder-gray-500"
-        style={{ color: colors.colors.primary }}
+        style={{ color: primary }}
       />
     </div>
   );

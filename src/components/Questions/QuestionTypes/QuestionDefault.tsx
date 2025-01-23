@@ -2,12 +2,14 @@ import { Question } from "@exploregame/types"
 
 const QuestionDefault = ({
   question,
-  next
-} : {
+  checkAnswer,
+  next,
+}: {
   question: Question
+  checkAnswer: (answers: string[]) => void
   next: () => void
 }) => {
-  console.log(question)
+  console.log(checkAnswer, next)
   return (
     <div>
       <h1>QuestionDefault</h1>

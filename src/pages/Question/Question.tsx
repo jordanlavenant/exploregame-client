@@ -52,7 +52,8 @@ const QuestionPage = () => {
 
   const handleFinishDiscussion = () => {
     setShowQuestions(true);
-    localStorage.setItem(`discussionFinished-${stepId}`, true);
+    // TODO: fix this V
+    localStorage.setItem(`discussionFinished-${stepId}`, 'true');
   };
 
   if (loading) return <div>Loading...</div>
@@ -60,7 +61,6 @@ const QuestionPage = () => {
 
   const questions = data.step.Questions
   const discussion = data.step.CharacterStep
-  console.log(discussion)
 
   return (
     <main className="flex-1 flex flex-col h-full">

@@ -26,7 +26,6 @@ const ProfilCheckPage = () => {
             </div>
             <BoutonCell urlRedirection="/profile/update?type=filiere" nomBouton="Informatique" title="Ma filière" />
             <BoutonCell urlRedirection="/profile/update?type=username" nomBouton="@Username" title="Username" />
-            <BoutonCell urlRedirection="/profile/update?type=mail" nomBouton="user@gmail.com" title="Mail" />
             <BoutonCell urlRedirection="/profile/update?type=password" nomBouton="********" title="Mot de passe" />
         </div>
     )

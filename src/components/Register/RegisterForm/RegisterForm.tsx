@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { gql, useMutation, useQuery } from "@apollo/client";
@@ -16,9 +15,6 @@ export const REGISTER = gql`
   mutation createPlayer($input: CreatePlayerInput!) {
     createPlayer(input: $input) {
         id
-        firstName
-        lastName
-        email
     }
   }
 `
@@ -32,43 +28,21 @@ export const GET_DEPARTMENTS = gql`
   }
 `
 
-
-export const GET_GENRES = gql`
-  query getGenders {
-    genders {
-      id
-      gender
-    }
-  }
-`
-
 interface FormSchema {
-  firstName: string;
-  lastName: string;
-  genderId: string;
-  email: string;
+  username: string;
   hashedPassword: string;
   departmentId: string;
 }
 
 const formSchema: z.ZodSchema<FormSchema> = z.object({
-  firstName: z.string().min(1, {
-    message: 'Le prénom est requis',
-  }),
-  lastName: z.string().min(1, {
-    message: 'Le nom est requis',
-  }),
-  genderId: z.string().min(1, {
-    message: 'Le genre est requis',
-  }),
-  email: z.string().email({
-    message: 'Entrer une adresse email valide',
+  username: z.string().min(1,{
+    message: "Entrer un nom d'utilisateur valide",
   }),
   hashedPassword: z.string().min(6, {
     message: 'Le mot de passe doit contenir au moins 6 caractères',
   }),
   departmentId: z.string().min(1, {
-    message: 'La filière est requise',
+    message: 'Le département est requis',
   }),
 })
 
@@ -76,7 +50,6 @@ const RegisterForm: React.FC = () => {
   const navigate = useNavigate();
   const [register] = useMutation(REGISTER);
   const { data: departmentsData } = useQuery(GET_DEPARTMENTS);
-  const { data: genresData } = useQuery(GET_GENRES);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   })
@@ -106,58 +79,9 @@ const RegisterForm: React.FC = () => {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
-          name="firstName"
-          render={({ field }) => (
-            <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Prénom</FormLabel>
-              <FormControl>
-                <Input placeholder="Prénom" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="lastName"
-          render={({ field }) => (
-            <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Nom</FormLabel>
-              <FormControl>
-                <Input placeholder="Nom" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="genderId"
-          render={({ field }) => (
-            <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Genre</FormLabel>
-              <FormControl>
-                <select {...field}>
-                  <option value="" disabled selected>
-                      Sélectionnez un genre
-                  </option>
-                  {genresData?.genders?.map((genre: any) => (
-                    <option key={genre.id} value={genre.id}>
-                      {genre.gender}
-                    </option>
-                  ))}
-                </select>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
           name="departmentId"
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Filière</FormLabel>
               <FormControl>
                 <select {...field}>
                   <option value="" disabled selected>
@@ -176,12 +100,11 @@ const RegisterForm: React.FC = () => {
         />
         <FormField
           control={form.control}
-          name="email"
+          name="username"
           render={({ field }) => (
             <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <FormLabel style={{ minWidth: '100px' }}>Email</FormLabel>
               <FormControl>
-                <Input placeholder="Email" {...field} />
+                <Input placeholder="Nom d'utilisateur" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -194,7 +117,6 @@ const RegisterForm: React.FC = () => {
             const [showPassword, setShowPassword] = useState(false);   
             return (
               <FormItem style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                <FormLabel style={{ minWidth: '100px' }}>Mot de passe</FormLabel>
                 <div style={{ position: 'relative', width: '100%' }}>
                   <Input
                     type={showPassword ? "text" : "password"}

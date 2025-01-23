@@ -27,7 +27,7 @@ const ProfilModifPage = () => {
         }
     }, []);
 
-    const title = type === "username" ? "username" : type === "mail" ? "mail" : type === "password" ? "mot de passe" : type === "filiere" ? "filière" : "Type de champ inconnu";
+    const title = type === "username" ? "username" : type === "password" ? "mot de passe" : type === "filiere" ? "filière" : "Type de champ inconnu";
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -36,7 +36,7 @@ const ProfilModifPage = () => {
     };
 
     const handleClick = () => {
-      navigate("/profile/check");
+      navigate("/profile/informations");
     };
 
     return (
@@ -49,7 +49,7 @@ const ProfilModifPage = () => {
             </div>
             <section className="w-full py-40 px-7 grid grid-rows-2 gap-32">
                 <InputUpdate typeInput={type} onChange={handleInputChange} />
-                <BoutonActivate urlRedirection="/profile/check" nomBouton="Modifier" activate={activation} />
+                <BoutonActivate urlRedirection="/profile/informations" nomBouton="Modifier" activate={activation} />
             </section>
         </div>
     )

@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "../ui/button"
-import { BoxIcon, Lightbulb, CircleHelp, X } from "lucide-react"
+import { Lightbulb, CircleHelp, X } from "lucide-react"
 import { Hint as HintType, Question } from "@exploregame/types"
 import { gql, useQuery } from "@apollo/client"
 import { useHints } from "@/context/HintContext"

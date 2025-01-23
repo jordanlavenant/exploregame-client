@@ -1,8 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import MenuBurger from '@/components/MenuBurger'
 import { gql, useQuery } from '@apollo/client'
+import { useGeolocation } from "@uidotdev/usehooks"
+import { Info, LucideMessageSquareWarning } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { useNavigate } from 'react-router-dom'
 
 export const DEPARTMENTS = gql`
   query FindDepartments {
@@ -19,15 +23,33 @@ export const DEPARTMENTS = gql`
 `
 
 const MapPage = () => {
+  const navigate = useNavigate()
   const mapContainerRef = useRef<HTMLDivElement | null>(null)
   const markersRef = useRef<maplibregl.Marker[]>([])
   const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY
+  const [isOnline, setIsOnline] = useState(navigator.onLine)
 
   const distance = 0.002
 
   const { loading, error, data } = useQuery(DEPARTMENTS)
 
+  const state = useGeolocation()
+
   useEffect(() => {
+    const handleOnline = () => setIsOnline(true)
+    const handleOffline = () => setIsOnline(false)
+
+    window.addEventListener('online', handleOnline)
+    window.addEventListener('offline', handleOffline)
+
+    return () => {
+      window.removeEventListener('online', handleOnline)
+      window.removeEventListener('offline', handleOffline)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!isOnline) return
     if (loading || error || !data) return
 
     if (mapContainerRef.current) {
@@ -70,15 +92,95 @@ const MapPage = () => {
         markersRef.current.push(marker)
       })
 
+      if (!state.loading && state.latitude && state.longitude) {
+        const marker = new maplibregl.Marker(
+          {
+            color: '#000000',
+            scale: 1.5,
+          }
+        )
+          .setLngLat([state.longitude, state.latitude])
+          .addTo(map)
+
+        markersRef.current.push(marker)
+      }
+
       return () => {
         markersRef.current.forEach(marker => marker.remove())
         map.remove()
       }
     }
-  }, [loading, error, data, MAPTILER_KEY])
+  }, [isOnline, loading, error, data, MAPTILER_KEY, state.loading])
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error: {error.message}</p>
+  if (!isOnline) return (
+    <section className='bg-red-500'>
+      <div className='fixed flex justify-between items-center z-10 px-5 py-5 w-full border-t-8 border-[#822369]'>
+        <p className='text-3xl font-bold uppercase text-[#822369]'>
+          carte
+        </p>
+        <MenuBurger />
+      </div>
+      <div className='grid grid-rows-2 justify-center absolute top-1/2 -translate-y-10 w-full'>
+        <div className='flex items-center gap-x-2'>
+          <LucideMessageSquareWarning />
+          <p className='text-muted-foreground'>Vous n'êtes pas connecté à internet</p>
+        </div>
+        <Button 
+          className='h-14'
+          variant="default"
+          onClick={() => navigate('/')}
+        >
+          Retour
+        </Button>      
+      </div>
+    </section>
+  )
+  if (loading) return (
+    <section className='bg-red-500'>
+    <div className='fixed flex justify-between items-center z-10 px-5 py-5 w-full border-t-8 border-[#822369]'>
+      <p className='text-3xl font-bold uppercase text-[#822369]'>
+        carte
+      </p>
+      <MenuBurger />
+    </div>
+    <div className='grid grid-rows-2 justify-center absolute top-1/2 -translate-y-10 w-full'>
+      <div className='flex items-center gap-x-2'>
+        <LucideMessageSquareWarning className='text-muted-foreground' />
+        <p className='text-muted-foreground'>Chargement de la carte...</p>
+      </div>
+      <Button 
+        className='h-14'
+        variant="default"
+        onClick={() => navigate('/')}
+      >
+        Retour
+      </Button>
+    </div>
+  </section>
+  )
+  if (error) return (
+    <section className='bg-red-500'>
+      <div className='fixed flex justify-between items-center z-10 px-5 py-5 w-full border-t-8 border-[#822369]'>
+        <p className='text-3xl font-bold uppercase text-[#822369]'>
+          carte
+        </p>
+        <MenuBurger />
+      </div>
+      <div className='grid grid-rows-2 justify-center absolute top-1/2 -translate-y-10 w-full'>
+        <div className='flex items-center gap-x-2'>
+          <LucideMessageSquareWarning className='text-muted-foreground' />
+          <p className='text-muted-foreground'>Une erreur s'est produite</p>
+        </div>
+        <Button 
+          className='h-14'
+          variant="default"
+          onClick={() => navigate('/')}
+        >
+          Retour
+        </Button>
+      </div>
+    </section>
+  )
 
   return (
     <section>

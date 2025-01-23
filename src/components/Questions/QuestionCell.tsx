@@ -1,9 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom"
 import getCurrentPlayer from "@/utils/currentPlayer"
-import { PlayerScript, Question, Step } from "@exploregame/types"
+import { PlayerScript, Question, ScriptStep, Step } from "@exploregame/types"
 import { getLocalScenario, setLocalScenario } from "@/utils/localScenario"
 import { gql, useMutation, useQuery } from "@apollo/client"
-import { lazy, useEffect, useState, Suspense } from "react"
+import { lazy, useEffect, useState, Suspense, LazyExoticComponent, ComponentType } from "react"
 import { useCurrentQuestionState } from "@/context/CurrentQuestionStateContext"
 import { useNextStep } from "@/context/NextStepContext"
 import Hint from "@/components/Hint/Hint"
@@ -65,7 +65,10 @@ export const UPDATE_PLAYER_SCRIPT = gql`
 
 export const CHECK_ANSWER = gql`
   mutation checkAnswer($input: CheckAnswerInput!) {
-    checkAnswer(input: $input)
+    checkAnswer(input: $input) {
+      isCorrect
+      correctAnswers
+    }
   }
 `
 
@@ -82,7 +85,11 @@ const QuestionCell = ({
   const currentPlayer = getCurrentPlayer()
   const localScenario = getLocalScenario()
   const { setHintsOpened } = useHints()
-  const [QuestionModule, setQuestionModule] = useState<React.LazyExoticComponent<any> | null>(null)
+  const [QuestionModule, setQuestionModule] = useState<LazyExoticComponent<ComponentType<{
+    question: Question
+    checkAnswer: (answers: string[]) => void
+    next: () => void
+  }>> | null>(null)
 
   const [verifyAnswer] = useMutation(CHECK_ANSWER)
 
@@ -129,7 +136,6 @@ const QuestionCell = ({
     navigate
   ])
 
-  // ! Logique du composant
   useEffect(() => {
     if (!queId) return
 
@@ -143,6 +149,9 @@ const QuestionCell = ({
         break
       case "2":
         Component = lazy(() => import("./QuestionTypes/QuestionRadioField"))
+        break
+      case "3":
+        Component = lazy(() => import("./QuestionTypes/QuestionMultiple"))
         break
       default:
         Component = lazy(() => import("./QuestionTypes/QuestionDefault"))
@@ -167,20 +176,21 @@ const QuestionCell = ({
 
   const nextQuestion = questions[questions.indexOf(question!) + 1]
 
-  const step = steps.find((s: Step) => s.id === stepId)
-  const nextStep = steps[steps.indexOf(step) + 1]
+  const scriptStep: ScriptStep = steps.find((s: Step) => s.id === stepId)
+  const nextScriptStep: ScriptStep = steps[steps.indexOf(scriptStep) + 1]
 
-  function checkAnswer(answer: string) {
+  function checkAnswer(userAnswers: string[]) {
     try {
       verifyAnswer({
         variables: {
           input: {
             questionId: question!.id,
-            answer
+            answers: userAnswers
           }
         }
       }).then((response) => {
-        const correct = response.data.checkAnswer
+        const correct = response.data.checkAnswer.isCorrect
+        const answers = response.data.checkAnswer.correctAnswers
         const updatedPlayerScript = { ...playerScript };
         if (correct) {
           updatedPlayerScript.score += 100
@@ -188,8 +198,10 @@ const QuestionCell = ({
           updatedPlayerScript.score -= 0
         }
         setQuestionState({
+          userAnswers,
           answered: true,
-          correct
+          correct,
+          answers
         })
       })
     } catch (error) {
@@ -201,16 +213,18 @@ const QuestionCell = ({
     setCurrentQuestion((prev) => prev + 1)
     if (nextQuestion !== undefined) {
       setQuestionState({
+        userAnswers: [],
         answered: false,
-        correct: false
+        correct: false,
+        answers: []
       })
       setHintsOpened([false, false, false])
       setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
     } else {
       setStepProps({
-        currentStep: step,
-        nextStep: nextStep,
+        currentStep: scriptStep,
+        nextStep: nextScriptStep,
         playerScriptId: playerScript.id
       })
       setHintsOpened([false, false, false])
@@ -240,17 +254,19 @@ const QuestionCell = ({
   
   return (
     <div>
-      {QuestionModule && (
+      {QuestionModule && question && (
         <Suspense fallback={<div>Loading...</div>}>
           <Hint 
             question={question}
             penalty={applyPenalty}
-           />
-          <QuestionModule 
-            question={question}
-            checkAnswer={checkAnswer}
-            next={next}
           />
+          <section className="pt-8">
+            <QuestionModule 
+              question={question}
+              checkAnswer={checkAnswer}
+              next={next}
+            />
+          </section>
         </Suspense>
       )}
     </div>
