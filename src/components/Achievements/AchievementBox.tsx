@@ -20,7 +20,7 @@ const AchievementBox = ({ filiere, progression, remainingSteps, scenarioStart }:
     }
 
     const handleRetourClick = () => {
-        window.location.href = '/evolutions/scenario';
+        window.location.href = '/evolutions/scenario/1';
     };
     
     return (
