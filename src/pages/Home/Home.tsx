@@ -1,20 +1,19 @@
-import HomeCell from "@/components/Home/HomeCell"
+import WelcomeCell from "@/components/Home/WelcomeCell";
 import BoutonExplorer from "@/components/Home/BoutonExplorer";
 import Header from "@/components/Header";
 import CarteBox from "@/components/Home/CarteBox";
 import ActualiteBox from "@/components/Home/ActualiteBox";
+import FilieresBox from "@/components/Home/FilieresBox";
 
 const HomePage = () => {
   
   return (
     <main>
       <Header />
-      <HomeCell title="Bienvenue" />
-      {/* <HomeCell title="Carte" /> */}
+      <WelcomeCell />
       <CarteBox />
-      {/* <HomeCell title="Actualités" /> */}
       <ActualiteBox />
-      <HomeCell title="Les filières" />
+      <FilieresBox />
       <BoutonExplorer positionBas={true} urlRedirection="/departments" />
     </main>
   )

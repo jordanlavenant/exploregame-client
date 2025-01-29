@@ -4,7 +4,7 @@ import { gql, useQuery } from "@apollo/client"
 import { Department } from "@exploregame/types"
 import { useNavigate, useParams } from "react-router-dom"
 import BoutonExplorer from "@/components/Home/BoutonExplorer"
-import HomeCell from "@/components/Home/HomeCell"
+import HomeCell from "@/components/Home/WelcomeCell"
 import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 
 
