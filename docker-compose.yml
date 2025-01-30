@@ -4,9 +4,12 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
-    environment:
-      NODE_ENV: production
-    ports:
-      - "8920:3000"
     env_file:
       - .env
+    environment:
+      NODE_ENV: production
+      VITE_API_URL_GRAPHQL: ${VITE_API_URL_GRAPHQL}
+      VITE_API_URL: ${VITE_API_URL}
+      VITE_MAPTILER_KEY: ${VITE_MAPTILER_KEY}
+    ports:
+      - "8920:3000"
