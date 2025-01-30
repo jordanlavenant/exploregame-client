@@ -99,7 +99,7 @@ const Leaderboard = () => {
       const minutes = Math.floor(totalTime / 60);
       const seconds = totalTime % 60;
       return {
-          nomPlayer: player.lastName + " " + player.firstName,
+          nomPlayer: player.username,
           temps: `${minutes}:${seconds < 10 ? "0" + seconds : seconds}`,
           score: player.score,
           top: index + 1,

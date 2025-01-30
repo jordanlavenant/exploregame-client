@@ -2,7 +2,6 @@ import EvolutionBox from "@/components/Evolutions/EvolutionBox";
 import SecretWord from "@/components/Evolutions/SecretWord";
 import EvolutionTop from "@/components/Evolutions/EvolutionTop";
 import { gql, useQuery } from "@apollo/client";
-import { Script } from "@exploregame/types";
 import { useParams } from "react-router-dom";
 import { Key } from "react";
 
