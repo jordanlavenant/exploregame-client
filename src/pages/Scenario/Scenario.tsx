@@ -1,6 +1,7 @@
 import { useEffect } from "react"
 import getCurrentPlayer from "@/utils/currentPlayer"
 import { setLocalScenario } from "@/utils/localScenario"
+import { createChrono } from "@/utils/chrono"
 import { gql, useMutation, useQuery } from "@apollo/client"
 import { PlayerScript, ScriptStep } from "@exploregame/types"
 import toast from "react-hot-toast"
@@ -27,6 +28,7 @@ export const SCENARIO = gql`
         stepId
         questionId
         completed
+        remainingTime
       }
     }
   }
@@ -36,6 +38,8 @@ export const CREATE_PLAYER_SCRIPT = gql`
   mutation createPlayerScript($input: CreatePlayerScriptInput!) {
     createPlayerScript(input: $input) {
       id
+      remainingTime
+      score
     }
   }
 `;
@@ -91,6 +95,8 @@ const ScenarioPage = () => {
         scriptId: sceId,
         stepId: data.script.ScriptStep[0].stepId,
         questionId: data.script.ScriptStep[0].Step.Questions[0].id,
+        score: 0,
+        remainingTime: 3600,
       };
 
       // ! Mutation
@@ -99,14 +105,14 @@ const ScenarioPage = () => {
           input: {
             ...initScenarioData,
             completed: false,
-            score: 0,
-            remainingTime: 3600,
           },
         },
       }).then((response) => {
         // ! Redirection
         const idPlayerScript = response.data.createPlayerScript.id
-        setLocalScenario(idPlayerScript, currentPlayer!.id, sceId!, initScenarioData.stepId, initScenarioData.questionId)
+        setLocalScenario(idPlayerScript, currentPlayer!.id, sceId!, initScenarioData.stepId, initScenarioData.questionId, initScenarioData.remainingTime, initScenarioData.score)
+        console.log("test2", response.data)
+        createChrono(response.data.createPlayerScript.remainingTime)
         redirect(initScenarioData.stepId, initScenarioData.questionId)
       })
     }
@@ -114,10 +120,13 @@ const ScenarioPage = () => {
     const resume = () => {
       // ! Data
       const playerScript = data.script.PlayerScript.find((playerScript: PlayerScript) => playerScript.playerId === currentPlayer!.id)
-      const { id, stepId, questionId } = playerScript
+      const { id, stepId, questionId, remainingTime, score } = playerScript
 
       // ! Redirection
-      setLocalScenario(id, currentPlayer!.id, sceId!, stepId, questionId);
+
+      console.log("test création redirection",playerScript)
+      createChrono(remainingTime)
+      setLocalScenario(id, currentPlayer!.id, sceId!, stepId, questionId, remainingTime, score);
       redirect(stepId, questionId);
     }
 

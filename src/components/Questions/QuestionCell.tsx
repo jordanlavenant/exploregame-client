@@ -9,6 +9,9 @@ import { useNextStep } from "@/context/NextStepContext"
 import Hint from "@/components/Hint/Hint"
 import { useHints } from "@/context/HintContext"
 import { useScriptProgress } from "@/context/ScriptProgressContext"
+import { applyScore } from "@/utils/score"
+import { applyPenaltyChrono, getChrono } from "@/utils/chrono"
+import { getScore } from "@/utils/score"
 
 export const PLAYER_SCRIPTS = gql`
   query FindPlayerScripts {
@@ -18,6 +21,8 @@ export const PLAYER_SCRIPTS = gql`
       scriptId
       stepId
       questionId
+      score
+      remainingTime
     }
   }
 `
@@ -49,14 +54,6 @@ export const QUESTION = gql`
         answer
         isCorrect
       }
-    }
-  }
-`
-
-export const UPDATE_PLAYER_SCRIPT = gql`
-  mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
-    updatePlayerScript(id: $id, input: $input) {
-      id
     }
   }
 `
@@ -189,6 +186,9 @@ const QuestionCell = ({
       }).then((response) => {
         const correct = response.data.checkAnswer.isCorrect
         const answers = response.data.checkAnswer.correctAnswers
+        if (correct) {
+          applyScore(100)
+        } // TODO : réponse partiellement correcte ( choix multiple score + 50 ?)
         setQuestionState({
           userAnswers,
           answered: true,
@@ -211,7 +211,8 @@ const QuestionCell = ({
         answers: []
       })
       setHintsOpened([false, false, false])
-      setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
+      console.log("QuestionCell setLocalScenario")
+      setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id, getChrono(), getScore())
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
     } else {
       setStepProps({
@@ -223,12 +224,33 @@ const QuestionCell = ({
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}`)
     }
   }
+
+  const applyPenalty = (importance: string) => {
+    let penalty = 0
+    switch (importance) {
+      case "1":
+        penalty = 60
+        break
+      case "2":
+        penalty = 120
+        break
+      case "3":
+        penalty = 180
+        break
+      default:
+        break
+    }
+    applyPenaltyChrono(penalty)
+  }
   
   return (
     <div>
       {QuestionModule && question && (
         <Suspense fallback={<div>Loading...</div>}>
-          <Hint question={question} />
+          <Hint 
+            question={question}
+            penalty={applyPenalty}
+          />
           <section className="pt-8">
             <QuestionModule 
               question={question}
