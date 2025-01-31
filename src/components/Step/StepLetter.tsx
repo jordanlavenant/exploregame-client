@@ -68,7 +68,7 @@ const StepLetter = () => {
             stepId: stepId,
             questionId: currentStep.Step.Questions?.[currentStep.Step.Questions.length - 1]?.id ?? '',
             completed: true,
-            score: 0,
+            score: getScore(),
             remainingTime: getChrono(),
           }
         }

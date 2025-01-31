@@ -34,10 +34,10 @@ const QuestionHeader = () => {
   useEffect(() => {
     //Gestion du chrono
     refreshChrono()
-    // refreshScore()
+    refreshScore()
     const interval = setInterval(() => {
       setChronoValue(getChrono());
-      // setScore(getScore());
+      setScore(getScore());
     }, 1000);
 
     return () => clearInterval(interval); // Nettoie l'intervalle au démontage
@@ -54,7 +54,7 @@ const QuestionHeader = () => {
           scriptId: scriptId,
           stepId: stepId,
           questionId: questionId,
-          score: 0,
+          score: getScore(),
           remainingTime: getChrono(),
         },
       },
@@ -102,9 +102,9 @@ const QuestionHeader = () => {
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          {/* <div className="text-lg font-semibold">
+          <div className="text-lg font-semibold">
         Score: {score}
-          </div> */}
+          </div>
         </div>
       </div>
     </header>

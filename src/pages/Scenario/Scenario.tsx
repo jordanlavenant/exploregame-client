@@ -29,6 +29,7 @@ export const SCENARIO = gql`
         questionId
         completed
         remainingTime
+        score
       }
     }
   }
@@ -38,8 +39,6 @@ export const CREATE_PLAYER_SCRIPT = gql`
   mutation createPlayerScript($input: CreatePlayerScriptInput!) {
     createPlayerScript(input: $input) {
       id
-      remainingTime
-      score
     }
   }
 `;
