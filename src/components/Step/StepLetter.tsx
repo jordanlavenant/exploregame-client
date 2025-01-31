@@ -8,6 +8,8 @@ import { useState, useEffect } from 'react'
 import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 import { useDepartments } from "@/context/DepartmentDataContext"
 import { ScriptStep } from "@exploregame/types"
+import { getChrono } from "@utils/chrono"
+import { getScore } from "@/utils/score"
 
 export const UPDATE_PLAYER_SCRIPT = gql`
   mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
@@ -65,7 +67,9 @@ const StepLetter = () => {
           input: {
             stepId: stepId,
             questionId: currentStep.Step.Questions?.[currentStep.Step.Questions.length - 1]?.id ?? '',
-            completed: true
+            completed: true,
+            score: getScore(),
+            remainingTime: getChrono(),
           }
         }
       }).then(() => navigate(`/departments/${depId}`))
@@ -76,7 +80,9 @@ const StepLetter = () => {
         id: playerScriptId,
         input: {
           stepId: nextStep.id,
-          questionId: nextStep?.Step?.Questions?.[0]?.id ?? ''
+          questionId: nextStep?.Step?.Questions?.[0]?.id ?? '',
+          score: getScore(),
+          remainingTime: getChrono()
         }
       }
     })

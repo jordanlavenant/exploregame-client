@@ -9,6 +9,9 @@ import { useNextStep } from "@/context/NextStepContext"
 import Hint from "@/components/Hint/Hint"
 import { useHints } from "@/context/HintContext"
 import { useScriptProgress } from "@/context/ScriptProgressContext"
+import { applyScore } from "@/utils/score"
+import { applyPenaltyChrono, getChrono } from "@/utils/chrono"
+import { getScore } from "@/utils/score"
 
 export const PLAYER_SCRIPTS = gql`
   query FindPlayerScripts {
@@ -51,14 +54,6 @@ export const QUESTION = gql`
         answer
         isCorrect
       }
-    }
-  }
-`
-
-export const UPDATE_PLAYER_SCRIPT = gql`
-  mutation updatePlayerScript($id: String!, $input: UpdatePlayerScriptInput!) {
-    updatePlayerScript(id: $id, input: $input) {
-      id
     }
   }
 `
@@ -168,7 +163,7 @@ const QuestionCell = ({
   ) return null
 
   const playerScripts = dataPS.playerScripts
-  var playerScript = playerScripts.find((ps: PlayerScript) => ps.playerId === currentPlayer!.id && ps.scriptId === sceId)
+  const playerScript = playerScripts.find((ps: PlayerScript) => ps.playerId === currentPlayer!.id && ps.scriptId === sceId)
 
   const steps = dataScript.script.ScriptStep
 
@@ -191,12 +186,9 @@ const QuestionCell = ({
       }).then((response) => {
         const correct = response.data.checkAnswer.isCorrect
         const answers = response.data.checkAnswer.correctAnswers
-        const updatedPlayerScript = { ...playerScript };
         if (correct) {
-          updatedPlayerScript.score += 100
-        } else {
-          updatedPlayerScript.score -= 0
-        }
+          applyScore(100)
+        } // TODO : réponse partiellement correcte ( choix multiple score + 50 ?)
         setQuestionState({
           userAnswers,
           answered: true,
@@ -219,7 +211,8 @@ const QuestionCell = ({
         answers: []
       })
       setHintsOpened([false, false, false])
-      setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id)
+      console.log("QuestionCell setLocalScenario")
+      setLocalScenario(playerScript.id, currentPlayer!.id, sceId!, stepId!, nextQuestion.id, getChrono(), getScore())
       navigate(`/departments/${depId}/scenarios/${sceId}/steps/${stepId}/questions/${nextQuestion.id}`)
     } else {
       setStepProps({
@@ -247,9 +240,7 @@ const QuestionCell = ({
       default:
         break
     }
-    console.log(playerScript.ramainingTime)
-    playerScript.remainingTime -= penalty
-    console.log(playerScript.ramainingTime)
+    applyPenaltyChrono(penalty)
   }
   
   return (

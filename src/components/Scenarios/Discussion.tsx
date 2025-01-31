@@ -39,7 +39,7 @@ const Discussion: React.FC<DiscussionProps> = ({ characterSteps, onFinish }) => 
       ref={scrollRef} // Conteneur défilable
       className="fixed top-16 left-0 right-0 bottom-0 flex flex-col gap-4 p-4 overflow-y-auto"
       onClick={handleNext} // Clique pour avancer
-      style={{ marginTop: '8vh' }}
+      style={{ marginTop: '10vh' }}
     >
       {characterSteps.slice(0, currentIndex + 1).map((step) => {
         const character = step.Character;

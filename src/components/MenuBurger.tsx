@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const MenuBurger = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
       setIsOpen(!isOpen);
@@ -58,22 +60,22 @@ const MenuBurger = () => {
                   }}
                 >
                   <motion.li variants={{ visible: { y: 0 }, hidden: { y: 20 } }}>
-                    <a href="/" className="hover:underline">ACCUEIL</a>
+                    <button onClick={() => navigate('/')} className="hover:underline">ACCUEIL</button>
                   </motion.li>
                   <motion.li variants={{ visible: { y: 0 }, hidden: { y: 20 } }}>
-                    <a href="/departments" className="hover:underline">LES FILIERES</a>
+                    <button onClick={() => navigate('/departments')} className="hover:underline">LES DEPARTEMENTS</button>
                   </motion.li>
                   <motion.li variants={{ visible: { y: 0 }, hidden: { y: 20 } }}>
-                    <a href="/profile" className="hover:underline">PROFIL</a>
+                    <button onClick={() => navigate('/profile')} className="hover:underline">PROFIL</button>
                   </motion.li>
                   <motion.li variants={{ visible: { y: 0 }, hidden: { y: 20 } }}>
-                    <a href="/" className="hover:underline">ACTUALITES</a>
+                    <button onClick={() => navigate('/')} className="hover:underline">ACTUALITES</button>
                   </motion.li>
                   <motion.li variants={{ visible: { y: 0 }, hidden: { y: 20 } }}>
-                    <a href="/map" className="hover:underline">CARTE</a>
+                    <button onClick={() => navigate('/map')} className="hover:underline">CARTE</button>
                   </motion.li>
                   <motion.li variants={{ visible: { y: 0 }, hidden: { y: 20 } }}>
-                    <a href="/" className="hover:underline">LES BDE</a>
+                    <button onClick={() => navigate('/')} className="hover:underline">LES BDE</button>
                   </motion.li>
                 </motion.ul>
               </motion.nav>
