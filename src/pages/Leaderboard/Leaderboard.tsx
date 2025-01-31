@@ -6,6 +6,7 @@ import { Player } from "@exploregame/types"
 const GET_CURRENT_PLAYER = gql`
   query GetCurrentPlayer($id: String!) {
     player(id: $id) {
+      id
       username
       Department {
           id
@@ -90,7 +91,13 @@ const Leaderboard = () => {
   if (playerScriptError) {
       return <p>Error: {playerScriptError.message}</p>
   }
+
+  if (!currentPlayerData || !data) {
+      return <p>No data</p>
+  }
+
   const playersList = data.playerScripts
+
   const aggregatePlayerList = aggregateAndSortPlayers(playersList)
   const newSortedPlayer = aggregatePlayerList.map((player, index) => {
       const totalTime = 3600 - player.remainingTime;
@@ -104,25 +111,29 @@ const Leaderboard = () => {
           departement: player.Department.name
       };
   });
-  const currentPlayerScript: PlayerScript | undefined = playersList.find(
+  
+  const currentPlayerScripts = playersList.filter(
       (script: PlayerScript) => script.Player.id === currentPlayerData.player.id
   );
 
-  const currentPlayerFormated = currentPlayerScript
+  const totalScore: number = currentPlayerScripts.reduce((acc: number, script: PlayerScript) => acc + script.score, 0);
+  const remainingTime = currentPlayerScripts.length > 0 ? currentPlayerScripts[0].remainingTime : 0;
+
+  const currentPlayerFormated = currentPlayerScripts.length > 0
       ? [{
             nomPlayer: currentPlayerData.player.username,
-            temps: `${Math.floor((3600 - currentPlayerScript.remainingTime) / 60)}:${
-                (3600 - currentPlayerScript.remainingTime) % 60 < 10
-                    ? "0" + (3600 - currentPlayerScript.remainingTime) % 60
-                    : (3600 - currentPlayerScript.remainingTime) % 60
+            temps: `${Math.floor((3600 - remainingTime) / 60)}:${
+                (3600 - remainingTime) % 60 < 10
+                    ? "0" + (3600 - remainingTime) % 60
+                    : (3600 - remainingTime) % 60
             }`,
             top: aggregatePlayerList.findIndex(
                 (player) => player.id === currentPlayerData.player.id
             ) + 1,
-            score: currentPlayerScript.score,
+            score: totalScore,
             departement: currentPlayerData.player.Department.name,
         }]
-      : [{nomPlayer: "Jean", temps: "1:30", top: 10, score: 100}];
+      : [];
 
   const currentPlayerDepartment = currentPlayerData.player.Department.name || "Inconnu";
   const playerScriptByFilliere = newSortedPlayer.filter(
