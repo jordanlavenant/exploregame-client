@@ -188,7 +188,7 @@ const QuestionCell = ({
         const answers = response.data.checkAnswer.correctAnswers
         if (correct) {
           applyScore(100)
-        } // TODO : réponse partiellement correcte ( choix multiple score + 50 ?)
+        } // TODO : réponse partiellement correct ( choix multiple score + 50 ?)
         setQuestionState({
           userAnswers,
           answered: true,

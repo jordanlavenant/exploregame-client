@@ -32,7 +32,7 @@ const SubmitQuestion = () => {
                 <div className="flex items-center gap-x-2 text-3xl justify-between w-full">
                   <section className="flex items-center justify-start gap-x-2">
                     <img src={questionState.correct ? '/icon-valid.svg' : '/icon-false.svg'} alt="checked" className="w-8 h-8" />
-                    <p className={questionState.correct ? 'font-bold text-[#46E54E]' : 'font-bold text-[#C53030]'}>{questionState.correct ? 'Correcte !' : 'Incorrecte'}</p>
+                    <p className={questionState.correct ? 'font-bold text-[#46E54E]' : 'font-bold text-[#C53030]'}>{questionState.correct ? 'Correct !' : 'Incorrect'}</p>
                   </section>
                   {questionState.correct ? <img src="/green-flag.svg" alt="green-flag" className="w-12 h-12" /> : <img src="/red-flag.svg" alt="red-flag" className="w-12 h-12" />}
                 </div>
