@@ -30,7 +30,7 @@ const Routes = () => {
         <Route path="/profile/informations" element={<ProfilCheckPage />} />
         <Route path="/profile/update" element={<ProfilModifPage />} />
         <Route path="/achievements" element={<AchievementPage />} />
-        <Route path="/evolutions/scenario" element={<EvolutionScenario />} />
+        <Route path="/evolutions/scenario/:sceID" element={<EvolutionScenario />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/map" element={<MapPage />} />
       </Paths>
