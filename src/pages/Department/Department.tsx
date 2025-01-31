@@ -4,8 +4,10 @@ import { gql, useQuery } from "@apollo/client"
 import { Department } from "@exploregame/types"
 import { useNavigate, useParams } from "react-router-dom"
 import BoutonExplorer from "@/components/Home/BoutonExplorer"
-import HomeCell from "@/components/Home/HomeCell"
 import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
+import CarteBox from "@/components/Home/CarteBox";
+import ActualiteBox from "@/components/Home/ActualiteBox";
+
 
 
 const DEPARTMENTS = gql`
@@ -125,18 +127,8 @@ const DepartmentPage = () => {
         bordercolor={colors.primary}
         department={currentDepartment}
       />
-      <HomeCell 
-        title="Bienvenue"
-        colors={colors}
-      />
-      <HomeCell 
-        title="Carte"
-        colors={colors}
-      />
-      <HomeCell
-        title="Actualités"
-        colors={colors}
-      />
+      <CarteBox />
+      <ActualiteBox />
 
       {/* <DepartmentCell department={currentDepartment} /> */}
     </main>
