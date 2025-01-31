@@ -34,30 +34,17 @@ const QuestionHeader = () => {
   useEffect(() => {
     //Gestion du chrono
     refreshChrono()
+    // refreshScore()
     const interval = setInterval(() => {
       setChronoValue(getChrono());
+      // setScore(getScore());
     }, 1000);
 
     return () => clearInterval(interval); // Nettoie l'intervalle au démontage
   }, []);
 
-  useEffect(() => {
-    refreshScore();
-    setScore(getScore());
-
-    // Vérification du localStorage toutes les 500ms
-    const interval = setInterval(() => {
-        const localScore = getScore();
-        setScore(localScore);
-    }, 500);
-
-    return () => {
-        clearInterval(interval); // Nettoie l'intervalle quand le composant est démonté
-    };
-}, []);
-
   const saveStep = () => {
-    const { id, playerId, scriptId, stepId, questionId, score, chrono } = getLocalScenario()
+    const { id, playerId, scriptId, stepId, questionId} = getLocalScenario()
     console.log('saveStep', id, playerId, scriptId, stepId, questionId, getScore(), getChrono())
     updatePlayerScript({
       variables: {
@@ -67,8 +54,8 @@ const QuestionHeader = () => {
           scriptId: scriptId,
           stepId: stepId,
           questionId: questionId,
-          score: score,
-          remainingTime: chrono,
+          score: 0,
+          remainingTime: getChrono(),
         },
       },
     }).catch((error) => {
@@ -115,9 +102,9 @@ const QuestionHeader = () => {
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <div className="text-lg font-semibold">
+          {/* <div className="text-lg font-semibold">
         Score: {score}
-          </div>
+          </div> */}
         </div>
       </div>
     </header>

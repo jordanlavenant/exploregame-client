@@ -1,5 +1,4 @@
-import { setLocalChrono } from "./chrono";
-import { getLocalScenario, setLocalScenario, updateLocalScenarioScore } from "./localScenario";
+import { getLocalScenario, updateLocalScenarioScore } from "./localScenario";
 
 let score : number = 0
 
@@ -9,13 +8,14 @@ export function getScore() {
 }
 
 export function getLocalScore(): number {
-    const localScenario = getLocalScenario();
-    return localScenario?.score ?? 0; // Récupère le score du scénario stocké
+    const localScore = getLocalScenario().score;
+    console.log("getLocalScore", localScore)
+    return localScore ?? 0; // Récupère le score du scénario stocké
 }
 
 export function applyScore(points: number) {
     score += points;
-    setLocalChrono(score)
+    setLocalScore(score)
     console.log(score)
     localStorage.setItem("scoreUpdated", Date.now().toString());
 }
