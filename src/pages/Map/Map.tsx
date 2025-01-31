@@ -4,7 +4,7 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import MenuBurger from '@/components/MenuBurger'
 import { gql, useQuery } from '@apollo/client'
 import { useGeolocation } from "@uidotdev/usehooks"
-import { Info, LucideMessageSquareWarning } from 'lucide-react'
+import { LucideMessageSquareWarning } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 
