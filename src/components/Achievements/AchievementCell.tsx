@@ -6,6 +6,7 @@ type AchievementBoxProps = {
     progression: number;
     remainingSteps: number;
     scenarioStart: boolean;
+    scriptId: string;
 }
 
 interface AchievementCellProps {
@@ -25,6 +26,7 @@ const AchievementCell = ({ title, listeAchievements }: AchievementCellProps) => 
                         progression={achievement.progression}
                         remainingSteps={achievement.remainingSteps}
                         scenarioStart={achievement.scenarioStart}
+                        scriptId={achievement.scriptId}
                     />
                 ))}
             </div>

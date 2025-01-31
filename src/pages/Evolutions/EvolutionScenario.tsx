@@ -106,6 +106,8 @@ const EvolutionScenario = () => {
     (script: any) => script.id === sceID
   );
 
+  console.log(currentScriptWithSteps);
+
   // Récupération du nombres d'étapes total du scénario
   const totalSteps = currentScriptWithSteps.ScriptStep.length;
 
@@ -121,7 +123,7 @@ const EvolutionScenario = () => {
       nomEtape: scriptStep.Step.Location.name,
       progression: 100,
       lettre: scriptStep.lettre,
-      urlRedirection: "",
+      urlRedirection: `/departments/${currentScriptWithSteps.Department.id}/scenarios/${sceID}/steps/${currentStepId}/questions/${currentQuestionId}`,
     }));
   }else{
   listeEvolutions = [];
@@ -134,7 +136,7 @@ const EvolutionScenario = () => {
       );      
       const totalQuestions = step.Step.Questions.length;
       let questionDone = 0;
-      for (let j = 1 ; j <= currentQuestionId; j++){
+      for (let j = 1 ; j < currentQuestionId; j++){ // Modifier la condition pour exclure la question en cours
         const questionIdStr = j.toString();
 
         if (step.Step.Questions.find((question: any) => question.id === questionIdStr)){
@@ -147,7 +149,19 @@ const EvolutionScenario = () => {
           nomEtape: step.Step.Location.name,
           progression: progression,
           lettre: step.lettre,
-          urlRedirection: "",
+          urlRedirection: `/departments/${currentScriptWithSteps.Department.id}/scenarios/${sceID}/steps/${currentStepId}/questions/${currentQuestionId}`,
+        });
+      }
+    } else if (i < parseInt(currentStepId)) {
+      step = currentScriptWithSteps.ScriptStep.find(
+        (scriptStep: any) => scriptStep.Step.id === stepIdStr
+      );
+      if (step) {
+        listeEvolutions.push({
+          nomEtape: step.Step.Location.name,
+          progression: 100,
+          lettre: step.lettre,
+          urlRedirection: `/departments/${currentScriptWithSteps.Department.id}/scenarios/${sceID}/steps/${currentStepId}/questions/${currentQuestionId}`,
         });
       }
     } else {
@@ -157,9 +171,9 @@ const EvolutionScenario = () => {
       if (step) {
         listeEvolutions.push({
           nomEtape: step.Step.Location.name,
-          progression: 100,
+          progression: 0,
           lettre: step.lettre,
-          urlRedirection: "",
+          urlRedirection: `/departments/${currentScriptWithSteps.Department.id}/scenarios/${sceID}/steps/${currentStepId}/questions/${currentQuestionId}`,
         });
       }
     }

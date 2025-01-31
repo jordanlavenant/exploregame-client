@@ -1,12 +1,13 @@
-// ! Temporaire pour build
 type AchievementBoxProps = {
     filiere: string;
     progression: number;
     remainingSteps: number;
     scenarioStart: boolean;
+    scriptId: string;
 }
 
-const AchievementBox = ({ filiere, progression, remainingSteps, scenarioStart }: AchievementBoxProps) => {
+const AchievementBox = ({ filiere, progression, remainingSteps, scenarioStart, scriptId }: AchievementBoxProps) => {
+
     let phrase:string = "";
     let urlPhotoSucces: string = "/succes-vide.png";
     
@@ -20,7 +21,11 @@ const AchievementBox = ({ filiere, progression, remainingSteps, scenarioStart }:
     }
 
     const handleRetourClick = () => {
-        window.location.href = '/evolutions/scenario/1';
+        if (scriptId) {
+            window.location.href = `/evolutions/scenario/${scriptId}`;
+        } else {
+            console.error("scriptId est undefined");
+        }
     };
     
     return (
