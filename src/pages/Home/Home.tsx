@@ -6,13 +6,15 @@ import ActualiteBox from "@/components/Home/ActualiteBox";
 import FilieresBox from "@/components/Home/FilieresBox";
 
 const HomePage = () => {
+
+  
   
   return (
     <main>
       <Header />
       <WelcomeCell />
-      <CarteBox />
-      <ActualiteBox />
+      <CarteBox primaryColor="#bb8baf" />
+      <ActualiteBox primaryColor="bb8baf" />
       <FilieresBox />
       <BoutonExplorer positionBas={true} urlRedirection="/departments" />
     </main>
