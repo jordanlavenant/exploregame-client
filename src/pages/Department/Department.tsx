@@ -7,6 +7,7 @@ import BoutonExplorer from "@/components/Home/BoutonExplorer"
 import { useColorsDepartments } from "@/context/ColorsDepartmentContext"
 import CarteBox from "@/components/Home/CarteBox";
 import ActualiteBox from "@/components/Home/ActualiteBox";
+import { color } from "framer-motion"
 
 
 
@@ -127,8 +128,8 @@ const DepartmentPage = () => {
         bordercolor={colors.primary}
         department={currentDepartment}
       />
-      <CarteBox />
-      <ActualiteBox />
+      <CarteBox primaryColor={colors.secondary} />
+      <ActualiteBox primaryColor={colors.secondary} />
 
       {/* <DepartmentCell department={currentDepartment} /> */}
     </main>

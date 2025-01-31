@@ -1,11 +1,15 @@
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { darkenColor } from "@/utils/color";
 
 interface ActualiteBoxProps {
+    primaryColor: string;
 }
 
-const ActualiteBox = ({ }: ActualiteBoxProps) => {
+const ActualiteBox = ({ primaryColor }: ActualiteBoxProps) => {
     const navigate = useNavigate();
+
+    const secondaryColor = darkenColor(primaryColor, -25);
 
     const handleCardClick = () => {
         navigate("/actualites");
@@ -21,15 +25,15 @@ const ActualiteBox = ({ }: ActualiteBoxProps) => {
             <p className="text-3xl font-bold text-[#555454] text-start w-full">Dernières nouvelles</p>
             <div className="space-y-4 w-full">
                 {news.map((item, index) => (
-                    <div key={index} className="flex flex-col space-y-2 p-4 bg-[#bb8baf] rounded-lg shadow">
+                    <div key={index} className="flex flex-col space-y-2 p-4 bg-[#bb8baf] rounded-lg shadow" style={{ backgroundColor: primaryColor }}>
+                        <h3 className="font-bold text-xl">{item.title}</h3>
                         <div className='flex flex-wrap justify-start gap-2'>
-                            <p className="px-2 text-gray-900 bg-[#791860]  text-center rounded-lg shadow">{item.tags[0]}</p>
-                            <p className="px-2 text-gray-900 bg-[#791860]  text-center rounded-lg shadow">{item.tags[1]}</p>
-                            <p className="px-2 text-gray-900 bg-[#791860]  text-center rounded-lg shadow">{item.tags[2]}</p>
+                            <p style={{ backgroundColor: secondaryColor }} className="px-3 py-2 font-semibold text-white text-sm bg-[#791860]  text-center rounded-lg shadow">{item.tags[0]}</p>
+                            <p style={{ backgroundColor: secondaryColor }} className="px-3 py-2 font-semibold text-white text-sm bg-[#791860]  text-center rounded-lg shadow">{item.tags[1]}</p>
+                            <p style={{ backgroundColor: secondaryColor }} className="px-3 py-2 font-semibold text-white text-sm bg-[#791860]  text-center rounded-lg shadow">{item.tags[2]}</p>
                         </div>
-                        <h3 className="font-bold">{item.title}</h3>
                         <p className="text-sm text-black">{item.description}</p>
-                        <p className="font-semibold text-gray-900 bg-[#791860] w-48 text-center rounded-lg shadow">{item.date}</p>
+                        <p style={{ backgroundColor: secondaryColor }} className="font-semibold px-3 py-2 text-white bg-[#791860] w-48 text-center rounded-lg shadow">{item.date}</p>
                     </div>
                 ))}
             </div>
